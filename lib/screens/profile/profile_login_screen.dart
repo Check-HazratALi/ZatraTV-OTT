@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/auth/sign_in/sign_in_screen.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/screens/auth/sign_in/sign_in_screen.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../components/cached_image_widget.dart';

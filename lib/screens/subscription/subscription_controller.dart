@@ -5,8 +5,8 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:purchases_flutter/models/offerings_wrapper.dart';
 import 'package:purchases_flutter/models/package_wrapper.dart';
 import 'package:purchases_flutter/models/store_product_wrapper.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/subscription/model/subscription_plan_model.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/subscription/model/subscription_plan_model.dart';
 
 import '../../network/core_api.dart';
 import '../../utils/app_common.dart';

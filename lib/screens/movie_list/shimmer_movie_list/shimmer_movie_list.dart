@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/shimmer_widget.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/components/shimmer_widget.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 class ShimmerMovieList extends StatelessWidget {
   const ShimmerMovieList({super.key});

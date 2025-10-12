@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tihd/screens/home/model/dashboard_res_model.dart';
+import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 import '../../../../components/cached_image_widget.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/generated/assets.dart';
 import '../../../../main.dart';
 import 'package:get/get.dart';
 

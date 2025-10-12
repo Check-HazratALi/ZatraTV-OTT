@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/utils/extension/string_extention.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/utils/extension/string_extention.dart';
 
 import '../../../components/app_scaffold.dart';
 import '../../../components/cached_image_widget.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/generated/assets.dart';
 import '../../../utils/colors.dart';
 import '../model/notification_model.dart';
 import 'notification_screen_controller.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/download_videos/components/download_movie_card.dart';
-import 'package:tihd/screens/download_videos/download_controller.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/download_videos/download_details/download_details_screen.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/screens/download_videos/components/download_movie_card.dart';
+import 'package:zatra_tv/screens/download_videos/download_controller.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/download_videos/download_details/download_details_screen.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../components/cached_image_widget.dart';

@@ -4,9 +4,9 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/network/auth_apis.dart';
-import 'package:tihd/screens/auth/sign_in/sign_in_controller.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_screen.dart';
+import 'package:zatra_tv/network/auth_apis.dart';
+import 'package:zatra_tv/screens/auth/sign_in/sign_in_controller.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_screen.dart';
 
 import '../../../configs.dart';
 import '../../../utils/app_common.dart';

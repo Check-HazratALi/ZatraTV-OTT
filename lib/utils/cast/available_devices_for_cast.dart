@@ -4,9 +4,9 @@ import 'package:flutter_chrome_cast/_session_manager/cast_session_manager.dart';
 import 'package:flutter_chrome_cast/entities/cast_device.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../main.dart';
 import '../empty_error_state_widget.dart';

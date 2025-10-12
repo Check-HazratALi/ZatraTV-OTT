@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/constants.dart';
-import 'package:tihd/video_players/model/video_model.dart';
-import 'package:tihd/video_players/video_player_controller.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/constants.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
+import 'package:zatra_tv/video_players/video_player_controller.dart';
 
 import '../utils/colors.dart';
 

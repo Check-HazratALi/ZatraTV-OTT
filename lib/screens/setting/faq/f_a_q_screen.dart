@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/screens/setting/faq/components/f_a_q_card.dart';
-import 'package:tihd/screens/setting/model/faq_model.dart';
-import 'package:tihd/screens/setting/setting_controller.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/screens/setting/faq/components/f_a_q_card.dart';
+import 'package:zatra_tv/screens/setting/model/faq_model.dart';
+import 'package:zatra_tv/screens/setting/setting_controller.dart';
 
 import '../../../main.dart';
 import '../../../utils/colors.dart';

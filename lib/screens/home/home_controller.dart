@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/ads/ads_helper.dart';
-import 'package:tihd/screens/home/model/dashboard_res_model.dart';
-import 'package:tihd/screens/watch_list/watch_list_controller.dart';
-import 'package:tihd/utils/constants.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/ads/ads_helper.dart';
+import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
+import 'package:zatra_tv/screens/watch_list/watch_list_controller.dart';
+import 'package:zatra_tv/utils/constants.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../../configs.dart';
 import '../../main.dart';

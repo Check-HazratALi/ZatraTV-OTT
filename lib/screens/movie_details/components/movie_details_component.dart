@@ -7,12 +7,12 @@ import 'package:flutter_chrome_cast/entities/cast_session.dart';
 import 'package:flutter_chrome_cast/enums/connection_state.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/ads/components/custom_ad_component.dart';
-import 'package:tihd/components/cached_image_widget.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/auth/sign_in/sign_in_screen.dart';
+import 'package:zatra_tv/ads/components/custom_ad_component.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/auth/sign_in/sign_in_screen.dart';
 
 import '../../../components/custom_icon_button_widget.dart';
 import '../../../utils/app_common.dart';

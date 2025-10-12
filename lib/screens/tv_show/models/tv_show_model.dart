@@ -1,5 +1,5 @@
-import 'package:tihd/screens/review_list/model/review_model.dart';
-import 'package:tihd/screens/tv_show/models/tv_show_details_model.dart';
+import 'package:zatra_tv/screens/review_list/model/review_model.dart';
+import 'package:zatra_tv/screens/tv_show/models/tv_show_details_model.dart';
 
 import '../../subscription/model/subscription_plan_model.dart';
 

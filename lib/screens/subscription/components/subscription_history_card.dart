@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/constants.dart';
-import 'package:tihd/utils/price_widget.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/constants.dart';
+import 'package:zatra_tv/utils/price_widget.dart';
 
 import '../../../utils/common_base.dart';
 import '../model/subscription_plan_model.dart';

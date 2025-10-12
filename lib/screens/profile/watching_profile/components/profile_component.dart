@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/cached_image_widget.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/profile/watching_profile/components/verify_profile_pin_component.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/components/verify_profile_pin_component.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/generated/assets.dart';
 import '../model/profile_watching_model.dart';
 import '../watching_profile_controller.dart';
 

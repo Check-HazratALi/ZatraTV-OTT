@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/shimmer_widget.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/video/video_details_screen.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/components/shimmer_widget.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/video/video_details_screen.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 import '../../../main.dart';
 import '../../../screens/coming_soon/coming_soon_controller.dart';

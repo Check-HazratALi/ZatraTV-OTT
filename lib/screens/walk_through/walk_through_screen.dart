@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 import '../../main.dart';
 import 'choose_option_screen.dart';

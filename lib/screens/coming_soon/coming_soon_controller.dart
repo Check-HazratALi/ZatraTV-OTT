@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:tihd/screens/coming_soon/model/coming_soon_response.dart';
+import 'package:zatra_tv/screens/coming_soon/model/coming_soon_response.dart';
 
 import '../../network/core_api.dart';
 import '../../utils/app_common.dart';

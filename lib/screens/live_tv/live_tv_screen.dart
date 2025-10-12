@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/live_tv/shimmer_live_tv.dart';
+import 'package:zatra_tv/screens/live_tv/shimmer_live_tv.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../main.dart';

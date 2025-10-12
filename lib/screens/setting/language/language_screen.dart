@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
-import 'package:tihd/screens/dashboard/dashboard_controller.dart';
-import 'package:tihd/screens/home/home_controller.dart';
-import 'package:tihd/screens/setting/setting_controller.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/screens/dashboard/dashboard_controller.dart';
+import 'package:zatra_tv/screens/home/home_controller.dart';
+import 'package:zatra_tv/screens/setting/setting_controller.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 import '../../../components/app_scaffold.dart';
 import '../../../locale/app_localizations.dart';
 import '../../../locale/languages.dart';

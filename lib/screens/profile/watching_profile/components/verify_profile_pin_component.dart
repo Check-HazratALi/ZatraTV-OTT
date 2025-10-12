@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/profile/watching_profile/model/profile_watching_model.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_controller.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/model/profile_watching_model.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 class VerifyProfilePinComponent extends StatelessWidget {
   final WatchingProfileModel profile;

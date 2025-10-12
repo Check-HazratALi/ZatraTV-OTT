@@ -1,4 +1,4 @@
-import 'package:tihd/screens/subscription/model/subscription_plan_model.dart';
+import 'package:zatra_tv/screens/subscription/model/subscription_plan_model.dart';
 
 class SubscriptionResponseModel {
   bool status;

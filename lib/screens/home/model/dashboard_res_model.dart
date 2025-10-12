@@ -1,4 +1,4 @@
-import 'package:tihd/screens/watch_list/model/watch_list_resp.dart';
+import 'package:zatra_tv/screens/watch_list/model/watch_list_resp.dart';
 
 import '../../../video_players/model/video_model.dart';
 import '../../genres/model/genres_model.dart';

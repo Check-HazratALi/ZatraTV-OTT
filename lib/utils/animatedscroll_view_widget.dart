@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 import '../components/category_list/movie_horizontal/poster_card_component.dart';
 import '../video_players/model/video_model.dart';

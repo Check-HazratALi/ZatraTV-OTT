@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_controller.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_screen.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_controller.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_screen.dart';
 
-import 'package:tihd/network/auth_apis.dart';
+import 'package:zatra_tv/network/auth_apis.dart';
 import '../../../configs.dart';
 import '../../../main.dart';
 import '../../../utils/app_common.dart';

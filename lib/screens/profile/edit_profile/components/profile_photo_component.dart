@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tihd/components/cached_image_widget.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/screens/profile/edit_profile/edit_profile_controller.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/screens/profile/edit_profile/edit_profile_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 class ProfilePicComponent extends StatelessWidget {
   ProfilePicComponent({super.key});

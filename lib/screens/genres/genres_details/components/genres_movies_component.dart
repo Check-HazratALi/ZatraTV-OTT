@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/genres/genres_details/genres_details_controller.dart';
+import 'package:zatra_tv/screens/genres/genres_details/genres_details_controller.dart';
 
 import '../../../../components/category_list/movie_horizontal/poster_card_component.dart';
 import '../../../../components/loader_widget.dart';

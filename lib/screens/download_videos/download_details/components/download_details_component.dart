@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tihd/components/cached_image_widget.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../../utils/colors.dart';
 import '../../../../video_players/model/video_model.dart';

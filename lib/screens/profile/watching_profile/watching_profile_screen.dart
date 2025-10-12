@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/screens/profile/watching_profile/components/add_profile_component.dart';
-import 'package:tihd/screens/profile/watching_profile/components/profile_component.dart';
-import 'package:tihd/screens/profile/watching_profile/model/profile_watching_model.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_controller.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/empty_error_state_widget.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/components/add_profile_component.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/components/profile_component.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/model/profile_watching_model.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_controller.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/empty_error_state_widget.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 import '../../../main.dart';
 import '../../setting/account_setting/components/logout_account_component.dart';

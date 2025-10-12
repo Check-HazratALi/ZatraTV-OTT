@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/live_tv/components/live_card.dart';
-import 'package:tihd/screens/live_tv/live_tv_controller.dart';
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/live_tv/components/live_card.dart';
+import 'package:zatra_tv/screens/live_tv/live_tv_controller.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/utils/colors.dart';
 import '../../../components/cached_image_widget.dart';
 import '../../../main.dart';
 import 'package:nb_utils/nb_utils.dart';

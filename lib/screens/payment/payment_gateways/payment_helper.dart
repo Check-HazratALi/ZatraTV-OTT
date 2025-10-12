@@ -7,8 +7,8 @@ import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
 import 'package:flutter_sslcommerz/model/sslproductinitilizer/General.dart';
 import 'package:flutter_sslcommerz/model/sslproductinitilizer/SSLCProductInitializer.dart';
 import 'package:flutter_sslcommerz/sslcommerz.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;

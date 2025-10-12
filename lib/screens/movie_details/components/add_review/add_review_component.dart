@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/movie_details/components/add_review/add_review_controller.dart';
-import 'package:tihd/screens/movie_details/movie_details_controller.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/screens/movie_details/components/add_review/add_review_controller.dart';
+import 'package:zatra_tv/screens/movie_details/movie_details_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../../../main.dart';
 import '../../../../utils/common_base.dart';

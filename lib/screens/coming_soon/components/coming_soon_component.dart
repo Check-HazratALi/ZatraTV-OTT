@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/coming_soon/model/coming_soon_response.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/screens/coming_soon/model/coming_soon_response.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 import '../../../components/cached_image_widget.dart';
 import '../../../main.dart';

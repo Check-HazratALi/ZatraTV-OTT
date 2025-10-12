@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/setting/model/faq_model.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/screens/setting/model/faq_model.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 class FAQCard extends StatelessWidget {
   final FAQModel faqData;

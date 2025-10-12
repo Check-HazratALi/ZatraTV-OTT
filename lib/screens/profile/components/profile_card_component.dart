@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tihd/components/cached_image_widget.dart';
-import 'package:tihd/screens/profile/edit_profile/edit_profile_screen.dart';
-import 'package:tihd/screens/profile/model/profile_detail_resp.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
+import 'package:zatra_tv/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:zatra_tv/screens/profile/model/profile_detail_resp.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/profile/profile_controller.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/screens/profile/profile_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../../generated/assets.dart';
 

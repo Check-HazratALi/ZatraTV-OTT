@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/home/model/dashboard_res_model.dart';
-import 'package:tihd/screens/profile/profile_controller.dart';
-import 'package:tihd/screens/rented_content/pay_per_view_screen.dart';
-import 'package:tihd/screens/tv_show/tv_show_screen.dart';
-import 'package:tihd/screens/watch_list/watch_list_screen.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
+import 'package:zatra_tv/screens/profile/profile_controller.dart';
+import 'package:zatra_tv/screens/rented_content/pay_per_view_screen.dart';
+import 'package:zatra_tv/screens/tv_show/tv_show_screen.dart';
+import 'package:zatra_tv/screens/watch_list/watch_list_screen.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 import '../../../main.dart';
 import '../../../screens/channel_list/channel_list_screen.dart';

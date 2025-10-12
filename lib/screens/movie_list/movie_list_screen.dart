@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/dashboard/components/floating_widget.dart';
-import 'package:tihd/screens/movie_list/movie_list_controller.dart';
-import 'package:tihd/screens/movie_list/shimmer_movie_list/shimmer_movie_list.dart';
-import 'package:tihd/screens/slider/banner_widget.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/screens/dashboard/components/floating_widget.dart';
+import 'package:zatra_tv/screens/movie_list/movie_list_controller.dart';
+import 'package:zatra_tv/screens/movie_list/shimmer_movie_list/shimmer_movie_list.dart';
+import 'package:zatra_tv/screens/slider/banner_widget.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../main.dart';

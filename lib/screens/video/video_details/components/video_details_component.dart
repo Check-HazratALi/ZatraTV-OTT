@@ -7,11 +7,11 @@ import 'package:flutter_chrome_cast/entities/cast_session.dart';
 import 'package:flutter_chrome_cast/enums/connection_state.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/ads/components/custom_ad_component.dart';
-import 'package:tihd/components/custom_icon_button_widget.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/screens/video/video_details_controller.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/ads/components/custom_ad_component.dart';
+import 'package:zatra_tv/components/custom_icon_button_widget.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/screens/video/video_details_controller.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 import '../../../../main.dart';
 import '../../../../utils/app_common.dart';

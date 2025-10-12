@@ -3,16 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/ads/custom_ads/ad_player_controller.dart';
-import 'package:tihd/ads/model/custom_ad_response.dart';
-import 'package:tihd/network/core_api.dart';
-import 'package:tihd/screens/coming_soon/coming_soon_controller.dart';
-import 'package:tihd/screens/coming_soon/coming_soon_screen.dart';
-import 'package:tihd/screens/live_tv/live_tv_controller.dart';
-import 'package:tihd/screens/live_tv/live_tv_screen.dart';
-import 'package:tihd/screens/profile/profile_screen.dart';
-import 'package:tihd/screens/search/search_screen.dart';
-import 'package:tihd/video_players/model/vast_ad_response.dart';
+import 'package:zatra_tv/ads/custom_ads/ad_player_controller.dart';
+import 'package:zatra_tv/ads/model/custom_ad_response.dart';
+import 'package:zatra_tv/network/core_api.dart';
+import 'package:zatra_tv/screens/coming_soon/coming_soon_controller.dart';
+import 'package:zatra_tv/screens/coming_soon/coming_soon_screen.dart';
+import 'package:zatra_tv/screens/live_tv/live_tv_controller.dart';
+import 'package:zatra_tv/screens/live_tv/live_tv_screen.dart';
+import 'package:zatra_tv/screens/profile/profile_screen.dart';
+import 'package:zatra_tv/screens/search/search_screen.dart';
+import 'package:zatra_tv/video_players/model/vast_ad_response.dart';
 
 import '../../network/auth_apis.dart';
 import '../../main.dart';

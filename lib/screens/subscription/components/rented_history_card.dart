@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/subscription/model/rental_history_model.dart';
-import 'package:tihd/utils/price_widget.dart';
+import 'package:zatra_tv/screens/subscription/model/rental_history_model.dart';
+import 'package:zatra_tv/utils/price_widget.dart';
 
 import '../../../utils/common_base.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/setting/account_setting/model/account_setting_response.dart';
+import 'package:zatra_tv/screens/setting/account_setting/model/account_setting_response.dart';
 
 import '../../../../../main.dart';
 import '../../../../../utils/app_common.dart';

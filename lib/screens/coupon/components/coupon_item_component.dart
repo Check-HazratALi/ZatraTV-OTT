@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/utils/extension/num_extenstions.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/utils/extension/num_extenstions.dart';
 
 import '../../../components/cached_image_widget.dart';
 import '../../../generated/assets.dart';

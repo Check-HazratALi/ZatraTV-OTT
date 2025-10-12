@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/utils/empty_error_state_widget.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/utils/empty_error_state_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../main.dart';

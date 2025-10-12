@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/home/shimmer_home.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/screens/home/shimmer_home.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../components/category_list/category_list_component.dart';

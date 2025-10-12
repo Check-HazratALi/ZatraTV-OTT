@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 import '../../../network/auth_apis.dart';
 import '../../../main.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 
 class EmptyStateWidget extends StatelessWidget {

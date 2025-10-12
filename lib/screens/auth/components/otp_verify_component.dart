@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/screens/auth/sign_in/sign_in_controller.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/screens/auth/sign_in/sign_in_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../../main.dart';
 import '../../../utils/common_base.dart';

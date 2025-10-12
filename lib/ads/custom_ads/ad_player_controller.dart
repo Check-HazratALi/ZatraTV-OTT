@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 import '../../video_players/model/ad_config.dart';
 

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:tihd/network/core_api.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/network/core_api.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 import '../../main.dart';
 import '../../utils/constants.dart';

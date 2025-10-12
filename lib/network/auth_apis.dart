@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/coming_soon/model/coming_soon_response.dart';
-import 'package:tihd/screens/profile/watching_profile/model/profile_watching_model.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_screen.dart';
-import 'package:tihd/services/in_app_purhcase_service.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/screens/coming_soon/model/coming_soon_response.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/model/profile_watching_model.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_screen.dart';
+import 'package:zatra_tv/services/in_app_purhcase_service.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 import '../main.dart';
 import '../models/base_response_model.dart';

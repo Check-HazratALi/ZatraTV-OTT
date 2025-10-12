@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 
 import '../../network/core_api.dart';
 import '../../utils/common_base.dart';

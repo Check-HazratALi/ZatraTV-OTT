@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/constants.dart';
 import '../../../components/cached_image_widget.dart';
 import '../../../generated/assets.dart';
 import '../../../utils/colors.dart';

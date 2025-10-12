@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/person/person_controller.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/person/person_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../components/category_list/movie_horizontal/poster_card_component.dart';
 import '../../components/loader_widget.dart';

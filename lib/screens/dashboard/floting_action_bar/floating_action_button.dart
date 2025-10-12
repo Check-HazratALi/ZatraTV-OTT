@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/movie_list/movie_list_screen.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/screens/movie_list/movie_list_screen.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
 import '../../../main.dart';
 import '../../tv_show/tvshow_list_screen.dart';
 import '../../video/video_list_screen.dart';

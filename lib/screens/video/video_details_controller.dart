@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/video/video_details/model/video_details_resp.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/screens/video/video_details/model/video_details_resp.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../network/core_api.dart';

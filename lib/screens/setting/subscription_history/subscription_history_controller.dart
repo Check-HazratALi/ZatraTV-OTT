@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/auth/model/login_response.dart';
-import 'package:tihd/screens/subscription/model/subscription_plan_model.dart';
+import 'package:zatra_tv/screens/auth/model/login_response.dart';
+import 'package:zatra_tv/screens/subscription/model/subscription_plan_model.dart';
 
 import '../../../network/core_api.dart';
 import '../../../utils/app_common.dart';

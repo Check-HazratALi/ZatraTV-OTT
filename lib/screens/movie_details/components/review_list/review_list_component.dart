@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../../../main.dart';
 import '../../../review_list/model/review_model.dart';

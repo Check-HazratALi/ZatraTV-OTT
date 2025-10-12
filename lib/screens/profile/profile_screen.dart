@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/home/model/dashboard_res_model.dart';
-import 'package:tihd/screens/profile/components/profile_card_component.dart';
-import 'package:tihd/screens/profile/components/user_profile_component.dart';
-import 'package:tihd/screens/profile/shimmer_profile.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
+import 'package:zatra_tv/screens/profile/components/profile_card_component.dart';
+import 'package:zatra_tv/screens/profile/components/user_profile_component.dart';
+import 'package:zatra_tv/screens/profile/shimmer_profile.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../components/cached_image_widget.dart';

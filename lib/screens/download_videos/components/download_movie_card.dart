@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/cached_image_widget.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/constants.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 import '../../../video_players/model/video_model.dart';
 

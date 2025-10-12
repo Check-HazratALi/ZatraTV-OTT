@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/screens/search/model/search_list_model.dart';
-import 'package:tihd/screens/search/search_controller.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/screens/search/model/search_list_model.dart';
+import 'package:zatra_tv/screens/search/search_controller.dart';
 
 import '../../components/cached_image_widget.dart';
 import '../../main.dart';

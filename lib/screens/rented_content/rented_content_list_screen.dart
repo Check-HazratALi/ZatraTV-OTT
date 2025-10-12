@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/category_list/movie_horizontal/poster_card_component.dart';
-import 'package:tihd/screens/profile/profile_controller.dart';
-import 'package:tihd/screens/watch_list/components/empty_watch_list_compnent.dart';
-import 'package:tihd/screens/watch_list/shimmer_watch_list.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/components/category_list/movie_horizontal/poster_card_component.dart';
+import 'package:zatra_tv/screens/profile/profile_controller.dart';
+import 'package:zatra_tv/screens/watch_list/components/empty_watch_list_compnent.dart';
+import 'package:zatra_tv/screens/watch_list/shimmer_watch_list.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../main.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tihd/screens/home/model/dashboard_res_model.dart';
+import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 import '../../../../components/shimmer_widget.dart';
 import '../../../../utils/app_common.dart';
 import '../../../movie_list/movie_list_screen.dart';

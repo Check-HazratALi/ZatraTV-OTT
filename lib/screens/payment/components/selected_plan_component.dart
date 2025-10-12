@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/price_widget.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/price_widget.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../../../main.dart';
 import '../../subscription/model/subscription_plan_model.dart';

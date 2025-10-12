@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/custom_icon_button_widget.dart';
-import 'package:tihd/components/shimmer_widget.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/slider/slider_controller.dart';
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/empty_error_state_widget.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/components/custom_icon_button_widget.dart';
+import 'package:zatra_tv/components/shimmer_widget.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/slider/slider_controller.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/empty_error_state_widget.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../../components/cached_image_widget.dart';
 import '../../generated/assets.dart';

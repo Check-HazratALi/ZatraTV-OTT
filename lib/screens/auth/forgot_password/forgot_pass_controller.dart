@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/network/auth_apis.dart';
+import 'package:zatra_tv/network/auth_apis.dart';
 
 import '../../../utils/common_base.dart';
 

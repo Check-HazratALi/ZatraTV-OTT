@@ -1,4 +1,4 @@
-import 'package:tihd/screens/auth/model/about_page_res.dart';
+import 'package:zatra_tv/screens/auth/model/about_page_res.dart';
 
 import '../../../subscription/model/subscription_plan_model.dart';
 

@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/network/core_api.dart';
-import 'package:tihd/screens/setting/pin_generation_bottom_sheet.dart';
-import 'package:tihd/screens/setting/setting_controller.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/network/core_api.dart';
+import 'package:zatra_tv/screens/setting/pin_generation_bottom_sheet.dart';
+import 'package:zatra_tv/screens/setting/setting_controller.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 import '../../main.dart';
 
 class OtpVerificationBottomSheet extends StatelessWidget {

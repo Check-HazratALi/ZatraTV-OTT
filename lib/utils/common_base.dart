@@ -11,11 +11,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:tihd/components/new_update_dialog.dart';
-import 'package:tihd/utils/extension/get_x_extention.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/video_players/model/video_model.dart';
-import 'package:tihd/video_players/video_player_controller.dart';
+import 'package:zatra_tv/components/new_update_dialog.dart';
+import 'package:zatra_tv/utils/extension/get_x_extention.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
+import 'package:zatra_tv/video_players/video_player_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../configs.dart';

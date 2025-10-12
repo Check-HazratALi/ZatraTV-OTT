@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/network/core_api.dart';
-import 'package:tihd/screens/home/model/dashboard_res_model.dart';
-import 'package:tihd/screens/profile/profile_controller.dart';
-import 'package:tihd/screens/watch_list/watch_list_controller.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/network/core_api.dart';
+import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
+import 'package:zatra_tv/screens/profile/profile_controller.dart';
+import 'package:zatra_tv/screens/watch_list/watch_list_controller.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 class SliderController extends GetxController {
   RxBool isLoading = false.obs;

@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/review_list/review_list_controller.dart';
-import 'package:tihd/screens/review_list/shimmer_review_list/shimmer_review_list.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/screens/review_list/review_list_controller.dart';
+import 'package:zatra_tv/screens/review_list/shimmer_review_list/shimmer_review_list.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../components/loader_widget.dart';

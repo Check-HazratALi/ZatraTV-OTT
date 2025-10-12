@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/auth/sign_in/sign_in_screen.dart';
-import 'package:tihd/screens/dashboard/dashboard_controller.dart';
-import 'package:tihd/screens/profile/watching_profile/model/profile_watching_model.dart';
-import 'package:tihd/utils/price_widget.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/auth/sign_in/sign_in_screen.dart';
+import 'package:zatra_tv/screens/dashboard/dashboard_controller.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/model/profile_watching_model.dart';
+import 'package:zatra_tv/utils/price_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../components/cached_image_widget.dart';

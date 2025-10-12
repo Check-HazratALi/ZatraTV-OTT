@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/payment/components/payment_card_component.dart';
-import 'package:tihd/screens/payment/payment_controller.dart';
-import 'package:tihd/screens/payment/payment_gateways/payment_helper.dart';
-import 'package:tihd/screens/subscription/model/subscription_plan_model.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/screens/payment/components/payment_card_component.dart';
+import 'package:zatra_tv/screens/payment/payment_controller.dart';
+import 'package:zatra_tv/screens/payment/payment_gateways/payment_helper.dart';
+import 'package:zatra_tv/screens/subscription/model/subscription_plan_model.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../components/loader_widget.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:tihd/utils/constants.dart';
-import 'package:tihd/utils/extension/date_time_extention.dart';
-import 'package:tihd/utils/extension/string_extention.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/utils/constants.dart';
+import 'package:zatra_tv/utils/extension/date_time_extention.dart';
+import 'package:zatra_tv/utils/extension/string_extention.dart';
+import 'package:zatra_tv/generated/assets.dart';
 import '../../../../main.dart';
 import '../../../../utils/app_common.dart';
 import '../../../../utils/colors.dart';

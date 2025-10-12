@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:tihd/screens/subscription/model/subscription_plan_model.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/screens/subscription/model/subscription_plan_model.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../network/core_api.dart';
 

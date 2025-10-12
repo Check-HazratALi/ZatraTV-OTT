@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/video_players/video_player_controller.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/video_players/video_player_controller.dart';
 import '../../utils/colors.dart';
 import '../component/custom_progress_bar.dart';
 

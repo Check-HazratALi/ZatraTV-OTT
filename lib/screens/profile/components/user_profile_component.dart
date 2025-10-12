@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/profile/watching_profile/components/profile_component.dart';
-import 'package:tihd/screens/profile/watching_profile/model/profile_watching_model.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_controller.dart';
-import 'package:tihd/screens/setting/pin_generation_bottom_sheet.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/components/profile_component.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/model/profile_watching_model.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_controller.dart';
+import 'package:zatra_tv/screens/setting/pin_generation_bottom_sheet.dart';
 import '../../../main.dart';
 import '../../../utils/app_common.dart';
 import '../../../utils/colors.dart';

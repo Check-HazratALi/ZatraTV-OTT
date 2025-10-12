@@ -9,9 +9,9 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/constants.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/constants.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../network/core_api.dart';
 import '../main.dart';

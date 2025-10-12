@@ -6,14 +6,14 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:media_kit_video/media_kit_video_controls/src/controls/methods/video_state.dart';
 import 'package:media_kit_video/media_kit_video_controls/src/controls/widgets/video_controls_theme_data_injector.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/video_players/component/ad_widgets.dart';
-import 'package:tihd/video_players/component/overlay_ad_widget.dart';
-import 'package:tihd/video_players/model/video_model.dart';
-import 'package:tihd/video_players/video_player_controller.dart';
-import 'package:tihd/video_players/y_player_material.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/video_players/component/ad_widgets.dart';
+import 'package:zatra_tv/video_players/component/overlay_ad_widget.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
+import 'package:zatra_tv/video_players/video_player_controller.dart';
+import 'package:zatra_tv/video_players/y_player_material.dart';
 import 'package:y_player/y_player.dart';
 
 /// A customizable YouTube video player widget.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:tihd/utils/app_common.dart';
+import 'package:zatra_tv/utils/app_common.dart';
 import '../model/overlay_ad.dart';
 import '../../generated/assets.dart';
 import '../../components/cached_image_widget.dart';

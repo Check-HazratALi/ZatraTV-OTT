@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:purchases_flutter/models/store_product_wrapper.dart';
-import 'package:tihd/components/u_l_widget.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/price_widget.dart';
+import 'package:zatra_tv/components/u_l_widget.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/price_widget.dart';
 
 import '../../../../components/cached_image_widget.dart';
 import '../../../../main.dart';

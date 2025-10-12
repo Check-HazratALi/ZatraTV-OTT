@@ -3,14 +3,14 @@ import 'package:flutterwave_standard/core/flutterwave.dart';
 import 'package:flutterwave_standard/models/requests/customer.dart';
 import 'package:flutterwave_standard/models/requests/customizations.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/network/network_utils.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/network/network_utils.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/constants.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 class FlutterWaveService {
   final Customer customer = Customer(

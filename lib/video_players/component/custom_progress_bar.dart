@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 class CustomProgressBar extends StatelessWidget {
   final Duration position;

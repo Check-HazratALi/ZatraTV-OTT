@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chrome_cast/lib.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/components/loader_widget.dart';
-import 'package:tihd/utils/cast/controller/fc_cast_controller.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/components/loader_widget.dart';
+import 'package:zatra_tv/utils/cast/controller/fc_cast_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../main.dart';
 

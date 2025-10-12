@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/models/base_response_model.dart';
-import 'package:tihd/screens/dashboard/dashboard_screen.dart';
+import 'package:zatra_tv/models/base_response_model.dart';
+import 'package:zatra_tv/screens/dashboard/dashboard_screen.dart';
 
 import 'auth_apis.dart';
 import '../configs.dart';

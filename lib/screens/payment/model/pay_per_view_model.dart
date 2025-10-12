@@ -1,5 +1,5 @@
 
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 class PayPerViewModel {
   bool status;

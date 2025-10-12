@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/live_tv/live_tv_details/model/live_tv_details_response.dart';
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/screens/live_tv/live_tv_details/model/live_tv_details_response.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
 import '../../../network/core_api.dart';
 import '../../../utils/app_common.dart';
 import '../../../utils/constants.dart';

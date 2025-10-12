@@ -4,13 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/ads/custom_ads/ad_player.dart';
-import 'package:tihd/components/cached_image_widget.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/ads/model/custom_ad_response.dart';
+import 'package:zatra_tv/ads/custom_ads/ad_player.dart';
+import 'package:zatra_tv/components/cached_image_widget.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/ads/model/custom_ad_response.dart';
 
 class CustomAdComponent extends StatefulWidget {
   final List<CustomAd> ads;

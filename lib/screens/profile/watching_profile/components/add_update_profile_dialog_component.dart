@@ -3,13 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_toggle_widget.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/profile/components/delete_profile_component.dart';
-import 'package:tihd/screens/profile/watching_profile/watching_profile_controller.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/generated/assets.dart';
+import 'package:zatra_tv/components/app_toggle_widget.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/profile/components/delete_profile_component.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/generated/assets.dart';
 
 class AddUpdateProfileDialogComponent extends StatelessWidget {
   final bool isEdit;

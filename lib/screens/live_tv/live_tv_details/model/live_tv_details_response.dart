@@ -1,4 +1,4 @@
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
 
 
 class LiveShowDetailResponse {

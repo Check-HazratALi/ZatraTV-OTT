@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../../utils/app_common.dart';
 import '../../channel_list/channel_list_screen.dart';

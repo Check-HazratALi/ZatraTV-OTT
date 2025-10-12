@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/cupertino.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 class ToggleWidget extends StatefulWidget {
   bool isSwitched;

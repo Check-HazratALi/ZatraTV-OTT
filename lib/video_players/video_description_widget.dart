@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/subscription/components/subscription_price_component.dart';
-import 'package:tihd/screens/subscription/subscription_controller.dart';
-import 'package:tihd/utils/extension/widget_extention.dart';
-import 'package:tihd/video_players/model/video_model.dart';
-import 'package:tihd/video_players/video_player_controller.dart';
+import 'package:zatra_tv/screens/subscription/components/subscription_price_component.dart';
+import 'package:zatra_tv/screens/subscription/subscription_controller.dart';
+import 'package:zatra_tv/utils/extension/widget_extention.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
+import 'package:zatra_tv/video_players/video_player_controller.dart';
 
 import '../components/cached_image_widget.dart';
 import '../generated/assets.dart';

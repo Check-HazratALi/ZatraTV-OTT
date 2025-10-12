@@ -1,7 +1,7 @@
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/genres/model/genres_model.dart';
-import 'package:tihd/screens/review_list/model/review_model.dart';
-import 'package:tihd/screens/tv_show/models/season_model.dart';
+import 'package:zatra_tv/screens/genres/model/genres_model.dart';
+import 'package:zatra_tv/screens/review_list/model/review_model.dart';
+import 'package:zatra_tv/screens/tv_show/models/season_model.dart';
 
 import '../../../video_players/model/video_model.dart';
 import '../../person/model/person_model.dart';

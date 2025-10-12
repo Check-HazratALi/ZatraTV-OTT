@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/payment/model/payment_model.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/screens/payment/model/payment_model.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../payment_controller.dart';
 

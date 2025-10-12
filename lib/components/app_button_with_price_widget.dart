@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/utils/colors.dart';
 import '../utils/price_widget.dart';
 import '../utils/app_common.dart';
 import '../utils/common_base.dart';

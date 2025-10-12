@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_dialog_widget.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/profile/model/profile_detail_resp.dart';
-import 'package:tihd/screens/setting/account_setting/components/register_mobile_component.dart';
-import 'package:tihd/screens/setting/account_setting/shimmer_account_setting.dart';
-import 'package:tihd/screens/setting/setting_controller.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/components/app_dialog_widget.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/profile/model/profile_detail_resp.dart';
+import 'package:zatra_tv/screens/setting/account_setting/components/register_mobile_component.dart';
+import 'package:zatra_tv/screens/setting/account_setting/shimmer_account_setting.dart';
+import 'package:zatra_tv/screens/setting/setting_controller.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../../components/app_scaffold.dart';
 import '../../../main.dart';

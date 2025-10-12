@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/screens/profile/model/profile_detail_resp.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/utils/country_picker/country_code.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/screens/profile/model/profile_detail_resp.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/utils/country_picker/country_code.dart';
 
 import '../../../main.dart';
 import '../../../network/core_api.dart';

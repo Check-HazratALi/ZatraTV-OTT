@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/screens/dashboard/dashboard_controller.dart';
-import 'package:tihd/screens/home/home_controller.dart';
-import 'package:tihd/screens/setting/setting_screen.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/dashboard/dashboard_controller.dart';
+import 'package:zatra_tv/screens/home/home_controller.dart';
+import 'package:zatra_tv/screens/setting/setting_screen.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../main.dart';
 import '../../network/auth_apis.dart';

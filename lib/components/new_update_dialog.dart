@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewUpdateDialog extends StatelessWidget {

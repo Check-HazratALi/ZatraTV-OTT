@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_dialog_widget.dart';
-import 'package:tihd/screens/subscription/components/subscription_history_card.dart';
-import 'package:tihd/utils/constants.dart';
-import 'package:tihd/utils/price_widget.dart';
+import 'package:zatra_tv/components/app_dialog_widget.dart';
+import 'package:zatra_tv/screens/subscription/components/subscription_history_card.dart';
+import 'package:zatra_tv/utils/constants.dart';
+import 'package:zatra_tv/utils/price_widget.dart';
 
 import '../../../components/app_scaffold.dart';
 import '../../../main.dart';

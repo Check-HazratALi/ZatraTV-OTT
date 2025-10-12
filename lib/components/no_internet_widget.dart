@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
+import 'package:zatra_tv/main.dart';
 
 import '../screens/download_videos/download_video.dart';
 import '../utils/empty_error_state_widget.dart';

@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/app_scaffold.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/components/app_scaffold.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 import '../../network/core_api.dart';
 import '../../main.dart';

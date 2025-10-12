@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/payment/model/pay_per_view_model.dart';
+import 'package:zatra_tv/screens/payment/model/pay_per_view_model.dart';
 
 import '../../screens/genres/model/genres_model.dart';
 

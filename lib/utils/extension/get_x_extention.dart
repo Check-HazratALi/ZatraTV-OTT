@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:tihd/utils/common_base.dart';
+import 'package:zatra_tv/utils/common_base.dart';
 
 extension ExtensionSnackbar on GetInterface {
   SnackbarController showSnackBar({

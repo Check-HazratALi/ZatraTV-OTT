@@ -1,4 +1,4 @@
-import 'package:tihd/screens/setting/account_setting/model/account_setting_response.dart';
+import 'package:zatra_tv/screens/setting/account_setting/model/account_setting_response.dart';
 
 class ErrorModel {
   String error;

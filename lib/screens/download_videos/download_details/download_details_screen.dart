@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tihd/screens/download_videos/download_controller.dart';
-import 'package:tihd/utils/colors.dart';
-import 'package:tihd/video_players/model/video_model.dart';
-import 'package:tihd/video_players/video_player.dart';
+import 'package:zatra_tv/screens/download_videos/download_controller.dart';
+import 'package:zatra_tv/utils/colors.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
+import 'package:zatra_tv/video_players/video_player.dart';
 
 import '../../../components/app_scaffold.dart';
 

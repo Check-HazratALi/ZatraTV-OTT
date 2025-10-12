@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/components/shimmer_widget.dart';
+import 'package:zatra_tv/components/shimmer_widget.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/constants.dart';

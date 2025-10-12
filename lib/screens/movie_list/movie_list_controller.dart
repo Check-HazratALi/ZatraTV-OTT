@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/slider/slider_controller.dart';
-import 'package:tihd/utils/constants.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/slider/slider_controller.dart';
+import 'package:zatra_tv/utils/constants.dart';
 
 import '../../network/core_api.dart';
 import '../../video_players/model/video_model.dart';

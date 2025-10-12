@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/utils/extension/string_extention.dart';
+import 'package:zatra_tv/utils/extension/string_extention.dart';
 
 class CachedImageWidget extends StatelessWidget {
   final String url;

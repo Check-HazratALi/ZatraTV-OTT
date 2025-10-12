@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/generated/assets.dart';
-import 'package:tihd/main.dart';
+import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/main.dart';
 
 class WalkThroughController extends GetxController {
   RxList<WalkThroughModelClass> pages = RxList();

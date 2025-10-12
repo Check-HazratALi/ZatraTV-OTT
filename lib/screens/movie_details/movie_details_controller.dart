@@ -4,12 +4,12 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/download_videos/download_video.dart';
-import 'package:tihd/screens/home/home_controller.dart';
-import 'package:tihd/screens/movie_details/model/movie_details_resp.dart';
-import 'package:tihd/screens/profile/profile_controller.dart';
-import 'package:tihd/utils/common_base.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/screens/download_videos/download_video.dart';
+import 'package:zatra_tv/screens/home/home_controller.dart';
+import 'package:zatra_tv/screens/movie_details/model/movie_details_resp.dart';
+import 'package:zatra_tv/screens/profile/profile_controller.dart';
+import 'package:zatra_tv/utils/common_base.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../network/core_api.dart';

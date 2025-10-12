@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/profile/model/profile_detail_resp.dart';
-import 'package:tihd/utils/app_common.dart';
-import 'package:tihd/video_players/model/video_model.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/profile/model/profile_detail_resp.dart';
+import 'package:zatra_tv/utils/app_common.dart';
+import 'package:zatra_tv/video_players/model/video_model.dart';
 
 import '../../network/core_api.dart';
 import '../../utils/constants.dart';

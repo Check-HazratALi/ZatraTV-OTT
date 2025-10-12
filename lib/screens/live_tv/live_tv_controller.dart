@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tihd/configs.dart';
-import 'package:tihd/main.dart';
-import 'package:tihd/screens/live_tv/model/live_tv_dashboard_response.dart';
+import 'package:zatra_tv/configs.dart';
+import 'package:zatra_tv/main.dart';
+import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
 
 import '../../network/core_api.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:tihd/screens/coming_soon/coming_soon_controller.dart';
-import 'package:tihd/screens/coming_soon/shimmer_coming_soon.dart';
-import 'package:tihd/utils/colors.dart';
+import 'package:zatra_tv/screens/coming_soon/coming_soon_controller.dart';
+import 'package:zatra_tv/screens/coming_soon/shimmer_coming_soon.dart';
+import 'package:zatra_tv/utils/colors.dart';
 
 import '../../components/app_scaffold.dart';
 import '../../main.dart';
