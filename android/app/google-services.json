@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "248093102987",
+    "project_id": "zatra-tv",
+    "storage_bucket": "zatra-tv.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248093102987:android:2a4826c2900d353a1fd58e",
+        "android_client_info": {
+          "package_name": "com.media.zatratv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248093102987-dvg944p8d0l4uk3qu19in2u3j3utr27e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.media.zatratv",
+            "certificate_hash": "4f750f2b7785b1a06969c7c9d4aa74e77f4512b4"
+          }
+        },
+        {
+          "client_id": "248093102987-e6ppn12du3qo4op69e3to53u84bnrm4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA96bNkYnxvunWigOH_y_DBCvo9hEJep8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248093102987-e6ppn12du3qo4op69e3to53u84bnrm4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
