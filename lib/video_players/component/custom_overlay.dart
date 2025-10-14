@@ -135,7 +135,7 @@ class _CustomPodPlayerControlOverlayState
                         },
                       ).expand(),
                       Text(
-                        '${formatDuration(widget.position)} / ${formatDuration(widget.duration)}',
+                        '${_formatDuration(widget.position)} / ${_formatDuration(widget.duration)}',
                         style:
                             const TextStyle(color: Colors.white, fontSize: 12),
                       ),
@@ -160,9 +160,19 @@ class _CustomPodPlayerControlOverlayState
     );
   }
 
-  String formatDuration(Duration duration) {
-    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return '$minutes:$seconds';
+  // FIXED: Proper duration formatting with hours
+  String _formatDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:'
+          '${minutes.toString().padLeft(2, '0')}:'
+          '${seconds.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(2, '0')}:'
+          '${seconds.toString().padLeft(2, '0')}';
+    }
   }
 }

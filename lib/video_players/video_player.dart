@@ -28,7 +28,6 @@ import 'embedded_video/embedded_video_player.dart';
 import 'model/video_model.dart';
 import 'video_player_controller.dart';
 
-// ignore: must_be_immutable
 class VideoPlayersComponent extends StatelessWidget {
   final VideoPlayerModel videoModel;
   final LiveShowModel? liveShowModel;
@@ -788,28 +787,38 @@ class VideoPlayersComponent extends StatelessWidget {
   }
 
   Widget _buildOtherVideoPlayer(BuildContext ctx) {
-    return Theme(
-      data: _buildDarkTheme(),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(0),
-        child: Obx(() {
-          return PodVideoPlayer(
-            key: controller.uniqueKey,
-            alwaysShowProgressBar: false,
-            videoAspectRatio: 16 / 9,
-            frameAspectRatio: 16 / 9,
-            podProgressBarConfig: _progressBarConfig(),
-            controller: controller.podPlayerController.value,
-            overlayBuilder: (options) => _buildOverlay(ctx),
-            videoThumbnail: _getThumbnailImage(),
-            onVideoError: _buildErrorContainer,
-            onLoading: (_) => LoaderWidget(
-                loaderColor: appColorPrimary.withValues(alpha: 0.4)),
-          );
-        }),
-      ),
-    );
-  }
+  return Theme(
+    data: _buildDarkTheme(),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(0),
+      child: Obx(() {
+        // Auto-play trailer
+        if (isTrailer) {
+          Future.delayed(Duration(milliseconds: 200), () {
+            if (controller.podPlayerController.value.isInitialised) {
+              controller.podPlayerController.value.play();
+            }
+          });
+        }
+
+        return PodVideoPlayer(
+          key: controller.uniqueKey,
+          alwaysShowProgressBar: false,
+          videoAspectRatio: 16 / 9,
+          frameAspectRatio: 16 / 9,
+          podProgressBarConfig: _progressBarConfig(),
+          controller: controller.podPlayerController.value,
+          overlayBuilder: (options) => _buildOverlay(ctx),
+          videoThumbnail: _getThumbnailImage(),
+          onVideoError: _buildErrorContainer,
+          onLoading: (_) => LoaderWidget(
+              loaderColor: appColorPrimary.withValues(alpha: 0.4)),
+        );
+      }),
+    ),
+  );
+}
+
 
   Widget _buildOverlay(BuildContext ctx) {
     return Obx(() {
@@ -974,17 +983,18 @@ class VideoPlayersComponent extends StatelessWidget {
   }
 
   PodProgressBarConfig _progressBarConfig() {
-    return const PodProgressBarConfig(
-      circleHandlerColor: appColorPrimary,
-      backgroundColor: borderColorDark,
-      playingBarColor: appColorPrimary,
-      bufferedBarColor: appColorSecondary,
-      circleHandlerRadius: 6,
-      height: 2.6,
-      alwaysVisibleCircleHandler: false,
-      padding: EdgeInsets.only(bottom: 16, left: 8, right: 8),
-    );
-  }
+  return PodProgressBarConfig(
+    circleHandlerColor: appColorPrimary,
+    backgroundColor: borderColorDark,
+    playingBarColor: appColorPrimary,
+    bufferedBarColor: appColorSecondary,
+    circleHandlerRadius: 6,
+    height: 2.6,
+    alwaysVisibleCircleHandler: false,
+    padding: EdgeInsets.only(bottom: 16, left: 8, right: 8),
+
+  );
+}
 
   Widget _adView() {
     return AdView(
@@ -1037,3 +1047,4 @@ class VideoPlayersComponent extends StatelessWidget {
     );
   }
 }
+

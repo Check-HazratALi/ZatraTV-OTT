@@ -12,6 +12,7 @@ import '../../../../utils/common_base.dart';
 import '../edit_profile_controller.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+
 class EditFormFieldComponent extends StatelessWidget {
   EditFormFieldComponent({super.key});
 
@@ -217,29 +218,6 @@ class EditFormFieldComponent extends StatelessWidget {
                 () => Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InkWell(
-                  onTap: () {
-                    profileCont.changeCountry(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: boxDecorationDefault(
-                      borderRadius: BorderRadiusDirectional.zero,
-                      border: Border(bottom: BorderSide(color: borderColor.withValues(alpha: 0.6))),
-                      color: appScreenBackgroundDark,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(profileCont.selectedCountry.value.flagEmoji, style: primaryTextStyle(size: 20)),
-                        16.width,
-                        Text(profileCont.countryCode.value, style: primaryTextStyle()),
-                        6.width,
-                        const Icon(Icons.arrow_drop_down, color: iconColor)
-                      ],
-                    ),
-                  ),
-                ),
-                16.width,
                 AppTextField(
                   textStyle: primaryTextStyle(size: 12, color: white),
                   controller: profileCont.mobileNoCont,
@@ -269,7 +247,7 @@ class EditFormFieldComponent extends StatelessWidget {
                   },
                 ).expand(),
               ],
-            ).paddingOnly(left: 16, right: 16),
+            ),
           ),
        /*   16.height,
           AppTextField(

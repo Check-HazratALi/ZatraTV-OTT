@@ -1512,7 +1512,22 @@ class VideoPlayersController extends GetxController {
     }
   }
 
-  Future<void> saveToContinueWatchVideo() async {
+  String formatDuration(Duration duration) {
+  final hours = duration.inHours;
+  final minutes = duration.inMinutes.remainder(60);
+  final seconds = duration.inSeconds.remainder(60);
+  
+  if (hours > 0) {
+    return '${hours.toString().padLeft(2, '0')}:'
+        '${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
+  } else {
+    return '${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
+  }
+}
+
+    Future<void> saveToContinueWatchVideo() async {
     if (videoModel.value.id != -1) {
       String watchedTime = '';
       String totalWatchedTime = '';
@@ -1537,8 +1552,6 @@ class VideoPlayersController extends GetxController {
         request: {
           "entertainment_id": videoModel.value.watchedTime.isNotEmpty ? videoModel.value.entertainmentId : videoModel.value.id,
           "watched_time": watchedTime,
-
-          ///store actual value of video player there is chance duration might be set different then actual duration of video
           "total_watched_time": totalWatchedTime,
           "entertainment_type": getTypeForContinueWatch(type: videoModel.value.type.toLowerCase()),
           if (profileId.value != 0) "profile_id": profileId.value,
@@ -1579,13 +1592,19 @@ class VideoPlayersController extends GetxController {
   }
 
   String formatSecondsToHMS(int seconds) {
-    final hours = seconds ~/ 3600;
-    final minutes = (seconds % 3600) ~/ 60;
-    final secs = seconds % 60;
+  final hours = seconds ~/ 3600;
+  final minutes = (seconds % 3600) ~/ 60;
+  final secs = seconds % 60;
+  
+  if (hours > 0) {
     return '${hours.toString().padLeft(2, '0')}:'
         '${minutes.toString().padLeft(2, '0')}:'
         '${secs.toString().padLeft(2, '0')}';
+  } else {
+    return '${minutes.toString().padLeft(2, '0')}:'
+        '${secs.toString().padLeft(2, '0')}';
   }
+}
 
   int parseDurationToSeconds(String? duration) {
     if (duration == null || duration.isEmpty) return 0;
