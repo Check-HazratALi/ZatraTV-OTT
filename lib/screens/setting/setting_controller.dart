@@ -182,15 +182,15 @@ class SettingController extends GetxController {
           ),
         );
       }
-      settingList.add(
-        SettingModel(
-          icon: Assets.iconsIcParentPassword,
-          title: locale.value.parentalControl,
-          subTitle: "",
-          showArrow: false,
-          showSwitch: true,
-        ),
-      );
+      // settingList.add(
+      //   SettingModel(
+      //     icon: Assets.iconsIcParentPassword,
+      //     title: locale.value.parentalControl,
+      //     subTitle: "",
+      //     showArrow: false,
+      //     showSwitch: true,
+      //   ),
+      // );
       settingList.add(
         SettingModel(
           icon: Assets.iconsIcAdd,
@@ -199,14 +199,14 @@ class SettingController extends GetxController {
           showArrow: true,
         ),
       );
-      settingList.add(
-        SettingModel(
-          icon: Assets.iconsIcDownload,
-          title: locale.value.yourDownloads,
-          subTitle: "",
-          showArrow: true,
-        ),
-      );
+      // settingList.add(
+      //   SettingModel(
+      //     icon: Assets.iconsIcDownload,
+      //     title: locale.value.yourDownloads,
+      //     subTitle: "",
+      //     showArrow: true,
+      //   ),
+      // );
       settingList.add(
         SettingModel(
           icon: Assets.iconsIcPaymentHistory,
@@ -215,14 +215,14 @@ class SettingController extends GetxController {
           showArrow: true,
         ),
       );
-      settingList.add(
-        SettingModel(
-          icon: Assets.iconsIcSettingRent,
-          title: 'Rental History',
-          subTitle: "",
-          showArrow: true,
-        ),
-      );
+      // settingList.add(
+      //   SettingModel(
+      //     icon: Assets.iconsIcSettingRent,
+      //     title: 'Rental History',
+      //     subTitle: "",
+      //     showArrow: true,
+      //   ),
+      // );
     }
     settingList.add(
       SettingModel(

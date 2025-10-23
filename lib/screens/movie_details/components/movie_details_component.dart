@@ -218,10 +218,10 @@ class MovieDetailsComponent extends StatelessWidget {
           ),
           ActorComponent(
               castDetails: movieDetCont.movieDetailsResp.value.casts,
-              title: locale.value.cast),
+              title: locale.value.cast).visible(movieDetCont.movieDetailsResp.value.casts.isNotEmpty),
           ActorComponent(
               castDetails: movieDetCont.movieDetailsResp.value.directors,
-              title: locale.value.directors),
+              title: locale.value.directors).visible(movieDetCont.movieDetailsResp.value.directors.isNotEmpty),
           Obx(() {
             final ads = getDashboardController().getBannerAdsForCategory(
                 targetContentType: 'movie',

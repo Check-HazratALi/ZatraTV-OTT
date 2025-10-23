@@ -8,7 +8,7 @@ import 'package:zatra_tv/utils/common_base.dart';
 
 import '../../network/core_api.dart';
 import '../../main.dart';
-import '../../utils/colors.dart';
+import '../../utils/colors.dart'; 
 import '../../utils/empty_error_state_widget.dart';
 import '../../video_players/model/video_model.dart';
 import '../home/home_controller.dart';

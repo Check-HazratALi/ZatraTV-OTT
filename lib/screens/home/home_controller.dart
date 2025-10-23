@@ -334,14 +334,15 @@ class HomeController extends GetxController {
     }
 
     if (isLoggedIn.value) {
-      if (dashboard.trendingInCountryMovieList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.trendingInYourCountry).isNegative) {
-        sectionList.add(CategoryListModel(
-          name: locale.value.trendingInYourCountry,
-          sectionType: DashboardCategoryType.personalised,
-          data: dashboard.trendingInCountryMovieList,
-          showViewAll: false,
-        ));
-      }
+
+      // if (dashboard.trendingInCountryMovieList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.trendingInYourCountry).isNegative) {
+      //   sectionList.add(CategoryListModel(
+      //     name: locale.value.trendingInYourCountry,
+      //     sectionType: DashboardCategoryType.personalised,
+      //     data: dashboard.trendingInCountryMovieList,
+      //     showViewAll: false,
+      //   ));
+      // }
 
       if (dashboard.favGenreList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.favoriteGenres).isNegative) {
         sectionList.add(CategoryListModel(
