@@ -205,7 +205,7 @@ class HomeController extends GetxController {
     if (appConfigs.value.enableMovie && sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.latestMovies).isNegative && (dashboard.latestList?.data?.isNotEmpty ?? false)) {
       sectionList.add(
         CategoryListModel(
-          name: dashboard.latestList?.name ?? '',
+          name: locale.value.latestMovies,
           sectionType: DashboardCategoryType.latestMovies,
           data: dashboard.latestList?.data ?? [],
         ),
@@ -239,7 +239,7 @@ class HomeController extends GetxController {
       setValue(SharedPreferenceConst.POPULAR_MOVIE, jsonEncode(dashboard.popularMovieList));
       sectionList.add(
         CategoryListModel(
-          name: dashboard.popularMovieList?.name ?? '',
+          name: locale.value.popularMovies,
           sectionType: DashboardCategoryType.movie,
           data: dashboard.popularMovieList?.data ?? [],
           showViewAll: dashboard.popularMovieList?.data?.isNotEmpty ?? false,
@@ -335,14 +335,14 @@ class HomeController extends GetxController {
 
     if (isLoggedIn.value) {
 
-      // if (dashboard.trendingInCountryMovieList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.trendingInYourCountry).isNegative) {
-      //   sectionList.add(CategoryListModel(
-      //     name: locale.value.trendingInYourCountry,
-      //     sectionType: DashboardCategoryType.personalised,
-      //     data: dashboard.trendingInCountryMovieList,
-      //     showViewAll: false,
-      //   ));
-      // }
+      if (dashboard.trendingInCountryMovieList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.trendingInYourCountry).isNegative) {
+        sectionList.add(CategoryListModel(
+          name: locale.value.trendingInYourCountry,
+          sectionType: DashboardCategoryType.personalised,
+          data: dashboard.trendingInCountryMovieList,
+          showViewAll: false,
+        ));
+      }
 
       if (dashboard.favGenreList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.favoriteGenres).isNegative) {
         sectionList.add(CategoryListModel(

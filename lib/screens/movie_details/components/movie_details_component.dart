@@ -212,7 +212,7 @@ class MovieDetailsComponent extends StatelessWidget {
                       return Offstage();
                     }
                   },
-                )
+                ),
               ],
             ).paddingSymmetric(vertical: 16, horizontal: 2),
           ),

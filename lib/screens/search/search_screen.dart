@@ -33,7 +33,6 @@ class SearchScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SearchTextFieldComponent().paddingSymmetric(horizontal: 16, vertical: 16),
-          Obx(() => const VoiceSearchLoadingWidget().visible(searchCont.isListening.isTrue).center()),
           Obx(
             () => SnapHelperWidget(
               future: searchCont.getSearchMovieFuture.value,

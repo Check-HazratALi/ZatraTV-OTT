@@ -452,6 +452,7 @@ class PaymentScreen extends StatelessWidget {
                                   tranId: generateTranId(),
                                   type: type,
                                 );
+                                toast("Rent Payment Successful");
                               } else {
                                 toast("Rent Payment Failed: $message");
                               }
@@ -480,6 +481,7 @@ class PaymentScreen extends StatelessWidget {
                                   tranId: generateTranId(),
                                   type: "",
                                 );
+                                toast("Subscription Payment Successful");
                               } else {
                                 toast("Subscription Payment Failed: $message");
                               }

@@ -47,22 +47,6 @@ class SearchTextFieldComponent extends StatelessWidget {
                     )
                   : Offstage(),
               8.width,
-              GestureDetector(
-                onTap: () {
-                  hideKeyboard(context);
-                  if (!searchCont.isListening.value) {
-                    searchCont.startListening();
-                  } else {
-                    searchCont.stopListening();
-                  }
-                },
-                child: Icon(
-                  searchCont.isListening.value ? Icons.keyboard_voice : Icons.keyboard_voice_outlined,
-                  size: 18,
-                  color: searchCont.isListening.value ? appColorPrimary : darkGrayColor,
-                ),
-              ),
-              16.width,
             ],
           ),
         ),

@@ -90,14 +90,20 @@ class DashboardModel {
       isEnableBanner: json['is_enable_banner'] == 1,
       continueWatch: json['continue_watch'] is Map ? ListResponse.fromJson(json['continue_watch']) : ListResponse(data: []),
       top10List: json['top_10'] is List ? List<VideoPlayerModel>.from(json['top_10'].map((x) => VideoPlayerModel.fromJson(x))) : [],
-      latestList: json['latest_movie'] is Map ? ListResponse.fromJson(json['latest_movie']) : ListResponse(data: []),
+      latestList: json['latest_movie'] is List 
+        ? ListResponse(data: List<VideoPlayerModel>.from(json['latest_movie'].map((x) => VideoPlayerModel.fromJson(x))))
+        : ListResponse(data: []),
       topChannelList: json['top_channel'] is Map ? ListResponse.fromJson(json['top_channel']) : ListResponse(data: []),
-      popularMovieList: json['popular_movie'] is Map ? ListResponse.fromJson(json['popular_movie']) : ListResponse(data: []),
+      popularMovieList: json['popular_movie'] is List 
+        ? ListResponse(data: List<VideoPlayerModel>.from(json['popular_movie'].map((x) => VideoPlayerModel.fromJson(x))))
+        : ListResponse(data: []),
       popularTvShowList: json['popular_tvshow'] is Map ? ListResponse.fromJson(json['popular_tvshow']) : ListResponse(data: []),
       popularVideoList: json['popular_videos'] is Map ? ListResponse.fromJson(json['popular_videos']) : ListResponse(data: []),
       likeMovieList: json['likedMovies'] is List ? List<VideoPlayerModel>.from(json['likedMovies'].map((x) => VideoPlayerModel.fromJson(x))) : [],
       viewedMovieList: json['viewedMovies'] is List ? List<VideoPlayerModel>.from(json['viewedMovies'].map((x) => VideoPlayerModel.fromJson(x))) : [],
-      trendingMovieList: json['tranding_movie'] is List ? List<VideoPlayerModel>.from(json['tranding_movie'].map((x) => VideoPlayerModel.fromJson(x))) : [],
+      trendingMovieList: json['tranding_movie'] is List 
+        ? List<VideoPlayerModel>.from(json['tranding_movie'].map((x) => VideoPlayerModel.fromJson(x))) 
+        : [],
       trendingInCountryMovieList: json['trendingMovies'] is List ? List<VideoPlayerModel>.from(json['trendingMovies'].map((x) => VideoPlayerModel.fromJson(x))) : [],
       basedOnLastWatchMovieList: json['base_on_last_watch'] is List ? List<VideoPlayerModel>.from(json['base_on_last_watch'].map((x) => VideoPlayerModel.fromJson(x))) : [],
       payPerView: json['pay_per_view'] is List ? List<VideoPlayerModel>.from(json['pay_per_view'].map((x) => VideoPlayerModel.fromJson(x))) : [],
@@ -117,9 +123,9 @@ class DashboardModel {
       'is_enable_banner': (isEnableBanner ?? true) ? 1 : 0,
       'continue_watch': continueWatch?.toJson(),
       'top_10': top10List.map((e) => e.toJson()).toList(),
-      'latest_movie': latestList?.toJson(),
+      'latest_movie': latestList?.data?.map((e) => e.toJson()).toList() ?? [],
       'top_channel': topChannelList?.toJson(),
-      'popular_movie': popularMovieList?.toJson(),
+      'popular_movie': popularMovieList?.data?.map((e) => e.toJson()).toList() ?? [],
       'popular_tvshow': popularTvShowList?.toJson(),
       'popular_videos': popularVideoList?.toJson(),
       'likedMovies': likeMovieList.map((e) => e.toJson()).toList(),
