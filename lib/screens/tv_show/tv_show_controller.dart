@@ -74,14 +74,14 @@ class TvShowController extends GetxController {
           tvShowId: (Get.arguments as VideoPlayerModel).entertainmentId != -1 ? (Get.arguments as VideoPlayerModel).entertainmentId : (Get.arguments as VideoPlayerModel).id,
         );
       } else {
-        isTrailer(false);
+        isTrailer(true);
         selectedEpisode(EpisodeModel.fromJson((Get.arguments as VideoPlayerModel).toJson()));
         isPlayingEpisode(true);
         await getEpisodeDetail(
           episodeId: (Get.arguments as VideoPlayerModel).episodeId,
           tvShowId: (Get.arguments as VideoPlayerModel).entertainmentId,
-          isWatchVideo: false,
-          changeVideo: false,
+          isWatchVideo: true,
+          changeVideo: true,
         );
       }
     }
@@ -158,8 +158,8 @@ class TvShowController extends GetxController {
         selectedEpisode.value.videoLinks = value.videoLinks;
       }
 
-      isTrailer(false);
-      selectedEpisode.value.isPurchased = value.isPurchased;
+      isTrailer(true);
+      selectedEpisode.value.isPurchased == value.isPurchased;
       if (!isMoviePaid(requiredPlanLevel: value.requiredPlanLevel)) {
         playMovie(
           isWatchVideo: isWatchVideo,

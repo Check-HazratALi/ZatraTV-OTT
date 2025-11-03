@@ -153,7 +153,7 @@ class VideoPlayersComponent extends StatelessWidget {
                 fit: StackFit.expand,
                 alignment: Alignment.center,
                 children: [
-                  if (isLoggedIn.value) ...[
+                  if (isLoggedIn.value || controller.isTrailer.value) ...[
                     if (controller.isTrailer.isFalse &&
                         !isSupportedDevice.value) ...[
                       DeviceNotSupportedComponent(title: videoModel.name)

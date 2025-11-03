@@ -37,7 +37,7 @@ Future<void> postPaymentSuccess({
       headers: {
         'Content-Type': 'application/json',
         // Add auth headers if your API requires
-        // 'Authorization': 'Bearer YOUR_TOKEN',
+        'Authorization': 'Bearer YOUR_TOKEN',
       },
       body: jsonEncode(body),
     );
@@ -134,17 +134,17 @@ void sslcommerz({
   Sslcommerz sslcommerz = Sslcommerz(
     initializer: SSLCommerzInitialization(
       //live
-      store_id: "rafusoft0live",
-      store_passwd: "679A1049A3D9C60860",
+      // store_id: "rafusoft0live",
+      // store_passwd: "679A1049A3D9C60860",
       //test
-      // store_id: "timed68bfc4b5ba8e3",
-      // store_passwd: "timed68bfc4b5ba8e3@ssl",
+      store_id: "timed68bfc4b5ba8e3",
+      store_passwd: "timed68bfc4b5ba8e3@ssl",
       total_amount: totalAmount,
       currency: SSLCurrencyType.BDT,
       tran_id: tranId,
       product_category: productInfo["category"]!,
       // sdkType: SSLCSdkType.LIVE,
-      sdkType: SSLCSdkType.LIVE,
+      sdkType: SSLCSdkType.TESTBOX,
     ),
   );
 
@@ -184,7 +184,7 @@ void sslcommerz({
 
   if (response.status == 'VALID') {
     try {
-      if (type == "movie") {
+      if (type == "movie" || type == "episode") {
         /// Rent API
         await postPaymentSuccess(
           planId: planId,

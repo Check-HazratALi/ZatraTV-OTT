@@ -35,7 +35,7 @@ class SplashScreen extends StatelessWidget {
           children: [
             Image.asset(
               Assets.assetsAppLogo,
-              height: 250,
+              height: 135,
             ).center(),
             Obx(
               () => splashController.isLoading.value

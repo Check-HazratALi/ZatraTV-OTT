@@ -59,7 +59,7 @@ class TvShowScreen extends StatelessWidget {
                   hasNextEpisode: tvShowController.currentEpisodeIndex.value <
                       tvShowController.episodeList.length,
                   onWatchNow: () {
-                    tvShowController.isTrailer(false);
+                    tvShowController.isTrailer(true);
                     tvShowController.currentEpisodeIndex.value++;
                     tvShowController.playNextEpisode(
                         tvShowController.episodeList[
@@ -76,12 +76,11 @@ class TvShowScreen extends StatelessWidget {
                   },
                 ),
               ),
+              if(currentSubscription.value.planId > 0)
               if (!isPipModeOn.value)
                 SnapHelperWidget(
                   future: tvShowController.getTvShowDetailsFuture.value,
-                  loadingWidget: tvShowController.isLoading.isFalse
-                      ? TvShowShimmerScreen()
-                      : Offstage(),
+                  loadingWidget:Offstage(),
                   errorBuilder: (error) {
                     return NoDataWidget(
                       titleTextStyle: secondaryTextStyle(color: white),
