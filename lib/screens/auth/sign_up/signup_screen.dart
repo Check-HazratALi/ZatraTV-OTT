@@ -37,11 +37,15 @@ class SignUpScreen extends StatelessWidget {
                 height: 75,
               ).center(),
               40.height,
-              Text(locale.value.createYourAccount,
-                  style: boldTextStyle(size: 20)),
+              Text(
+                locale.value.createYourAccount,
+                style: boldTextStyle(size: 20),
+              ),
               8.height,
-              Text(locale.value.completeProfileSubtitle,
-                  style: secondaryTextStyle()),
+              Text(
+                locale.value.completeProfileSubtitle,
+                style: secondaryTextStyle(),
+              ),
               28.height,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +66,7 @@ class SignUpScreen extends StatelessWidget {
                           //         .selectedCountry.value
                           //         .toJson())),
                           inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
+                            FilteringTextInputFormatter.digitsOnly,
                           ],
                           validator: (mobileCont) {
                             if (mobileCont!.isEmpty) {
@@ -84,7 +88,7 @@ class SignUpScreen extends StatelessWidget {
                           onChanged: (value) {
                             signUpController.onBtnEnable();
                           },
-                        ).expand(flex: 3)
+                        ).expand(flex: 3),
                       ],
                     ),
                   ),
@@ -155,44 +159,52 @@ class SignUpScreen extends StatelessWidget {
                     readOnly: true,
                     onTap: () async {
                       DateTime? selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: signUpController.dobCont.text.isNotEmpty
-                              ? DateTime.parse(signUpController.dobCont.text)
-                              : null,
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                          confirmText: locale.value.ok,
-                          cancelText: locale.value.cancel,
-                          helpText: locale.value.dateOfBirth,
-                          locale: Locale(
-                              selectedLanguageDataModel?.languageCode ??
-                                  getStringAsync(SELECTED_LANGUAGE_CODE)),
-                          builder: (context, child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.dark(
-                                    brightness: Brightness.dark,
-                                    surface: cardColor,
-                                    surfaceTint: cardColor,
-                                    primary: appColorPrimary,
-                                    onPrimary: primaryTextColor),
-                                hintColor: secondaryTextColor,
-                                inputDecorationTheme:
-                                    const InputDecorationTheme(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 10, right: 10, top: 2, bottom: 2),
-                                  hintStyle: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                  fillColor: appColorPrimary,
-                                ),
+                        context: context,
+                        initialDate: signUpController.dobCont.text.isNotEmpty
+                            ? DateTime.parse(signUpController.dobCont.text)
+                            : null,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                        confirmText: locale.value.ok,
+                        cancelText: locale.value.cancel,
+                        helpText: locale.value.dateOfBirth,
+                        locale: Locale(
+                          selectedLanguageDataModel?.languageCode ??
+                              getStringAsync(SELECTED_LANGUAGE_CODE),
+                        ),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.dark(
+                                brightness: Brightness.dark,
+                                surface: cardColor,
+                                surfaceTint: cardColor,
+                                primary: appColorPrimary,
+                                onPrimary: primaryTextColor,
                               ),
-                              child: child!,
-                            );
-                          });
+                              hintColor: secondaryTextColor,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                isDense: true,
+                                contentPadding: EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                  top: 2,
+                                  bottom: 2,
+                                ),
+                                hintStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                                fillColor: appColorPrimary,
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
                       if (selectedDate != null) {
-                        signUpController.dobCont.text =
-                            selectedDate.formatDateYYYYmmdd();
+                        signUpController.dobCont.text = selectedDate
+                            .formatDateYYYYmmdd();
                       } else {
                         log("Date is not selected");
                       }
@@ -220,47 +232,44 @@ class SignUpScreen extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Gender:",
-                          style: primaryTextStyle(),
-                        ),
+                        Text("Gender:", style: primaryTextStyle()),
                         16.width,
-                        Text(
-                          "Male",
-                          style: secondaryTextStyle(),
-                        ),
+                        Text("Male", style: secondaryTextStyle()),
                         Radio(
-                            value: Gender.male,
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -4),
-                            groupValue: signUpController.selectedGender.value,
-                            onChanged: (value) {
-                              signUpController.setGender(value!);
-                            }),
-                        Text(
-                          "Female",
-                          style: secondaryTextStyle(),
+                          value: Gender.male,
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -4,
+                          ),
+                          groupValue: signUpController.selectedGender.value,
+                          onChanged: (value) {
+                            signUpController.setGender(value!);
+                          },
                         ),
+                        Text("Female", style: secondaryTextStyle()),
                         Radio(
-                            value: Gender.female,
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -4),
-                            groupValue: signUpController.selectedGender.value,
-                            onChanged: (value) {
-                              signUpController.setGender(value!);
-                            }),
-                        Text(
-                          "Other",
-                          style: secondaryTextStyle(),
+                          value: Gender.female,
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -4,
+                          ),
+                          groupValue: signUpController.selectedGender.value,
+                          onChanged: (value) {
+                            signUpController.setGender(value!);
+                          },
                         ),
+                        Text("Other", style: secondaryTextStyle()),
                         Radio(
-                            value: Gender.other,
-                            visualDensity: const VisualDensity(
-                                horizontal: -4, vertical: -4),
-                            groupValue: signUpController.selectedGender.value,
-                            onChanged: (value) {
-                              signUpController.setGender(value!);
-                            }),
+                          value: Gender.other,
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -4,
+                          ),
+                          groupValue: signUpController.selectedGender.value,
+                          onChanged: (value) {
+                            signUpController.setGender(value!);
+                          },
+                        ),
                       ],
                     ).paddingSymmetric(horizontal: 16);
                   }),
@@ -285,10 +294,10 @@ class SignUpScreen extends StatelessWidget {
                       contentPadding: const EdgeInsets.only(top: 15),
                       hintText: locale.value.email,
                       prefixIcon: commonLeadingWid(
-                              imgPath: Assets.iconsIcEmail,
-                              color: secondaryTextColor,
-                              size: 12)
-                          .paddingAll(14),
+                        imgPath: Assets.iconsIcEmail,
+                        color: secondaryTextColor,
+                        size: 12,
+                      ).paddingAll(14),
                     ),
                     onChanged: (value) {
                       signUpController.onBtnEnable();
@@ -311,21 +320,21 @@ class SignUpScreen extends StatelessWidget {
                       hintText: locale.value.password,
                       contentPadding: const EdgeInsets.only(top: 14),
                       prefixIcon: commonLeadingWid(
-                              imgPath: Assets.iconsIcLockKey,
-                              color: iconColor,
-                              size: 12)
-                          .paddingAll(16),
+                        imgPath: Assets.iconsIcLockKey,
+                        color: iconColor,
+                        size: 12,
+                      ).paddingAll(16),
                     ),
                     suffixPasswordVisibleWidget: commonLeadingWid(
-                            imgPath: Assets.iconsIcEye,
-                            color: iconColor,
-                            size: 12)
-                        .paddingAll(16),
+                      imgPath: Assets.iconsIcEye,
+                      color: iconColor,
+                      size: 12,
+                    ).paddingAll(16),
                     suffixPasswordInvisibleWidget: commonLeadingWid(
-                            imgPath: Assets.iconsIcEyeSlash,
-                            color: iconColor,
-                            size: 12)
-                        .paddingAll(16),
+                      imgPath: Assets.iconsIcEyeSlash,
+                      color: iconColor,
+                      size: 12,
+                    ).paddingAll(16),
                     onChanged: (value) {
                       signUpController.onBtnEnable();
                     },
@@ -345,28 +354,29 @@ class SignUpScreen extends StatelessWidget {
                       hintText: locale.value.confirmPassword,
                       contentPadding: const EdgeInsets.only(top: 14),
                       prefixIcon: commonLeadingWid(
-                              imgPath: Assets.iconsIcLockKey,
-                              color: iconColor,
-                              size: 12)
-                          .paddingAll(16),
+                        imgPath: Assets.iconsIcLockKey,
+                        color: iconColor,
+                        size: 12,
+                      ).paddingAll(16),
                     ),
                     validator: (value) {
-                      if (value!.isEmpty)
+                      if (value!.isEmpty) {
                         return locale.value.passwordIsRequiredField;
+                      }
                       return signUpController.passwordCont.text == value
                           ? null
                           : locale.value.yourConfirmPasswordDoesnT;
                     },
                     suffixPasswordVisibleWidget: commonLeadingWid(
-                            imgPath: Assets.iconsIcEye,
-                            color: iconColor,
-                            size: 12)
-                        .paddingAll(16),
+                      imgPath: Assets.iconsIcEye,
+                      color: iconColor,
+                      size: 12,
+                    ).paddingAll(16),
                     suffixPasswordInvisibleWidget: commonLeadingWid(
-                            imgPath: Assets.iconsIcEyeSlash,
-                            color: iconColor,
-                            size: 12)
-                        .paddingAll(16),
+                      imgPath: Assets.iconsIcEyeSlash,
+                      color: iconColor,
+                      size: 12,
+                    ).paddingAll(16),
                     onChanged: (value) {
                       signUpController.onBtnEnable();
                     },
@@ -375,15 +385,16 @@ class SignUpScreen extends StatelessWidget {
                   AppButton(
                     width: double.infinity,
                     text: locale.value.signUp,
-                    color: appColorPrimary,
+                    color: signUpController.isBtnEnable.isTrue
+                        ? appColorPrimary
+                        : Colors.grey,
                     textStyle: appButtonTextStyleWhite,
                     shapeBorder: RoundedRectangleBorder(
-                        borderRadius: radius(defaultAppButtonRadius / 2)),
+                      borderRadius: radius(defaultAppButtonRadius / 2),
+                    ),
                     onTap: () {
-                      
-                        hideKeyboard(context);
-                        signUpController.saveForm();
-                      
+                      hideKeyboard(context);
+                      signUpController.saveForm();
                     },
                   ),
                 ],

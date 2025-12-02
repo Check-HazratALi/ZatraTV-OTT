@@ -7,6 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/network/auth_apis.dart';
 import 'package:zatra_tv/screens/auth/sign_in/sign_in_controller.dart';
 import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_screen.dart';
+import 'package:zatra_tv/utils/extension/string_extention.dart';
 
 import '../../../configs.dart';
 import '../../../utils/app_common.dart';
@@ -74,9 +75,66 @@ class SignUpController extends GetxController {
 
   Future<void> saveForm() async {
     if (isLoading.isTrue) return;
+
     isLoading(true);
     hideKeyBoardWithoutContext();
+
+    if (firstNameCont.text.trim().isEmpty) {
+      toast("First name is required");
+      isLoading(false);
+      return;
+    }
+
+    if (lastNameCont.text.trim().isEmpty) {
+      toast("Last name is required");
+      isLoading(false);
+      return;
+    }
+
+    if (emailCont.text.trim().isEmpty) {
+      toast("Email is required");
+      isLoading(false);
+      return;
+    }
+
+    if (!emailCont.text.trim().isValidEmail()) {
+      toast("Please enter a valid email address");
+      isLoading(false);
+      return;
+    }
+
+    if (passwordCont.text.trim().isEmpty) {
+      toast("Password is required");
+      isLoading(false);
+      return;
+    }
+
+    if (confPasswordCont.text.trim().isEmpty) {
+      toast("Confirm password is required");
+      isLoading(false);
+      return;
+    }
+
+    if (passwordCont.text.trim() != confPasswordCont.text.trim()) {
+      toast("Passwords do not match");
+      isLoading(false);
+      return;
+    }
+
+    if (mobileCont.text.trim().isEmpty) {
+      toast("Mobile number is required");
+      isLoading(false);
+      return;
+    }
+
+    if (dobCont.text.trim().isEmpty) {
+      toast("Date of birth is required");
+      isLoading(false);
+      return;
+    }
+
     Map<String, dynamic> req;
+
     if (isPhoneAuth.isTrue) {
       req = {
         "email": emailCont.text.trim(),
@@ -96,46 +154,64 @@ class SignUpController extends GetxController {
         "password": passwordCont.text.trim(),
         "mobile": "${countryCode.value}${mobileCont.text.trim()}",
         "gender": selectedGender.value.name,
-        "date_of_birth": dobCont.value.text.toString(),
+        "date_of_birth": dobCont.text.trim(),
         "confirm_password": confPasswordCont.text.trim(),
       };
     }
 
-    await AuthServiceApis.createUser(request: req).then((value) async {
-      if (isPhoneAuth.isTrue) {
-        final SignInController verificationController =
-            Get.put(SignInController());
-        verificationController
-            .mobileNo(mobileCont.text.trim().splitAfter(countryCode.value));
-        verificationController.phoneSignIn();
-      } else {
-        try {
-          Map<String, dynamic> req = {
-            'email': emailCont.text.trim(),
-            'password': passwordCont.text.trim(),
-            'device_id': yourDevice.value.deviceId,
-            'device_name': yourDevice.value.deviceName,
-            'platform': yourDevice.value.platform,
-          };
+    log('Sending request to API: $req');
 
-          await AuthServiceApis.loginUser(request: req).then((value) async {
-            handleLoginResponse();
-          }).whenComplete(() {
-            isLoading(false);
-          }).catchError((e) {
-            isLoading(false);
-            Get.to(() => SignInScreen());
+    try {
+      await AuthServiceApis.createUser(request: req)
+          .then((value) async {
+            log('API Response: $value');
+
+            if (isPhoneAuth.isTrue) {
+              final SignInController verificationController = Get.put(
+                SignInController(),
+              );
+              verificationController.mobileNo(
+                mobileCont.text.trim().splitAfter(countryCode.value),
+              );
+              verificationController.phoneSignIn();
+            } else {
+              try {
+                Map<String, dynamic> loginReq = {
+                  'email': emailCont.text.trim(),
+                  'password': passwordCont.text.trim(),
+                  'device_id': yourDevice.value.deviceId,
+                  'device_name': yourDevice.value.deviceName,
+                  'platform': yourDevice.value.platform,
+                };
+
+                log('Login request: $loginReq');
+
+                await AuthServiceApis.loginUser(request: loginReq)
+                    .then((value) async {
+                      handleLoginResponse();
+                    })
+                    .whenComplete(() {
+                      isLoading(false);
+                    })
+                    .catchError((e) {
+                      isLoading(false);
+                      Get.to(() => SignInScreen());
+                    });
+              } catch (e) {
+                log('Login Error: $e');
+                toast(e.toString(), print: true);
+              }
+              Get.back();
+              toast(value, print: true);
+            }
+          })
+          .catchError((e) {
+            log('Create User Error: $e');
+            toast(e.toString(), print: true);
           });
-        } catch (e) {
-          log('E: $e');
-          toast(e.toString(), print: true);
-        }
-        Get.back();
-        toast(value, print: true);
-      }
-    }).catchError((e) {
-      toast(e.toString(), print: true);
-    }).whenComplete(() => isLoading(false));
+    } finally {
+      isLoading(false);
+    }
   }
 
   void onBtnEnable() {
