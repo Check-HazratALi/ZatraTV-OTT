@@ -46,41 +46,89 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Obx(() {
-          return Blur(
-            blur: 30,
-            borderRadius: radius(0),
-            child: NavigationBarTheme(
-              data: NavigationBarThemeData(
-                backgroundColor: context.primaryColor.withValues(alpha: 0.02),
-                indicatorColor: context.primaryColor.withValues(alpha: 0.1),
-                labelTextStyle:
-                    WidgetStateProperty.all(primaryTextStyle(size: 14)),
-                shadowColor: Colors.transparent,
-                elevation: 0,
+          final currentIndex = dashboardController.currentIndex.value;
+          final navItems = dashboardController.bottomNavItems;
+
+          return Container(
+            margin: const EdgeInsets.all(10),
+            height: 65,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.1),
+                width: 1,
               ),
-              child: NavigationBar(
-                height: 60,
-                surfaceTintColor: Colors.transparent,
-                selectedIndex: dashboardController.currentIndex.value,
-                backgroundColor: Colors.transparent,
-                indicatorColor: Colors.transparent,
-                animationDuration: GetNumUtils(1000).milliseconds,
-                onDestinationSelected: (index) async {
-                  hideKeyboard(context);
-                  floatingController.isExpanded(false);
-                  await dashboardController.onBottomTabChange(index);
-                  handleChangeTabIndex(index);
-                },
-                destinations: List.generate(
-                  dashboardController.bottomNavItems.length,
-                  (index) {
-                    return navigationBarItemWidget(
-                      dashboardController.bottomNavItems[index],
-                      dashboardController.currentIndex.value == index,
-                    );
-                  },
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.6),
+                  blurRadius: 20,
+                  spreadRadius: 5,
+                  offset: const Offset(0, 5),
                 ),
-              ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(navItems.length, (index) {
+                final item = navItems[index];
+                final isSelected = currentIndex == index;
+
+                return GestureDetector(
+                  onTap: () async {
+                    hideKeyboard(context);
+                    floatingController.isExpanded(false);
+                    await dashboardController.onBottomTabChange(index);
+                    dashboardController.currentIndex(index);
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? appColorPrimary.withOpacity(0.2)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isSelected ? item.activeIcon : item.icon,
+                          size: 20,
+                          color: isSelected ? appColorPrimary : iconColor,
+                        ),
+                        if (isSelected) ...[
+                          6.width,
+                          ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: 60, // Maximum width for text
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                item.title,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: appColorPrimary,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ),
           );
         }),
@@ -90,16 +138,8 @@ class DashboardScreen extends StatelessWidget {
 
   Widget navigationBarItemWidget(BottomBarItem navBar, bool isCurrentTab) {
     return NavigationDestination(
-      selectedIcon: Icon(
-        navBar.activeIcon,
-        color: appColorPrimary,
-        size: 20,
-      ),
-      icon: Icon(
-        navBar.icon,
-        color: iconColor,
-        size: 20,
-      ),
+      selectedIcon: Icon(navBar.activeIcon, color: appColorPrimary, size: 20),
+      icon: Icon(navBar.icon, color: iconColor, size: 20),
       label: navBar.title,
     );
   }

@@ -25,76 +25,138 @@ class ComingSoonScreen extends StatelessWidget {
       topBarBgColor: transparentColor,
       appBartitleText: locale.value.comingSoon,
       hasLeadingWidget: false,
-      body: RefreshIndicator(
-        color: appColorPrimary,
-        onRefresh: () async {
-          return await comingSoonCont.getComingSoonDetails(showLoader: false);
-        },
-        child: Obx(
-          () => SnapHelperWidget(
-            future: comingSoonCont.getComingFuture.value,
-            initialData: cachedComingSoonList.isNotEmpty ? cachedComingSoonList : null,
-            loadingWidget: const ShimmerComingSoon(),
-            errorBuilder: (error) {
-              return NoDataWidget(
-                titleTextStyle: secondaryTextStyle(color: white),
-                subTitleTextStyle: primaryTextStyle(color: white),
-                title: error,
-                retryText: locale.value.reload,
-                imageWidget: const ErrorStateWidget(),
-                onRetry: () {
-                  comingSoonCont.page(1);
-                  comingSoonCont.getComingSoonDetails();
-                },
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topCenter,
+                radius: 1.5,
+                colors: [
+                  appColorPrimary.withOpacity(0.1),
+                  appScreenBackgroundDark,
+                ],
+              ),
+            ),
+          ),
+
+          // Floating Particles
+          ...List.generate(
+            15,
+            (index) => Positioned(
+              top: Get.height * 0.1 + (index * 30),
+              left: Get.width * (index % 3) * 0.33,
+              child: Container(
+                width: 2,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          RefreshIndicator(
+            color: appColorPrimary,
+            onRefresh: () async {
+              return await comingSoonCont.getComingSoonDetails(
+                showLoader: false,
               );
             },
-            onSuccess: (res) {
-              return Obx(
-                () => AnimatedListView(
-                  shrinkWrap: true,
-                  itemCount: comingSoonCont.comingSoonList.length,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  emptyWidget: NoDataWidget(
-                    titleTextStyle: boldTextStyle(color: white),
+            child: Obx(
+              () => SnapHelperWidget(
+                future: comingSoonCont.getComingFuture.value,
+                initialData: cachedComingSoonList.isNotEmpty
+                    ? cachedComingSoonList
+                    : null,
+                loadingWidget: const ShimmerComingSoon(),
+                errorBuilder: (error) {
+                  return NoDataWidget(
+                    titleTextStyle: secondaryTextStyle(color: white),
                     subTitleTextStyle: primaryTextStyle(color: white),
-                    title: locale.value.noDataFound,
-                    retryText: "",
-                    imageWidget: const EmptyStateWidget(),
-                  ).paddingSymmetric(horizontal: 16).visible(!comingSoonCont.isLoading.value),
-                  onSwipeRefresh: () async {
-                    comingSoonCont.page(1);
-                    comingSoonCont.getComingSoonDetails(showLoader: false);
-                    return await Future.delayed(const Duration(seconds: 2));
-                  },
-                  onNextPage: () async {
-                    if (!comingSoonCont.isLastPage.value) {
-                      comingSoonCont.page++;
-                      comingSoonCont.isLoading(true);
+                    title: error,
+                    retryText: locale.value.reload,
+                    imageWidget: const ErrorStateWidget(),
+                    onRetry: () {
+                      comingSoonCont.page(1);
                       comingSoonCont.getComingSoonDetails();
-                    }
-                  },
-                  itemBuilder: (ctx, index) {
-                    return ComingSoonComponent(
-                      comingSoonCont: comingSoonCont,
-                      isLoading: comingSoonCont.isLoading.value,
-                      onRemindMeTap: () {
-                        doIfLogin(
-                          onLoggedIn: () async {
-                            comingSoonCont.comingSoonData(comingSoonCont.comingSoonList[index]);
-                            await comingSoonCont.getComingSoonDetails();
-                            await comingSoonCont.saveRemind(isRemind: comingSoonCont.comingSoonList[index].isRemind.getBoolInt());
+                    },
+                  );
+                },
+                onSuccess: (res) {
+                  return Obx(
+                    () => AnimatedListView(
+                      shrinkWrap: true,
+                      itemCount: comingSoonCont.comingSoonList.length,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      emptyWidget:
+                          NoDataWidget(
+                                titleTextStyle: boldTextStyle(color: white),
+                                subTitleTextStyle: primaryTextStyle(
+                                  color: white,
+                                ),
+                                title: locale.value.noDataFound,
+                                retryText: "",
+                                imageWidget: const EmptyStateWidget(),
+                              )
+                              .paddingSymmetric(horizontal: 16)
+                              .visible(!comingSoonCont.isLoading.value),
+                      onSwipeRefresh: () async {
+                        comingSoonCont.page(1);
+                        comingSoonCont.getComingSoonDetails(showLoader: false);
+                        return await Future.delayed(const Duration(seconds: 2));
+                      },
+                      onNextPage: () async {
+                        if (!comingSoonCont.isLastPage.value) {
+                          comingSoonCont.page++;
+                          comingSoonCont.isLoading(true);
+                          comingSoonCont.getComingSoonDetails();
+                        }
+                      },
+                      itemBuilder: (ctx, index) {
+                        return ComingSoonComponent(
+                          comingSoonCont: comingSoonCont,
+                          isLoading: comingSoonCont.isLoading.value,
+                          onRemindMeTap: () {
+                            doIfLogin(
+                              onLoggedIn: () async {
+                                comingSoonCont.comingSoonData(
+                                  comingSoonCont.comingSoonList[index],
+                                );
+                                await comingSoonCont.getComingSoonDetails();
+                                await comingSoonCont.saveRemind(
+                                  isRemind: comingSoonCont
+                                      .comingSoonList[index]
+                                      .isRemind
+                                      .getBoolInt(),
+                                );
+                              },
+                            );
                           },
+                          comingSoonDet: comingSoonCont.comingSoonList[index],
+                        ).paddingOnly(
+                          left: 16,
+                          right: 16,
+                          bottom:
+                              index ==
+                                  comingSoonCont.comingSoonList
+                                          .validate()
+                                          .length -
+                                      1
+                              ? 50
+                              : 8,
+                          top: 8,
                         );
                       },
-                      comingSoonDet: comingSoonCont.comingSoonList[index],
-                    ).paddingOnly(left: 16, right: 16, bottom: index == comingSoonCont.comingSoonList.validate().length - 1 ? 50 : 8, top: 8);
-                  },
-                ),
-              );
-            },
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

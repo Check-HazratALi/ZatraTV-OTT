@@ -11,7 +11,6 @@ import 'package:zatra_tv/utils/colors.dart';
 import 'package:zatra_tv/utils/common_base.dart';
 import 'package:zatra_tv/utils/empty_error_state_widget.dart';
 import 'package:zatra_tv/video_players/model/video_model.dart';
-
 import '../../components/cached_image_widget.dart';
 import '../../generated/assets.dart';
 import '../../utils/constants.dart';
@@ -30,163 +29,171 @@ class BannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        if (sliderController.isLoading.isTrue &&
-            !sliderController.isWatchListLoading.value) {
-          return ShimmerWidget(
-            height: Get.height * 0.45,
+    return Obx(() {
+      if (sliderController.isLoading.isTrue &&
+          !sliderController.isWatchListLoading.value) {
+        return ShimmerWidget(
+          height: Get.height * 0.45,
+          width: Get.width,
+        ).paddingOnly(bottom: 18);
+      }
+      return SnapHelperWidget(
+        future: sliderController.getBannerList.value,
+        errorBuilder: (error) {
+          return SizedBox(
             width: Get.width,
-          ).paddingOnly(bottom: 18);
-        }
-        return SnapHelperWidget(
-          future: sliderController.getBannerList.value,
-          errorBuilder: (error) {
-            return SizedBox(
-              width: Get.width,
-              height: Get.height * 0.8,
-              child: NoDataWidget(
-                titleTextStyle: secondaryTextStyle(color: white),
-                subTitleTextStyle: primaryTextStyle(color: white),
-                title: error,
-                retryText: locale.value.reload,
-                imageWidget: const ErrorStateWidget(),
-                onRetry: () async {
-                  return await sliderController.getBanner(
-                      type: sliderController.sliderType.value);
-                },
-              ).center(),
-            );
-          },
-          loadingWidget: ShimmerWidget(
-            height: Get.height / 2,
-            width: Get.width,
-            radius: 6,
-          ).paddingOnly(bottom: 22),
-          onSuccess: (data) {
-            if (sliderController.bannerList.isEmpty &&
-                !sliderController.isLoading.value) {
-              return Offstage();
-            }
-            return Column(
-              children: [
-                Stack(
-                  children: [
-                    SizedBox(
-                      height: Get.height * 0.55,
-                      width: Get.width,
-                      child: PageView(
-                        controller: sliderController.sliderPageController.value,
-                        children: List.generate(
-                          sliderController.bannerList.length,
-                          (index) {
-                            SliderModel data =
-                                sliderController.bannerList[index];
-                            return Stack(
-                              children: [
-                                CachedImageWidget(
-                                  url: data.fileUrl,
+            height: Get.height * 0.8,
+            child: NoDataWidget(
+              titleTextStyle: secondaryTextStyle(color: white),
+              subTitleTextStyle: primaryTextStyle(color: white),
+              title: error,
+              retryText: locale.value.reload,
+              imageWidget: const ErrorStateWidget(),
+              onRetry: () async {
+                return await sliderController.getBanner(
+                  type: sliderController.sliderType.value,
+                );
+              },
+            ).center(),
+          );
+        },
+        loadingWidget: ShimmerWidget(
+          height: Get.height / 2,
+          width: Get.width,
+          radius: 6,
+        ).paddingOnly(bottom: 22),
+        onSuccess: (data) {
+          if (sliderController.bannerList.isEmpty &&
+              !sliderController.isLoading.value) {
+            return Offstage();
+          }
+          return Column(
+            children: [
+              Stack(
+                children: [
+                  SizedBox(
+                    height: Get.height * 0.55,
+                    width: Get.width,
+                    child: PageView(
+                      controller: sliderController.sliderPageController.value,
+                      children: List.generate(
+                        sliderController.bannerList.length,
+                        (index) {
+                          SliderModel data = sliderController.bannerList[index];
+                          return Stack(
+                            children: [
+                              CachedImageWidget(
+                                url: data.fileUrl,
+                                width: Get.width,
+                                fit: BoxFit.cover,
+                                height: Get.height * 0.55,
+                              ).onTap(() {
+                                if (data.type == VideoType.tvshow) {
+                                  Get.to(
+                                    () => TvShowScreen(),
+                                    arguments: data.data,
+                                  );
+                                } else if (data.type == VideoType.movie) {
+                                  Get.to(
+                                    () => MovieDetailsScreen(),
+                                    arguments: data.data,
+                                  );
+                                } else if (data.type == VideoType.video) {
+                                  Get.to(
+                                    () => VideoDetailsScreen(),
+                                    arguments: data.data,
+                                  );
+                                } else if (data.type == VideoType.liveTv) {
+                                  Get.to(
+                                    () => LiveShowDetailsScreen(),
+                                    arguments: data.data,
+                                  );
+                                }
+                              }),
+                              IgnorePointer(
+                                ignoring: true,
+                                child: Container(
+                                  height: Get.height * 0.56,
                                   width: Get.width,
-                                  fit: BoxFit.cover,
-                                  height: Get.height * 0.55,
-                                ).onTap(
-                                  () {
-                                    if (data.type == VideoType.tvshow) {
-                                      Get.to(() => TvShowScreen(),
-                                          arguments: data.data);
-                                    } else if (data.type == VideoType.movie) {
-                                      Get.to(() => MovieDetailsScreen(),
-                                          arguments: data.data);
-                                    } else if (data.type == VideoType.video) {
-                                      Get.to(() => VideoDetailsScreen(),
-                                          arguments: data.data);
-                                    } else if (data.type == VideoType.liveTv) {
-                                      Get.to(() => LiveShowDetailsScreen(),
-                                          arguments: data.data);
-                                    }
-                                  },
-                                ),
-                                IgnorePointer(
-                                  ignoring: true,
-                                  child: Container(
-                                    height: Get.height * 0.56,
-                                    width: Get.width,
-                                    foregroundDecoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          black.withValues(alpha: 0.8),
-                                          black.withValues(alpha: 0.5),
-                                          black.withValues(alpha: 0.9),
-                                          black.withValues(alpha: 1),
-                                        ],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                      ),
+                                  foregroundDecoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        black.withValues(alpha: 0.8),
+                                        black.withValues(alpha: 0.5),
+                                        black.withValues(alpha: 0.9),
+                                        black.withValues(alpha: 1),
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
                                     ),
                                   ),
                                 ),
-                                if (data.type == VideoType.liveTv)
-                                  const Positioned(
-                                    top: 14,
-                                    left: 46,
-                                    child: LiveCard(),
-                                  ),
-                                sliderDetails(
-                                  data.data,
-                                  data.type,
-                                  index,
-                                  buttonColor: context.cardColor,
+                              ),
+                              if (data.type == VideoType.liveTv)
+                                const Positioned(
+                                  top: 14,
+                                  left: 46,
+                                  child: LiveCard(),
                                 ),
-                              ],
-                            );
-                          },
+                              sliderDetails(
+                                data.data,
+                                data.type,
+                                index,
+                                buttonColor: context.cardColor,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 12,
+                    left: 16,
+                    right: 16,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const CachedImageWidget(
+                          url: Assets.iconsIcIcon,
+                          height: 30,
+                          width: 30,
                         ),
-                      ),
+                        const Spacer(),
+                        const SubscribeCard(),
+                        12.width,
+                      ],
                     ),
-                    Positioned(
-                      top: 12,
-                      left: 16,
-                      right: 16,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const CachedImageWidget(
-                            url: Assets.iconsIcIcon,
-                            height: 30,
-                            width: 30,
-                          ),
-                          const Spacer(),
-                          const SubscribeCard(),
-                          12.width
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                DotIndicator(
-                  pageController: sliderController.sliderPageController.value,
-                  pages: sliderController.bannerList,
-                  indicatorColor: white,
-                  unselectedIndicatorColor: darkGrayColor,
-                  currentBoxShape: BoxShape.rectangle,
-                  boxShape: BoxShape.rectangle,
-                  borderRadius: radius(3),
-                  currentBorderRadius: radius(3),
-                  currentDotSize: 12,
-                  currentDotWidth: 6,
-                  dotSize: 6,
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
+                  ),
+                ],
+              ),
+              DotIndicator(
+                pageController: sliderController.sliderPageController.value,
+                pages: sliderController.bannerList,
+                indicatorColor: white,
+                unselectedIndicatorColor: darkGrayColor,
+                currentBoxShape: BoxShape.rectangle,
+                boxShape: BoxShape.rectangle,
+                borderRadius: radius(3),
+                currentBorderRadius: radius(3),
+                currentDotSize: 12,
+                currentDotWidth: 6,
+                dotSize: 6,
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
-  Positioned sliderDetails(VideoPlayerModel data, String type, int index,
-      {Color? buttonColor}) {
+  Positioned sliderDetails(
+    VideoPlayerModel data,
+    String type,
+    int index, {
+    Color? buttonColor,
+  }) {
     return Positioned(
       bottom: 20,
       left: 0,
@@ -270,13 +277,17 @@ class BannerWidget extends StatelessWidget {
                     iconWidth: 16,
                     iconColor: data.isWatchList ? white : iconColor,
                     padding: EdgeInsets.all(12),
-                    buttonColor:
-                        data.isWatchList ? appColorPrimary : buttonColor,
+                    buttonColor: data.isWatchList
+                        ? appColorPrimary
+                        : buttonColor,
                     onTap: () {
                       doIfLogin(
                         onLoggedIn: () {
-                          sliderController.saveWatchLists(index,
-                              addToWatchList: !data.isWatchList, type: type);
+                          sliderController.saveWatchLists(
+                            index,
+                            addToWatchList: !data.isWatchList,
+                            type: type,
+                          );
                         },
                       );
                     },
@@ -286,19 +297,23 @@ class BannerWidget extends StatelessWidget {
                 16.width,
                 AppButton(
                   height: 40,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 10,
+                  ),
                   color: appColorPrimary,
                   shapeBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4)),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                   enabled: true,
                   onTap: () {
                     if (type == VideoType.tvshow) {
                       Get.to(() => TvShowScreen(), arguments: data);
                     } else if (type == VideoType.liveTv) {
-                      Get.to(() => LiveShowDetailsScreen(),
-                          arguments:
-                              ChannelModel(id: data.id, name: data.name));
+                      Get.to(
+                        () => LiveShowDetailsScreen(),
+                        arguments: ChannelModel(id: data.id, name: data.name),
+                      );
                     } else if (type == VideoType.movie) {
                       Get.to(() => MovieDetailsScreen(), arguments: data);
                     } else if (type == VideoType.video) {
@@ -315,8 +330,10 @@ class BannerWidget extends StatelessWidget {
                         width: 10,
                       ),
                       12.width,
-                      Text(locale.value.watchNow,
-                          style: appButtonTextStyleWhite),
+                      Text(
+                        locale.value.watchNow,
+                        style: appButtonTextStyleWhite,
+                      ),
                     ],
                   ),
                 ),
