@@ -53,7 +53,15 @@ class SocialIconWidget extends StatelessWidget {
   final double? buttonWidth;
   final String? text;
 
-  const SocialIconWidget({super.key, required this.icon, this.onTap, this.text, this.iconColor, this.iconSize, this.buttonWidth});
+  const SocialIconWidget({
+    super.key,
+    required this.icon,
+    this.onTap,
+    this.text,
+    this.iconColor,
+    this.iconSize,
+    this.buttonWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +86,7 @@ class SocialIconWidget extends StatelessWidget {
           Text(
             text.validate(),
             style: commonW500PrimaryTextStyle(color: primaryTextColor),
-          )
+          ),
         ],
       ),
     );

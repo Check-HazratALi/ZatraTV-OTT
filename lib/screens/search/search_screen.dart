@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/components/loader_widget.dart';
 import 'package:zatra_tv/main.dart';
 import 'package:zatra_tv/screens/search/components/search_text_field.dart';
 import 'package:zatra_tv/screens/search/shimmer_search.dart';

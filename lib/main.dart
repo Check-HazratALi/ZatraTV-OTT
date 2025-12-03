@@ -23,6 +23,7 @@ import 'package:zatra_tv/screens/coming_soon/model/coming_soon_response.dart';
 import 'package:zatra_tv/screens/home/model/dashboard_res_model.dart';
 import 'package:zatra_tv/screens/live_tv/model/live_tv_dashboard_response.dart';
 import 'package:zatra_tv/screens/person/model/person_model.dart';
+import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_screen.dart';
 import 'package:zatra_tv/services/in_app_purhcase_service.dart';
 import 'package:zatra_tv/utils/local_storage.dart';
 import 'package:zatra_tv/video_players/model/video_model.dart';
@@ -280,7 +281,7 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(builder: (_) => SplashScreen());
         }
       },
-      home: SplashScreen(),
+      home: WatchingProfileScreen(),
       // ),
     );
   }

@@ -4,7 +4,6 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/components/app_scaffold.dart';
 import 'package:zatra_tv/screens/tv_show/components/tv_show_details_component.dart';
 import 'package:zatra_tv/screens/tv_show/tv_show_controller.dart';
-import 'package:zatra_tv/screens/tv_show/tv_show_shimmer_screen.dart';
 import 'package:zatra_tv/utils/app_common.dart';
 
 import '../../main.dart';

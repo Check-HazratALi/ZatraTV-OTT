@@ -156,7 +156,7 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get walkthroughTitle2 =>
-      'Download and Go: Access Your Content Anywhere, Anytime, on Any Device';
+      'Access Your Content Anywhere, Anytime, on Any Device';
 
   @override
   String get walkthroughDesp2 =>
@@ -164,7 +164,7 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get walkthroughTitle3 =>
-      'Enjoy Freedom Without Commitments or Hassles - Join Us Today!';
+      'Enjoy Freedom Without Commitments or Hassles';
 
   @override
   String get walkthroughDesp3 =>

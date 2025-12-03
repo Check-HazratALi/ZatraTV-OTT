@@ -26,6 +26,18 @@ class SignUpController extends GetxController {
 
   var selectedGender = Gender.male.obs;
 
+  final RxBool isPasswordVisible = false.obs;
+  final RxBool isConfirmPasswordVisible = false.obs;
+
+  // Methods to toggle password visibility
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+  }
+
   RxBool agree = false.obs;
   RxBool isAcceptedTc = false.obs;
 
