@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/screens/dashboard/components/floating_widget.dart';
 import 'package:zatra_tv/screens/movie_list/shimmer_movie_list/shimmer_movie_list.dart';
 import 'package:zatra_tv/screens/slider/banner_widget.dart';
 import 'package:zatra_tv/screens/tv_show/tv_show_screen.dart';
@@ -26,7 +26,6 @@ class TvShowListScreen extends StatelessWidget {
       hasLeadingWidget: false,
       hideAppBar: true,
       scaffoldBackgroundColor: black,
-      floatingActionButton: FloatingWidget(label: locale.value.tVShows),
       body: AnimatedListView(
         shrinkWrap: true,
         itemCount: 1,
@@ -36,7 +35,10 @@ class TvShowListScreen extends StatelessWidget {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         onNextPage: tvShowListCont.onNextPage,
         onSwipeRefresh: () async {
-          tvShowListCont.sliderController.getBanner(showLoader: true, type: BannerType.tvShow);
+          tvShowListCont.sliderController.getBanner(
+            showLoader: true,
+            type: BannerType.tvShow,
+          );
           return await tvShowListCont.getTvShowDetails(showLoader: true);
         },
         itemBuilder: (context, index) {
@@ -51,75 +53,120 @@ class TvShowListScreen extends StatelessWidget {
               //     ],
               //   );
               // }),
-              Obx(
-                () {
-                  return SnapHelperWidget(
-                    future: tvShowListCont.getTvShowFuture.value,
-                    loadingWidget: const ShimmerMovieList(),
-                    errorBuilder: (error) {
-                      return SizedBox(
-                        width: Get.width,
-                        height: Get.height * 0.8,
-                        child: NoDataWidget(
-                          titleTextStyle: secondaryTextStyle(color: white),
-                          subTitleTextStyle: primaryTextStyle(color: white),
-                          title: error,
-                          retryText: locale.value.reload,
-                          imageWidget: const ErrorStateWidget(),
-                          onRetry: () async {
-                            return await tvShowListCont.getTvShowDetails(showLoader: true);
-                          },
-                        ).center(),
-                      );
-                    },
-                    onSuccess: (data) {
-                      if (tvShowListCont.tvShowList.isEmpty && !tvShowListCont.isLoading.value) {
-                        return NoDataWidget(
-                          titleTextStyle: boldTextStyle(color: white),
-                          subTitleTextStyle: primaryTextStyle(color: white),
-                          title: locale.value.noDataFound,
-                          retryText: "",
-                          imageWidget: const EmptyStateWidget(),
-                        ).paddingSymmetric(horizontal: 16);
-                      }
+              Obx(() {
+                return SnapHelperWidget(
+                  future: tvShowListCont.getTvShowFuture.value,
+                  loadingWidget: const ShimmerMovieList(),
+                  errorBuilder: (error) {
+                    return SizedBox(
+                      width: Get.width,
+                      height: Get.height * 0.8,
+                      child: NoDataWidget(
+                        titleTextStyle: secondaryTextStyle(color: white),
+                        subTitleTextStyle: primaryTextStyle(color: white),
+                        title: error,
+                        retryText: locale.value.reload,
+                        imageWidget: const ErrorStateWidget(),
+                        onRetry: () async {
+                          return await tvShowListCont.getTvShowDetails(
+                            showLoader: true,
+                          );
+                        },
+                      ).center(),
+                    );
+                  },
+                  onSuccess: (data) {
+                    if (tvShowListCont.tvShowList.isEmpty &&
+                        !tvShowListCont.isLoading.value) {
+                      return NoDataWidget(
+                        titleTextStyle: boldTextStyle(color: white),
+                        subTitleTextStyle: primaryTextStyle(color: white),
+                        title: locale.value.noDataFound,
+                        retryText: "",
+                        imageWidget: const EmptyStateWidget(),
+                      ).paddingSymmetric(horizontal: 16);
+                    }
 
-                      //  Data loaded and list is not empty → show list
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            locale.value.tVShows,
-                            style: primaryTextStyle(),
-                          ).paddingDirectional(start: 16),
-                          10.height,
-                          CustomAnimatedScrollView(
-                            paddingLeft: Get.width * 0.04,
-                            paddingRight: Get.width * 0.04,
-                            paddingBottom: Get.height * 0.10,
-                            spacing: Get.width * 0.03,
-                            runSpacing: Get.height * 0.02,
-                            posterHeight: 150,
-                            posterWidth: Get.width * 0.286,
-                            isHorizontalList: false,
-                            isLoading: false,
-                            isLastPage: tvShowListCont.isLastPage.value,
-                            itemList: tvShowListCont.tvShowList,
-                            onTap: (posterDet) {
-                              Get.to(() => TvShowScreen(key: UniqueKey()), arguments: posterDet);
-                            },
-                            onNextPage: tvShowListCont.onNextPage,
-                            onSwipeRefresh: () async {
-                              tvShowListCont.page(1);
-                              return await tvShowListCont.getTvShowDetails(showLoader: true);
-                            },
-                            isMovieList: true,
+                    //  Data loaded and list is not empty → show list
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Container(
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                appColorPrimary.withOpacity(0.1),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              )
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.live_tv_rounded,
+                                color: appColorPrimary,
+                                size: 24,
+                              ),
+                              8.width,
+                              Text(
+                                '${locale.value.tVShows}',
+                                style: boldTextStyle(
+                                  size: 14,
+                                  color: white,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                ),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(
+                                  Icons.close_rounded,
+                                  color: appColorPrimary,
+                                ),
+                              ),
+                            ],
+                          ).paddingSymmetric(horizontal: 16, vertical: 12),
+                        ),
+
+                        10.height,
+                        CustomAnimatedScrollView(
+                          paddingLeft: Get.width * 0.04,
+                          paddingRight: Get.width * 0.04,
+                          paddingBottom: Get.height * 0.10,
+                          spacing: Get.width * 0.03,
+                          runSpacing: Get.height * 0.02,
+                          posterHeight: 150,
+                          posterWidth: Get.width * 0.286,
+                          isHorizontalList: false,
+                          isLoading: false,
+                          isLastPage: tvShowListCont.isLastPage.value,
+                          itemList: tvShowListCont.tvShowList,
+                          onTap: (posterDet) {
+                            Get.to(
+                              () => TvShowScreen(key: UniqueKey()),
+                              arguments: posterDet,
+                            );
+                          },
+                          onNextPage: tvShowListCont.onNextPage,
+                          onSwipeRefresh: () async {
+                            tvShowListCont.page(1);
+                            return await tvShowListCont.getTvShowDetails(
+                              showLoader: true,
+                            );
+                          },
+                          isMovieList: true,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }),
             ],
           );
         },

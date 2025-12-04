@@ -40,7 +40,7 @@ class DashboardScreen extends StatelessWidget {
               color: Colors.black.withOpacity(0.8),
               borderRadius: BorderRadius.circular(25),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: appColorPrimary.withOpacity(0.6),
                 width: 1,
               ),
               boxShadow: [
@@ -85,7 +85,7 @@ class DashboardScreen extends StatelessWidget {
                         Icon(
                           isSelected ? item.activeIcon : item.icon,
                           size: 20,
-                          color: isSelected ? appColorPrimary : iconColor,
+                          color: isSelected ? Colors.white : iconColor,
                         ),
                         if (isSelected) ...[
                           6.width,
@@ -100,7 +100,7 @@ class DashboardScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
-                                  color: appColorPrimary,
+                                  color: Colors.white,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

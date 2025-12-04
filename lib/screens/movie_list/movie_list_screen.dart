@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/screens/dashboard/components/floating_widget.dart';
 import 'package:zatra_tv/screens/movie_list/movie_list_controller.dart';
 import 'package:zatra_tv/screens/movie_list/shimmer_movie_list/shimmer_movie_list.dart';
 import 'package:zatra_tv/screens/slider/banner_widget.dart';
@@ -29,7 +29,6 @@ class MovieListScreen extends StatelessWidget {
       hasLeadingWidget: false,
       hideAppBar: true,
       scaffoldBackgroundColor: black,
-      floatingActionButton: FloatingWidget(label: locale.value.movies),
       body: AnimatedListView(
         shrinkWrap: true,
         itemCount: 1,
@@ -77,7 +76,44 @@ class MovieListScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(title ?? locale.value.movies, style: primaryTextStyle()).paddingDirectional(start: 16),
+                        Container(
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                appColorPrimary.withOpacity(0.1),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.movie_filter_rounded,
+                                color: appColorPrimary,
+                                size: 24,
+                              ),
+                              8.width,
+                              Text(
+                                '${locale.value.movies}',
+                                style: boldTextStyle(
+                                  size: 14,
+                                  color: white,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                ),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(Icons.close_rounded, color: appColorPrimary),
+                              ),
+                            ],
+                          ).paddingSymmetric(horizontal: 16, vertical: 12),
+                        ),
                         10.height,
                         Obx(() {
                           if (movieListCont.originalMovieList.isEmpty && !movieListCont.isLoading.value) {

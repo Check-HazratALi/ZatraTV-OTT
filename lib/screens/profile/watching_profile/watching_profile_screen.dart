@@ -44,7 +44,6 @@ class WatchingProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-
           // Floating Particles
           ...List.generate(
             15,
@@ -152,6 +151,7 @@ class WatchingProfileScreen extends StatelessWidget {
               ],
             ),
           ),
+          
           Positioned(
             bottom: 0,
             left: 0,

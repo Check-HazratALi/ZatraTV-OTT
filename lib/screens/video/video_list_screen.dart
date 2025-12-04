@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/screens/dashboard/components/floating_widget.dart';
 import 'package:zatra_tv/screens/movie_list/shimmer_movie_list/shimmer_movie_list.dart';
@@ -17,7 +18,9 @@ import '../../utils/empty_error_state_widget.dart';
 class VideoListScreen extends StatelessWidget {
   VideoListScreen({super.key});
 
-  final VideoListController videoListController = Get.put(VideoListController());
+  final VideoListController videoListController = Get.put(
+    VideoListController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,6 @@ class VideoListScreen extends StatelessWidget {
       hasLeadingWidget: false,
       hideAppBar: true,
       scaffoldBackgroundColor: black,
-      floatingActionButton: FloatingWidget(label: locale.value.videos),
       body: AnimatedListView(
         shrinkWrap: true,
         itemCount: 1,
@@ -35,13 +37,17 @@ class VideoListScreen extends StatelessWidget {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         onNextPage: videoListController.onNextPage,
         onSwipeRefresh: () async {
-          videoListController.sliderController.getBanner(type: BannerType.video);
+          videoListController.sliderController.getBanner(
+            type: BannerType.video,
+          );
           return await videoListController.getVideoList(showLoader: true);
         },
         itemBuilder: (context, index) {
           return Column(
             children: [
-              BannerWidget(sliderController: videoListController.sliderController),
+              BannerWidget(
+                sliderController: videoListController.sliderController,
+              ),
               // Obx(() {
               //   final ads = getDashboardController().getBannerAdsForCategory(targetContentType: 'video');
               //   return Column(
@@ -50,75 +56,115 @@ class VideoListScreen extends StatelessWidget {
               //     ],
               //   );
               // }),
-              Obx(
-                () {
-                  return SnapHelperWidget(
-                    future: videoListController.getVideoListFuture.value,
-                    loadingWidget: const ShimmerMovieList(),
-                    errorBuilder: (error) {
-                      return SizedBox(
-                        width: Get.width,
-                        height: Get.height * 0.8,
-                        child: NoDataWidget(
-                          titleTextStyle: secondaryTextStyle(color: white),
-                          subTitleTextStyle: primaryTextStyle(color: white),
-                          title: error,
-                          retryText: locale.value.reload,
-                          imageWidget: const ErrorStateWidget(),
-                          onRetry: () async {
-                            return await videoListController.getVideoList(showLoader: true);
-                          },
-                        ).center(),
-                      );
-                    },
-                    onSuccess: (data) {
-                      if (videoListController.videoList.isEmpty && !videoListController.isLoading.value) {
-                        return NoDataWidget(
-                          titleTextStyle: boldTextStyle(color: white),
-                          subTitleTextStyle: primaryTextStyle(color: white),
-                          title: locale.value.noDataFound,
-                          retryText: "",
-                          imageWidget: const EmptyStateWidget(),
-                        ).paddingSymmetric(horizontal: 16);
-                      }
+              Obx(() {
+                return SnapHelperWidget(
+                  future: videoListController.getVideoListFuture.value,
+                  loadingWidget: const ShimmerMovieList(),
+                  errorBuilder: (error) {
+                    return SizedBox(
+                      width: Get.width,
+                      height: Get.height * 0.8,
+                      child: NoDataWidget(
+                        titleTextStyle: secondaryTextStyle(color: white),
+                        subTitleTextStyle: primaryTextStyle(color: white),
+                        title: error,
+                        retryText: locale.value.reload,
+                        imageWidget: const ErrorStateWidget(),
+                        onRetry: () async {
+                          return await videoListController.getVideoList(
+                            showLoader: true,
+                          );
+                        },
+                      ).center(),
+                    );
+                  },
+                  onSuccess: (data) {
+                    if (videoListController.videoList.isEmpty &&
+                        !videoListController.isLoading.value) {
+                      return NoDataWidget(
+                        titleTextStyle: boldTextStyle(color: white),
+                        subTitleTextStyle: primaryTextStyle(color: white),
+                        title: locale.value.noDataFound,
+                        retryText: "",
+                        imageWidget: const EmptyStateWidget(),
+                      ).paddingSymmetric(horizontal: 16);
+                    }
 
-                      //  Data loaded and list is not empty → show list
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            locale.value.videos,
-                            style: primaryTextStyle(),
-                          ).paddingDirectional(start: 16),
-                          10.height,
-                          CustomAnimatedScrollView(
-                            paddingLeft: Get.width * 0.04,
-                            paddingRight: Get.width * 0.04,
-                            paddingBottom: Get.height * 0.10,
-                            spacing: Get.width * 0.03,
-                            runSpacing: Get.height * 0.02,
-                            posterHeight: 150,
-                            posterWidth: Get.width * 0.286,
-                            isHorizontalList: false,
-                            isLoading: false,
-                            isLastPage: videoListController.isLastPage.value,
-                            itemList: videoListController.videoList,
-                            onTap: (posterDet) {
-                              Get.to(() => VideoDetailsScreen(), arguments: posterDet);
-                            },
-                            onNextPage: videoListController.onNextPage,
-                            onSwipeRefresh: () async {
-                              videoListController.page(1);
-                              return await videoListController.getVideoList(showLoader: true);
-                            },
-                            isMovieList: true,
+                    //  Data loaded and list is not empty → show list
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                appColorPrimary.withOpacity(0.1),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              )
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.play_circle_fill_outlined,
+                                color: appColorPrimary,
+                                size: 24,
+                              ),
+                              8.width,
+                              Text(
+                                '${locale.value.videos}',
+                                style: boldTextStyle(
+                                  size: 14,
+                                  color: white,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
+                                ),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(Icons.close_rounded, color: appColorPrimary),
+                              ),
+                            ],
+                          ).paddingSymmetric(horizontal: 16, vertical: 12),
+                        ),
+                        10.height,
+                        CustomAnimatedScrollView(
+                          paddingLeft: Get.width * 0.04,
+                          paddingRight: Get.width * 0.04,
+                          paddingBottom: Get.height * 0.10,
+                          spacing: Get.width * 0.03,
+                          runSpacing: Get.height * 0.02,
+                          posterHeight: 150,
+                          posterWidth: Get.width * 0.286,
+                          isHorizontalList: false,
+                          isLoading: false,
+                          isLastPage: videoListController.isLastPage.value,
+                          itemList: videoListController.videoList,
+                          onTap: (posterDet) {
+                            Get.to(
+                              () => VideoDetailsScreen(),
+                              arguments: posterDet,
+                            );
+                          },
+                          onNextPage: videoListController.onNextPage,
+                          onSwipeRefresh: () async {
+                            videoListController.page(1);
+                            return await videoListController.getVideoList(
+                              showLoader: true,
+                            );
+                          },
+                          isMovieList: true,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }),
             ],
           );
         },
