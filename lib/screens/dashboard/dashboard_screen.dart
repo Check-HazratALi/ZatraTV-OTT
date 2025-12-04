@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-
-import '../../utils/app_common.dart';
 import '../../utils/colors.dart';
 import 'components/menu.dart';
 import 'dashboard_controller.dart';
 import 'floting_action_bar/floating_action_controller.dart';
-import 'floting_action_bar/floating_action_button.dart';
 
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({super.key, required this.dashboardController});
@@ -23,19 +20,6 @@ class DashboardScreen extends StatelessWidget {
         extendBody: true,
         backgroundColor: appScreenBackgroundDark,
         extendBodyBehindAppBar: true,
-        floatingActionButton: Obx(() {
-          if (dashboardController.currentIndex.value == 0) {
-            if (!appConfigs.value.enableTvShow &&
-                !appConfigs.value.enableMovie &&
-                !appConfigs.value.enableVideo) {
-              return const Offstage();
-            } else {
-              return FloatingButton().paddingBottom(16);
-            }
-          } else {
-            return const Offstage();
-          }
-        }),
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Obx(

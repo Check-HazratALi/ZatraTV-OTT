@@ -266,44 +266,6 @@ class SearchScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-
-                                // Empty State for Search
-                                if (searchCont.searchCont.text.length > 2 &&
-                                    searchCont.searchMovieDetails.isEmpty &&
-                                    searchCont.isLoading.isFalse)
-                                  Container(
-                                    height: Get.height * 0.5,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.search_off_rounded,
-                                            size: 60,
-                                            color: Colors.white30,
-                                          ),
-                                          20.height,
-                                          Text(
-                                            "No Results Found",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          8.height,
-                                          Text(
-                                            "Try different keywords",
-                                            style: TextStyle(
-                                              color: Colors.white70,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
                               ],
                             ),
                           ),
