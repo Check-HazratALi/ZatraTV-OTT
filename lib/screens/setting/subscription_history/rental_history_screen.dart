@@ -13,9 +13,7 @@ import '../../../utils/empty_error_state_widget.dart';
 import '../../subscription/shimmer_subscription_list.dart';
 
 class RentalHistoryScreen extends StatelessWidget {
-  RentalHistoryScreen({
-    super.key,
-  });
+  RentalHistoryScreen({super.key});
 
   final RentalHistoryController controller = Get.put(RentalHistoryController());
 
@@ -27,101 +25,134 @@ class RentalHistoryScreen extends StatelessWidget {
       isLoading: controller.isLoading,
       appBartitleText: 'Rental History',
       body: Obx(() {
-        return AnimatedScrollView(
-          padding: EdgeInsets.only(bottom: 120, top: 8),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          listAnimationType: commonListAnimationType,
-          refreshIndicatorColor: appColorPrimary,
-          physics: AlwaysScrollableScrollPhysics(),
-          onNextPage: () {
-            if (!controller.isLastPage.value) {
-              controller.page++;
-              controller.getRentalListHistoryList();
-            }
-          },
-          onSwipeRefresh: () {
-            controller.page(1);
-            return controller.getRentalHistoryFuture();
-          },
+        return Stack(
           children: [
-            SnapHelperWidget(
-              future: controller.getRentalHistoryFuture.value,
-              loadingWidget: controller.isLoading.value ? const ShimmerSubscriptionList() : const ShimmerSubscriptionList(),
-              errorBuilder: (error) {
-                return NoDataWidget(
-                  titleTextStyle: secondaryTextStyle(color: white),
-                  subTitleTextStyle: primaryTextStyle(color: white),
-                  title: error,
-                  retryText: locale.value.reload,
-                  imageWidget: const ErrorStateWidget(),
-                  onRetry: () {
-                    controller.getRentalListHistoryList();
-                  },
-                );
-              },
-              onSuccess: (res) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (controller.rentalHistoryList.isEmpty && controller.isLoading.isFalse)
-                      SizedBox(
-                        height: Get.height * 0.6,
-                        width: Get.width,
-                        child: NoDataWidget(
-                          titleTextStyle: boldTextStyle(color: white),
-                          subTitleTextStyle: primaryTextStyle(color: white),
-
-                          ///Todo add language key
-                          title: 'No rental history found',
-                          imageWidget: const EmptyStateWidget(),
-                          retryText: locale.value.reload,
-                          onRetry: () {
-                            controller.getRentalListHistoryList();
-                          },
-                        ).paddingSymmetric(horizontal: 16).center(),
-                      )
-                    else
-                      AnimatedWrap(
-                        listAnimationType: commonListAnimationType,
-                        itemBuilder: (context, index) {
-                          return RentedHistoryCard(rentalHistory: controller.rentalHistoryList[index]);
-                        },
-                        runSpacing: 16,
-                        spacing: 16,
-                        itemCount: controller.rentalHistoryList.length,
-                      ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.topCenter,
+                  radius: 1.5,
+                  colors: [
+                    appColorPrimary.withOpacity(0.1),
+                    appScreenBackgroundDark,
                   ],
-                ).paddingSymmetric(horizontal: 16);
+                ),
+              ),
+            ),
+
+            // Floating Particles
+            ...List.generate(
+              15,
+              (index) => Positioned(
+                top: Get.height * 0.1 + (index * 30),
+                left: Get.width * (index % 3) * 0.33,
+                child: Container(
+                  width: 2,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+            AnimatedScrollView(
+              padding: EdgeInsets.only(bottom: 120, top: 8),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              listAnimationType: commonListAnimationType,
+              refreshIndicatorColor: appColorPrimary,
+              physics: AlwaysScrollableScrollPhysics(),
+              onNextPage: () {
+                if (!controller.isLastPage.value) {
+                  controller.page++;
+                  controller.getRentalListHistoryList();
+                }
               },
-            )
+              onSwipeRefresh: () {
+                controller.page(1);
+                return controller.getRentalHistoryFuture();
+              },
+              children: [
+                SnapHelperWidget(
+                  future: controller.getRentalHistoryFuture.value,
+                  loadingWidget: controller.isLoading.value
+                      ? const ShimmerSubscriptionList()
+                      : const ShimmerSubscriptionList(),
+                  errorBuilder: (error) {
+                    return NoDataWidget(
+                      titleTextStyle: secondaryTextStyle(color: white),
+                      subTitleTextStyle: primaryTextStyle(color: white),
+                      title: error,
+                      retryText: locale.value.reload,
+                      imageWidget: const ErrorStateWidget(),
+                      onRetry: () {
+                        controller.getRentalListHistoryList();
+                      },
+                    );
+                  },
+                  onSuccess: (res) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (controller.rentalHistoryList.isEmpty &&
+                            controller.isLoading.isFalse)
+                          SizedBox(
+                            height: Get.height * 0.6,
+                            width: Get.width,
+                            child: NoDataWidget(
+                              titleTextStyle: boldTextStyle(color: white),
+                              subTitleTextStyle: primaryTextStyle(color: white),
+
+                              ///Todo add language key
+                              title: 'No rental history found',
+                              imageWidget: const EmptyStateWidget(),
+                              retryText: locale.value.reload,
+                              onRetry: () {
+                                controller.getRentalListHistoryList();
+                              },
+                            ).paddingSymmetric(horizontal: 16).center(),
+                          )
+                        else
+                          AnimatedWrap(
+                            listAnimationType: commonListAnimationType,
+                            itemBuilder: (context, index) {
+                              return RentedHistoryCard(
+                                rentalHistory:
+                                    controller.rentalHistoryList[index],
+                              );
+                            },
+                            runSpacing: 16,
+                            spacing: 16,
+                            itemCount: controller.rentalHistoryList.length,
+                          ),
+                      ],
+                    ).paddingSymmetric(horizontal: 16);
+                  },
+                ),
+              ],
+            ),
           ],
         );
       }),
     );
   }
 
-  Widget planRows({required String title, required String value, required bool isAmount}) {
+  Widget planRows({
+    required String title,
+    required String value,
+    required bool isAmount,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          title,
-          style: primaryTextStyle(size: 14),
-        ),
+        Text(title, style: primaryTextStyle(size: 14)),
         const Spacer(),
         if (isAmount)
-          PriceWidget(
-            price: num.parse(value),
-            size: 14,
-            color: white,
-          )
+          PriceWidget(price: num.parse(value), size: 14, color: white)
         else
-          Text(
-            value,
-            style: boldTextStyle(size: 14),
-          ),
+          Text(value, style: boldTextStyle(size: 14)),
       ],
     );
   }

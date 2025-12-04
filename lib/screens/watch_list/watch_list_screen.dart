@@ -32,7 +32,9 @@ class WatchListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffoldNew(
-      isLoading: watchListCont.page.value == 1 ? false.obs : watchListCont.isLoading,
+      isLoading: watchListCont.page.value == 1
+          ? false.obs
+          : watchListCont.isLoading,
       currentPage: watchListCont.page,
       scaffoldBackgroundColor: appScreenBackgroundDark,
       topBarBgColor: transparentColor,
@@ -53,100 +55,184 @@ class WatchListScreen extends StatelessWidget {
             ),
           ).visible(watchListCont.watchList.isNotEmpty),
         ),
-        16.width
+        16.width,
       ],
-      body: RefreshIndicator(
-        color: appColorPrimary,
-        onRefresh: () async {
-          return await watchListCont.getWatchList();
-        },
-        child: Obx(
-          () => SnapHelperWidget(
-            future: watchListCont.getWatchListFuture.value,
-            initialData: cachedWatchList.isNotEmpty ? cachedWatchList : null,
-            loadingWidget: const ShimmerWatchList(),
-            errorBuilder: (error) {
-              return NoDataWidget(
-                titleTextStyle: secondaryTextStyle(color: white),
-                subTitleTextStyle: primaryTextStyle(color: white),
-                title: error,
-                retryText: locale.value.reload,
-                imageWidget: const ErrorStateWidget(),
-                onRetry: () {
-                  watchListCont.page(1);
-                  watchListCont.getWatchList();
-                },
-              );
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topCenter,
+                radius: 1.5,
+                colors: [
+                  appColorPrimary.withOpacity(0.1),
+                  appScreenBackgroundDark,
+                ],
+              ),
+            ),
+          ),
+
+          // Floating Particles
+          ...List.generate(
+            15,
+            (index) => Positioned(
+              top: Get.height * 0.1 + (index * 30),
+              left: Get.width * (index % 3) * 0.33,
+              child: Container(
+                width: 2,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          RefreshIndicator(
+            color: appColorPrimary,
+            onRefresh: () async {
+              return await watchListCont.getWatchList();
             },
-            onSuccess: (res) {
-              return Obx(
-                () => watchListCont.watchList.isEmpty
-                    ? watchListCont.isLoading.isTrue
-                        ? const ShimmerMovieList().visible(watchListCont.page.value == 1)
-                        : const EmptyWatchListComponent()
-                    : LayoutBuilder(builder: (context, constraints) {
-                        return AnimatedScrollView(
-                          refreshIndicatorColor: appColorPrimary,
-                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 120, top: 16),
-                          children: [
-                            AnimatedWrap(
-                              spacing: 12,
-                              runSpacing: 12,
-                              children: List.generate(
-                                watchListCont.watchList.length,
-                                (index) {
-                                  int reversedIndex = watchListCont.watchList.length - 1 - index;
-                                  VideoPlayerModel poster = watchListCont.watchList[reversedIndex];
-                                  return InkWell(
-                                    onTap: () {
-                                      if (watchListCont.isDelete.isTrue) {
-                                        if (watchListCont.selectedPosters.contains(poster)) {
-                                          watchListCont.selectedPosters.remove(poster);
-                                        } else {
-                                          watchListCont.selectedPosters.add(poster);
-                                        }
-                                      } else {
-                                        if (poster.releaseDate.isNotEmpty && isComingSoon(poster.releaseDate)) {
-                                          ComingSoonController comingSoonCont = Get.put(ComingSoonController());
-                                          Get.to(
-                                            () => ComingSoonDetailScreen(
-                                              comingSoonCont: comingSoonCont,
-                                              comingSoonData: ComingSoonModel.fromJson(poster.toJson()),
-                                            ),
-                                          );
-                                        } else {
-                                          if (poster.type == VideoType.episode || poster.type == VideoType.tvshow) {
-                                            Get.to(() => TvShowScreen(), arguments: poster);
-                                          } else if (poster.type == VideoType.video) {
-                                            Get.to(() => VideoDetailsScreen(), arguments: poster);
-                                          } else if (poster.type == VideoType.movie) {
-                                            Get.to(() => MovieDetailsScreen(), arguments: poster);
-                                          }
-                                        }
-                                      }
-                                    },
-                                    child: posterCard(poster: poster, index: index),
+            child: Obx(
+              () => SnapHelperWidget(
+                future: watchListCont.getWatchListFuture.value,
+                initialData: cachedWatchList.isNotEmpty
+                    ? cachedWatchList
+                    : null,
+                loadingWidget: const ShimmerWatchList(),
+                errorBuilder: (error) {
+                  return NoDataWidget(
+                    titleTextStyle: secondaryTextStyle(color: white),
+                    subTitleTextStyle: primaryTextStyle(color: white),
+                    title: error,
+                    retryText: locale.value.reload,
+                    imageWidget: const ErrorStateWidget(),
+                    onRetry: () {
+                      watchListCont.page(1);
+                      watchListCont.getWatchList();
+                    },
+                  );
+                },
+                onSuccess: (res) {
+                  return Obx(
+                    () => watchListCont.watchList.isEmpty
+                        ? watchListCont.isLoading.isTrue
+                              ? const ShimmerMovieList().visible(
+                                  watchListCont.page.value == 1,
+                                )
+                              : const EmptyWatchListComponent()
+                        : LayoutBuilder(
+                            builder: (context, constraints) {
+                              return AnimatedScrollView(
+                                refreshIndicatorColor: appColorPrimary,
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 16,
+                                  bottom: 120,
+                                  top: 16,
+                                ),
+                                children: [
+                                  AnimatedWrap(
+                                    spacing: 12,
+                                    runSpacing: 12,
+                                    children: List.generate(
+                                      watchListCont.watchList.length,
+                                      (index) {
+                                        int reversedIndex =
+                                            watchListCont.watchList.length -
+                                            1 -
+                                            index;
+                                        VideoPlayerModel poster = watchListCont
+                                            .watchList[reversedIndex];
+                                        return InkWell(
+                                          onTap: () {
+                                            if (watchListCont.isDelete.isTrue) {
+                                              if (watchListCont.selectedPosters
+                                                  .contains(poster)) {
+                                                watchListCont.selectedPosters
+                                                    .remove(poster);
+                                              } else {
+                                                watchListCont.selectedPosters
+                                                    .add(poster);
+                                              }
+                                            } else {
+                                              if (poster
+                                                      .releaseDate
+                                                      .isNotEmpty &&
+                                                  isComingSoon(
+                                                    poster.releaseDate,
+                                                  )) {
+                                                ComingSoonController
+                                                comingSoonCont = Get.put(
+                                                  ComingSoonController(),
+                                                );
+                                                Get.to(
+                                                  () => ComingSoonDetailScreen(
+                                                    comingSoonCont:
+                                                        comingSoonCont,
+                                                    comingSoonData:
+                                                        ComingSoonModel.fromJson(
+                                                          poster.toJson(),
+                                                        ),
+                                                  ),
+                                                );
+                                              } else {
+                                                if (poster.type ==
+                                                        VideoType.episode ||
+                                                    poster.type ==
+                                                        VideoType.tvshow) {
+                                                  Get.to(
+                                                    () => TvShowScreen(),
+                                                    arguments: poster,
+                                                  );
+                                                } else if (poster.type ==
+                                                    VideoType.video) {
+                                                  Get.to(
+                                                    () => VideoDetailsScreen(),
+                                                    arguments: poster,
+                                                  );
+                                                } else if (poster.type ==
+                                                    VideoType.movie) {
+                                                  Get.to(
+                                                    () => MovieDetailsScreen(),
+                                                    arguments: poster,
+                                                  );
+                                                }
+                                              }
+                                            }
+                                          },
+                                          child: posterCard(
+                                            poster: poster,
+                                            index: index,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                                onNextPage: () async {
+                                  if (!watchListCont.isLastPage.value) {
+                                    watchListCont.page(
+                                      watchListCont.page.value + 1,
+                                    );
+                                    watchListCont.getWatchList();
+                                  }
+                                },
+                                onSwipeRefresh: () async {
+                                  watchListCont.page(1);
+                                  return await watchListCont.getWatchList(
+                                    showLoader: false,
                                   );
                                 },
-                              ),
-                            ),
-                          ],
-                          onNextPage: () async {
-                            if (!watchListCont.isLastPage.value) {
-                              watchListCont.page(watchListCont.page.value + 1);
-                              watchListCont.getWatchList();
-                            }
-                          },
-                          onSwipeRefresh: () async {
-                            watchListCont.page(1);
-                            return await watchListCont.getWatchList(showLoader: false);
-                          },
-                        );
-                      }),
-              );
-            },
+                              );
+                            },
+                          ),
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
       widgetsStackedOverBody: [
         Obx(
@@ -158,11 +244,19 @@ class WatchListScreen extends StatelessWidget {
                   child: AppButton(
                     width: double.infinity,
                     text: locale.value.delete,
-                    color: watchListCont.selectedPosters.isNotEmpty ? appColorPrimary : btnColor,
+                    color: watchListCont.selectedPosters.isNotEmpty
+                        ? appColorPrimary
+                        : btnColor,
                     enabled: watchListCont.selectedPosters.isNotEmpty,
                     disabledColor: btnColor,
-                    textStyle: appButtonTextStyleWhite.copyWith(color: watchListCont.selectedPosters.isNotEmpty ? white : darkGrayTextColor),
-                    shapeBorder: RoundedRectangleBorder(borderRadius: radius(6)),
+                    textStyle: appButtonTextStyleWhite.copyWith(
+                      color: watchListCont.selectedPosters.isNotEmpty
+                          ? white
+                          : darkGrayTextColor,
+                    ),
+                    shapeBorder: RoundedRectangleBorder(
+                      borderRadius: radius(6),
+                    ),
                     onTap: () {
                       watchListCont.handleRemoveFromWatchClick(context);
                     },
@@ -211,7 +305,9 @@ class WatchListScreen extends StatelessWidget {
                   height: 16,
                   width: 16,
                   decoration: boxDecorationDefault(
-                    color: watchListCont.selectedPosters.contains(poster) ? appColorPrimary : white,
+                    color: watchListCont.selectedPosters.contains(poster)
+                        ? appColorPrimary
+                        : white,
                     borderRadius: BorderRadius.circular(2),
                   ),
                   alignment: Alignment.center,
@@ -220,7 +316,9 @@ class WatchListScreen extends StatelessWidget {
               ),
             ),
           if (poster.planId != 0)
-            if ((poster.movieAccess == MovieAccess.paidAccess || poster.access == MovieAccess.paidAccess) && isMoviePaid(requiredPlanLevel: poster.requiredPlanLevel))
+            if ((poster.movieAccess == MovieAccess.paidAccess ||
+                    poster.access == MovieAccess.paidAccess) &&
+                isMoviePaid(requiredPlanLevel: poster.requiredPlanLevel))
               Positioned(
                 right: 5,
                 top: 4,
@@ -228,10 +326,11 @@ class WatchListScreen extends StatelessWidget {
                   height: 18,
                   width: 18,
                   padding: const EdgeInsets.all(4),
-                  decoration: boxDecorationDefault(shape: BoxShape.circle, color: yellowColor),
-                  child: const CachedImageWidget(
-                    url: Assets.iconsIcVector,
+                  decoration: boxDecorationDefault(
+                    shape: BoxShape.circle,
+                    color: yellowColor,
                   ),
+                  child: const CachedImageWidget(url: Assets.iconsIcVector),
                 ),
               ),
           if (poster.movieAccess == MovieAccess.payPerView)
@@ -254,13 +353,15 @@ class WatchListScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                     Text(
-                      poster.isPurchased == true ? locale.value.rented : locale.value.rent,
+                      poster.isPurchased == true
+                          ? locale.value.rented
+                          : locale.value.rent,
                       style: secondaryTextStyle(color: white, size: 10),
                     ),
                   ],
                 ),
               ),
-            )
+            ),
         ],
       ),
     );

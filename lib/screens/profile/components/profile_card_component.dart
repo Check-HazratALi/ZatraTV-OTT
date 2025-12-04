@@ -20,15 +20,18 @@ class ProfileCardComponent extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
       padding: const EdgeInsets.all(14),
       decoration: boxDecorationDefault(
-        color: canvasColor,
+        color: appColorPrimary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: appColorPrimary, width: 1)
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CachedImageWidget(
-            url: profileInfo.profileImage.isEmptyOrNull ? Assets.iconsIcUser : profileInfo.profileImage,
+            url: profileInfo.profileImage.isEmptyOrNull
+                ? Assets.iconsIcUser
+                : profileInfo.profileImage,
             height: 52,
             width: 52,
             circle: true,
@@ -40,10 +43,7 @@ class ProfileCardComponent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Marquee(
-                child: Text(
-                  profileInfo.fullName,
-                  style: boldTextStyle(),
-                ),
+                child: Text(profileInfo.fullName, style: boldTextStyle()),
               ),
               6.height,
               profileInfo.email.isEmptyOrNull
@@ -96,17 +96,15 @@ class ProfileCardComponent extends StatelessWidget {
           Spacer(),
           IconButton(
             onPressed: () {
-              Get.to(() => EditProfileScreen(), arguments: profileInfo)?.then((value) {
+              Get.to(() => EditProfileScreen(), arguments: profileInfo)?.then((
+                value,
+              ) {
                 ProfileController controller = Get.put(ProfileController());
                 controller.getProfileDetail(showLoader: false);
               });
             },
-            icon: Icon(
-              Icons.edit,
-              size: 16,
-              color: appColorPrimary,
-            ),
-          )
+            icon: Icon(Icons.edit, size: 16, color: appColorPrimary),
+          ),
         ],
       ),
     );

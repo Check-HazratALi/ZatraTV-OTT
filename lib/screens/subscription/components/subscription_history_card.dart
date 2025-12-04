@@ -18,7 +18,7 @@ class SubscriptionHistoryCard extends StatelessWidget {
       padding: EdgeInsets.all(16),
       decoration: boxDecorationDefault(
         borderRadius: radius(4),
-        color: context.cardColor,
+        color: appColorPrimary.withValues(alpha: 0.05),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

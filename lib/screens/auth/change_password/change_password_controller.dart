@@ -24,11 +24,13 @@ class ChangePasswordController extends GetxController {
   Future<void> saveForm() async {
     isLoading(true);
 
-    if (getStringAsync(SharedPreferenceConst.USER_PASSWORD) != oldPasswordCont.text.trim()) {
+    if (getStringAsync(SharedPreferenceConst.USER_PASSWORD) !=
+        oldPasswordCont.text.trim()) {
       return toast(locale.value.yourOldPasswordDoesnT);
     } else if (newPasswordCont.text.trim() != confirmPasswordCont.text.trim()) {
       return toast(locale.value.yourNewPasswordDoesnT);
-    } else if ((oldPasswordCont.text.trim() == newPasswordCont.text.trim()) && oldPasswordCont.text.trim() == confirmPasswordCont.text.trim()) {
+    } else if ((oldPasswordCont.text.trim() == newPasswordCont.text.trim()) &&
+        oldPasswordCont.text.trim() == confirmPasswordCont.text.trim()) {
       return toast(locale.value.oldAndNewPassword);
     }
 
@@ -39,14 +41,19 @@ class ChangePasswordController extends GetxController {
       'new_password': confirmPasswordCont.text.trim(),
     };
 
-    await AuthServiceApis.changePasswordApi(request: req).then((value) async {
-      isLoading(false);
-      setValue(SharedPreferenceConst.USER_PASSWORD, confirmPasswordCont.text.trim());
-      loginUserData.value.apiToken = value.data.apiToken;
-      Get.to(() => const PasswordSetSuccess());
-    }).catchError((e) {
-      isLoading(false);
-      toast(e.toString(), print: true);
-    });
+    await AuthServiceApis.changePasswordApi(request: req)
+        .then((value) async {
+          isLoading(false);
+          setValue(
+            SharedPreferenceConst.USER_PASSWORD,
+            confirmPasswordCont.text.trim(),
+          );
+          loginUserData.value.apiToken = value.data.apiToken;
+          Get.to(() => const PasswordSetSuccess());
+        })
+        .catchError((e) {
+          isLoading(false);
+          toast(e.toString(), print: true);
+        });
   }
 }

@@ -14,7 +14,11 @@ class RegisterMobileComponent extends StatelessWidget {
   final ProfileModel profileDetail;
   final String mobileNo;
 
-  const RegisterMobileComponent({super.key, required this.mobileNo, required this.profileDetail});
+  const RegisterMobileComponent({
+    super.key,
+    required this.mobileNo,
+    required this.profileDetail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class RegisterMobileComponent extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 32, left: 16, right: 16),
       padding: const EdgeInsets.all(16),
       decoration: boxDecorationDefault(
-        color: canvasColor,
+        color: appColorPrimary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Column(
@@ -54,7 +58,11 @@ class RegisterMobileComponent extends StatelessWidget {
           8.height,
           Text(
             formatMobileNumber(mobileNo),
-            style: primaryTextStyle(size: 16, weight: FontWeight.w600, color: white),
+            style: primaryTextStyle(
+              size: 16,
+              weight: FontWeight.w600,
+              color: white,
+            ),
           ),
         ],
       ),

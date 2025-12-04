@@ -14,7 +14,11 @@ class OtherDevicesComponent extends StatelessWidget {
 
   final Function(bool logoutAll, String deviceId, String deviceName) onLogout;
 
-  const OtherDevicesComponent({super.key, required this.devicesDetail, required this.onLogout});
+  const OtherDevicesComponent({
+    super.key,
+    required this.devicesDetail,
+    required this.onLogout,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +35,7 @@ class OtherDevicesComponent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              locale.value.otherDevices,
-              style: boldTextStyle(),
-            ).expand(),
+            Text(locale.value.otherDevices, style: boldTextStyle()).expand(),
             16.width,
             TextButton(
               onPressed: () {
@@ -81,7 +82,11 @@ class OtherDevicesComponent extends StatelessWidget {
                       deviceName: devicesDetail[index].deviceName,
                       logOutAll: false,
                       onLogout: (logoutAll) {
-                        onLogout.call(logoutAll, devicesDetail[index].deviceId, devicesDetail[index].deviceName);
+                        onLogout.call(
+                          logoutAll,
+                          devicesDetail[index].deviceId,
+                          devicesDetail[index].deviceName,
+                        );
                       },
                     ),
                   );

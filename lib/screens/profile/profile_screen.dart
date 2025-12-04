@@ -44,12 +44,9 @@ class ProfileScreen extends StatelessWidget {
             Get.to(
               () => SettingScreen(settingCont: controller),
               arguments: profileCont.profileDetailsResp.value,
-              binding: BindingsBuilder(
-                () {
-                  if (Get.isRegistered<SettingController>())
-                    controller.onInit();
-                },
-              ),
+              binding: BindingsBuilder(() {
+                if (Get.isRegistered<SettingController>()) controller.onInit();
+              }),
             );
           },
           icon: const CachedImageWidget(
@@ -58,92 +55,137 @@ class ProfileScreen extends StatelessWidget {
             width: 20,
           ),
         ),
-        16.width
+        16.width,
       ],
       body: Obx(
-        () => SnapHelperWidget(
-          future: profileCont.getProfileDetailsFuture.value,
-          initialData: cachedProfileDetails,
-          loadingWidget: const ShimmerProfile(),
-          errorBuilder: (error) {
-            return NoDataWidget(
-              title: error,
-              retryText: locale.value.reload,
-              titleTextStyle: secondaryTextStyle(color: white),
-              subTitleTextStyle: primaryTextStyle(color: white),
-              imageWidget: const ErrorStateWidget(),
-              onRetry: () {
-                profileCont.getProfileDetail();
+        () => Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.topCenter,
+                  radius: 1.5,
+                  colors: [
+                    appColorPrimary.withOpacity(0.1),
+                    appScreenBackgroundDark,
+                  ],
+                ),
+              ),
+            ),
+
+            // Floating Particles
+            ...List.generate(
+              15,
+              (index) => Positioned(
+                top: Get.height * 0.1 + (index * 30),
+                left: Get.width * (index % 3) * 0.33,
+                child: Container(
+                  width: 2,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+            SnapHelperWidget(
+              future: profileCont.getProfileDetailsFuture.value,
+              initialData: cachedProfileDetails,
+              loadingWidget: const ShimmerProfile(),
+              errorBuilder: (error) {
+                return NoDataWidget(
+                  title: error,
+                  retryText: locale.value.reload,
+                  titleTextStyle: secondaryTextStyle(color: white),
+                  subTitleTextStyle: primaryTextStyle(color: white),
+                  imageWidget: const ErrorStateWidget(),
+                  onRetry: () {
+                    profileCont.getProfileDetail();
+                  },
+                );
               },
-            );
-          },
-          onSuccess: (res) {
-            return AnimatedScrollView(
-              listAnimationType: commonListAnimationType,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              physics: AlwaysScrollableScrollPhysics(),
-              mainAxisSize: MainAxisSize.min,
-              padding: const EdgeInsets.only(bottom: 120),
-              refreshIndicatorColor: appColorPrimary,
-              onSwipeRefresh: () async {
-                await profileCont.getProfileDetail();
-                if (profileCont.rentedContentList.isNotEmpty) {
-                  await profileCont.getRentedContentDetails();
-                }
-              },
-              children: [
-                SubscriptionComponent(
-                    planDetails: currentSubscription.value,
-                    callback: () {
-                      profileCont.getProfileDetail(showLoader: false);
-                    }),
-                ProfileCardComponent(
-                    profileInfo: profileCont.profileDetailsResp.value),
-                if (isLoggedIn.value) ...[
-                  AppButton(
-                    width: double.infinity,
-                    text: locale.value.linkTv,
-                    color: appColorPrimary,
-                    textStyle: appButtonTextStyleWhite,
-                    shapeBorder: RoundedRectangleBorder(
-                        borderRadius: radius(defaultAppButtonRadius / 2)),
-                    onTap: () {
-                      Get.to(() => QrScannerScreen());
-                    },
-                  ).paddingSymmetric(horizontal: 16, vertical: 8),
-                ],
-                if (isLoggedIn.value) UserProfileComponent(),
-                if (appConfigs.value.enableContinueWatch)
-                  ContinueWatchComponent(
-                          continueWatchList: profileCont
-                              .profileDetailsResp.value.continueWatch)
-                      .paddingSymmetric(vertical: 12),
-                HorizontalMovieComponent(
-                  movieDet: CategoryListModel(
-                    name: locale.value.watchlist,
-                    data: profileCont.profileDetailsResp.value.watchlists,
-                    showViewAll:
-                        profileCont.profileDetailsResp.value.watchlists.length >
+              onSuccess: (res) {
+                return AnimatedScrollView(
+                  listAnimationType: commonListAnimationType,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  mainAxisSize: MainAxisSize.min,
+                  padding: const EdgeInsets.only(bottom: 120),
+                  refreshIndicatorColor: appColorPrimary,
+                  onSwipeRefresh: () async {
+                    await profileCont.getProfileDetail();
+                    if (profileCont.rentedContentList.isNotEmpty) {
+                      await profileCont.getRentedContentDetails();
+                    }
+                  },
+                  children: [
+                    SubscriptionComponent(
+                      planDetails: currentSubscription.value,
+                      callback: () {
+                        profileCont.getProfileDetail(showLoader: false);
+                      },
+                    ),
+                    ProfileCardComponent(
+                      profileInfo: profileCont.profileDetailsResp.value,
+                    ),
+                    if (isLoggedIn.value) ...[
+                      AppButton(
+                        width: double.infinity,
+                        text: locale.value.linkTv,
+                        color: appColorPrimary,
+                        textStyle: appButtonTextStyleWhite,
+                        shapeBorder: RoundedRectangleBorder(
+                          borderRadius: radius(defaultAppButtonRadius / 2),
+                        ),
+                        onTap: () {
+                          Get.to(() => QrScannerScreen());
+                        },
+                      ).paddingSymmetric(horizontal: 16, vertical: 8),
+                    ],
+                    if (isLoggedIn.value) UserProfileComponent(),
+                    if (appConfigs.value.enableContinueWatch)
+                      ContinueWatchComponent(
+                        continueWatchList:
+                            profileCont.profileDetailsResp.value.continueWatch,
+                      ).paddingSymmetric(vertical: 12),
+                    HorizontalMovieComponent(
+                      movieDet: CategoryListModel(
+                        name: locale.value.watchlist,
+                        data: profileCont.profileDetailsResp.value.watchlists,
+                        showViewAll:
+                            profileCont
+                                .profileDetailsResp
+                                .value
+                                .watchlists
+                                .length >
                             5,
-                  ),
-                  isSearch: false,
-                  isWatchList: true,
-                  type: '',
-                ).visible(
-                    profileCont.profileDetailsResp.value.watchlists.isNotEmpty),
-                HorizontalMovieComponent(
-                  movieDet: CategoryListModel(
-                    name: locale.value.unlockedVideo,
-                    data: profileCont.rentedContentList,
-                    showViewAll: profileCont.rentedContentList.length > 4,
-                  ),
-                  isSearch: false,
-                  isWatchList: false,
-                  type: MovieAccess.payPerView,
-                ).visible(profileCont.rentedContentList.isNotEmpty),
-              ],
-            );
-          },
+                      ),
+                      isSearch: false,
+                      isWatchList: true,
+                      type: '',
+                    ).visible(
+                      profileCont
+                          .profileDetailsResp
+                          .value
+                          .watchlists
+                          .isNotEmpty,
+                    ),
+                    HorizontalMovieComponent(
+                      movieDet: CategoryListModel(
+                        name: locale.value.unlockedVideo,
+                        data: profileCont.rentedContentList,
+                        showViewAll: profileCont.rentedContentList.length > 4,
+                      ),
+                      isSearch: false,
+                      isWatchList: false,
+                      type: MovieAccess.payPerView,
+                    ).visible(profileCont.rentedContentList.isNotEmpty),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

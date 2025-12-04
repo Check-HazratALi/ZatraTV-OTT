@@ -12,15 +12,18 @@ class DeviceCard extends StatelessWidget {
 
   final VoidCallback onDeviceLogout;
 
-
-  const DeviceCard({super.key, required this.deviceDetail, required this.onDeviceLogout});
+  const DeviceCard({
+    super.key,
+    required this.deviceDetail,
+    required this.onDeviceLogout,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 16, bottom: 16, top: 16),
       decoration: boxDecorationDefault(
-        color: canvasColor,
+        color: appColorPrimary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Row(

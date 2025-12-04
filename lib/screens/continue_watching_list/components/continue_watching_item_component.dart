@@ -16,16 +16,27 @@ class ContinueWatchingItemComponent extends StatelessWidget {
   final double? width;
   final VoidCallback? onRemoveTap;
 
-  const ContinueWatchingItemComponent({super.key, required this.continueWatchData, this.width, this.onRemoveTap});
+  const ContinueWatchingItemComponent({
+    super.key,
+    required this.continueWatchData,
+    this.width,
+    this.onRemoveTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         if (continueWatchData.entertainmentType == VideoType.tvshow) {
-          Get.to(() => TvShowScreen(isFromContinueWatch: true), arguments: continueWatchData);
+          Get.to(
+            () => TvShowScreen(isFromContinueWatch: true),
+            arguments: continueWatchData,
+          );
         } else if (continueWatchData.entertainmentType == VideoType.movie) {
-          Get.to(() => MovieDetailsScreen(isFromContinueWatch: true), arguments: continueWatchData);
+          Get.to(
+            () => MovieDetailsScreen(isFromContinueWatch: true),
+            arguments: continueWatchData,
+          );
         } else if (continueWatchData.entertainmentType == VideoType.video) {
           Get.to(() => VideoDetailsScreen(), arguments: continueWatchData);
         }
@@ -33,7 +44,10 @@ class ContinueWatchingItemComponent extends StatelessWidget {
       child: Container(
         width: width ?? Get.width / 2,
         height: 142,
-        decoration: boxDecorationDefault(borderRadius: BorderRadius.circular(4), color: canvasColor),
+        decoration: boxDecorationDefault(
+          borderRadius: BorderRadius.circular(4),
+          color: appColorPrimary.withOpacity(0.05),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -41,7 +55,9 @@ class ContinueWatchingItemComponent extends StatelessWidget {
             Stack(
               children: [
                 CachedImageWidget(
-                  url: continueWatchData.thumbnailImage.isNotEmpty ? continueWatchData.thumbnailImage : continueWatchData.posterImage,
+                  url: continueWatchData.thumbnailImage.isNotEmpty
+                      ? continueWatchData.thumbnailImage
+                      : continueWatchData.posterImage,
                   height: 90,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -71,8 +87,14 @@ class ContinueWatchingItemComponent extends StatelessWidget {
             ),
             LinearProgressIndicator(
               value: calculatePendingPercentage(
-                (continueWatchData.totalWatchedTime.isEmpty || continueWatchData.totalWatchedTime == "00:00:00") ? "00:00:01" : continueWatchData.totalWatchedTime,
-                (continueWatchData.watchedTime.isEmpty || continueWatchData.watchedTime == "00:00:00") ? "00:00:01" : continueWatchData.watchedTime,
+                (continueWatchData.totalWatchedTime.isEmpty ||
+                        continueWatchData.totalWatchedTime == "00:00:00")
+                    ? "00:00:01"
+                    : continueWatchData.totalWatchedTime,
+                (continueWatchData.watchedTime.isEmpty ||
+                        continueWatchData.watchedTime == "00:00:00")
+                    ? "00:00:01"
+                    : continueWatchData.watchedTime,
               ).$1, // Extracts the first value (percentage) from the returned tuple
               minHeight: 2,
               valueColor: const AlwaysStoppedAnimation<Color>(appColorPrimary),
@@ -91,13 +113,20 @@ class ContinueWatchingItemComponent extends StatelessWidget {
                     ),
                     Text(
                       calculatePendingPercentage(
-                        (continueWatchData.totalWatchedTime.isEmpty || continueWatchData.totalWatchedTime == "00:00:00") ? "00:00:01" : continueWatchData.totalWatchedTime,
-                        (continueWatchData.watchedTime.isEmpty || continueWatchData.watchedTime == "00:00:00") ? "00:00:01" : continueWatchData.watchedTime,
+                        (continueWatchData.totalWatchedTime.isEmpty ||
+                                continueWatchData.totalWatchedTime ==
+                                    "00:00:00")
+                            ? "00:00:01"
+                            : continueWatchData.totalWatchedTime,
+                        (continueWatchData.watchedTime.isEmpty ||
+                                continueWatchData.watchedTime == "00:00:00")
+                            ? "00:00:01"
+                            : continueWatchData.watchedTime,
                       ).$2,
                       style: commonSecondaryTextStyle(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                    )
+                    ),
                   ],
                 ).paddingSymmetric(vertical: 8, horizontal: 8).expand(),
                 InkWell(

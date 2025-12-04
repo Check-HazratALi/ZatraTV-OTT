@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/screens/subscription/model/rental_history_model.dart';
+import 'package:zatra_tv/utils/colors.dart';
 import 'package:zatra_tv/utils/price_widget.dart';
 
 import '../../../utils/common_base.dart';
@@ -16,7 +17,7 @@ class RentedHistoryCard extends StatelessWidget {
       padding: EdgeInsets.all(16),
       decoration: boxDecorationDefault(
         borderRadius: radius(4),
-        color: context.cardColor,
+        color: appColorPrimary.withOpacity(0.05),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +51,7 @@ class RentedHistoryCard extends StatelessWidget {
                 color: context.primaryColor,
               ),
             ],
-          )
+          ),
         ],
       ),
     );

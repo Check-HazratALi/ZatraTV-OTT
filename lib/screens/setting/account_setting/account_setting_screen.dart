@@ -39,67 +39,109 @@ class AccountSettingScreen extends StatelessWidget {
       scaffoldBackgroundColor: appScreenBackgroundDark,
       appBartitleText: locale.value.accountSettings,
       body: Obx(
-        () => SnapHelperWidget(
-          future: settingController.getAccountSettingFuture.value,
-          loadingWidget: const ShimmerAccountSetting(),
-          errorBuilder: (error) {
-            return NoDataWidget(
-              title: error,
-              retryText: locale.value.reload,
-              titleTextStyle: secondaryTextStyle(color: white),
-              subTitleTextStyle: primaryTextStyle(color: white),
-              imageWidget: const ErrorStateWidget(),
-              onRetry: () {
-                settingController.getAccountSetting();
-              },
-            );
-          },
-          onSuccess: (res) {
-            return Obx(
-              () => AnimatedScrollView(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                listAnimationType: commonListAnimationType,
-                refreshIndicatorColor: appColorPrimary,
-                onSwipeRefresh: () {
-                  return settingController.getAccountSetting();
-                },
-                children: [
-                  cachedProfileDetails != null &&
-                          cachedProfileDetails?.data.planDetails.status
-                                  .toString() ==
-                              SubscriptionStatus.active
-                      ? SubscriptionComponent(
-                              planDetails: currentSubscription.value)
-                          .paddingBottom(16)
-                      : SubscriptionComponent(
-                              planDetails: SubscriptionPlanModel())
-                          .paddingBottom(16),
-                  RegisterMobileComponent(
-                          mobileNo: settingController
-                              .accountSettingResp.value.registerMobileNumber
-                              .validate(),
-                          profileDetail: profileInfo)
-                      .visible(settingController.accountSettingResp.value
-                          .registerMobileNumber.isNotEmpty),
-                  if (!isDeviceLimitReached)
-                    YourDeviceComponent(deviceDet: yourDevice.value),
-                  OtherDevicesComponent(
-                    devicesDetail:
-                        settingController.accountSettingResp.value.otherDevice,
-                    onLogout: (logoutAll, device, String deviceName) {
-                      if (logoutAll) {
-                        settingController.logOutAll();
-                      } else {
-                        settingController.deviceLogOut(device: device);
-                      }
-                    },
-                  ),
-                  10.height,
-                ],
+        () => Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.topCenter,
+                  radius: 1.5,
+                  colors: [
+                    appColorPrimary.withOpacity(0.1),
+                    appScreenBackgroundDark,
+                  ],
+                ),
               ),
-            );
-          },
+            ),
+
+            // Floating Particles
+            ...List.generate(
+              15,
+              (index) => Positioned(
+                top: Get.height * 0.1 + (index * 30),
+                left: Get.width * (index % 3) * 0.33,
+                child: Container(
+                  width: 2,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+            SnapHelperWidget(
+              future: settingController.getAccountSettingFuture.value,
+              loadingWidget: const ShimmerAccountSetting(),
+              errorBuilder: (error) {
+                return NoDataWidget(
+                  title: error,
+                  retryText: locale.value.reload,
+                  titleTextStyle: secondaryTextStyle(color: white),
+                  subTitleTextStyle: primaryTextStyle(color: white),
+                  imageWidget: const ErrorStateWidget(),
+                  onRetry: () {
+                    settingController.getAccountSetting();
+                  },
+                );
+              },
+              onSuccess: (res) {
+                return Obx(
+                  () => AnimatedScrollView(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    listAnimationType: commonListAnimationType,
+                    refreshIndicatorColor: appColorPrimary,
+                    onSwipeRefresh: () {
+                      return settingController.getAccountSetting();
+                    },
+                    children: [
+                      cachedProfileDetails != null &&
+                              cachedProfileDetails?.data.planDetails.status
+                                      .toString() ==
+                                  SubscriptionStatus.active
+                          ? SubscriptionComponent(
+                              planDetails: currentSubscription.value,
+                            ).paddingBottom(16)
+                          : SubscriptionComponent(
+                              planDetails: SubscriptionPlanModel(),
+                            ).paddingBottom(16),
+                      RegisterMobileComponent(
+                        mobileNo: settingController
+                            .accountSettingResp
+                            .value
+                            .registerMobileNumber
+                            .validate(),
+                        profileDetail: profileInfo,
+                      ).visible(
+                        settingController
+                            .accountSettingResp
+                            .value
+                            .registerMobileNumber
+                            .isNotEmpty,
+                      ),
+                      if (!isDeviceLimitReached)
+                        YourDeviceComponent(deviceDet: yourDevice.value),
+                      OtherDevicesComponent(
+                        devicesDetail: settingController
+                            .accountSettingResp
+                            .value
+                            .otherDevice,
+                        onLogout: (logoutAll, device, String deviceName) {
+                          if (logoutAll) {
+                            settingController.logOutAll();
+                          } else {
+                            settingController.deviceLogOut(device: device);
+                          }
+                        },
+                      ),
+                      10.height,
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
       bottomNavBar: Obx(
@@ -129,12 +171,9 @@ class AccountSettingScreen extends StatelessWidget {
                     },
                     child: Text(
                       locale.value.deleteAccount,
-                      style: boldTextStyle(
-                        size: 14,
-                        color: appColorPrimary,
-                      ),
+                      style: boldTextStyle(size: 14, color: appColorPrimary),
                     ).paddingOnly(bottom: 18, top: 18),
-                  )
+                  ),
                 ],
               ).visible(!settingController.isLoading.value),
       ),

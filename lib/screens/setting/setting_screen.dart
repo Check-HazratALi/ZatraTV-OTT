@@ -35,169 +35,287 @@ class SettingScreen extends StatelessWidget {
       isLoading: settingCont.isLoading,
       scaffoldBackgroundColor: appScreenBackgroundDark,
       appBartitleText: locale.value.helpSetting,
-      body: AnimatedScrollView(
-        padding: EdgeInsets.only(bottom: 120, top: 8),
-        physics: AlwaysScrollableScrollPhysics(),
-        refreshIndicatorColor: appColorPrimary,
-        onSwipeRefresh: () async {
-          await settingCont.init(true);
-        },
+      body: Stack(
         children: [
-          Obx(
-            () => SnapHelperWidget(
-              future: settingCont.getSettingInitialize.value,
-              loadingWidget: const ShimmerAccountSetting(),
-              onSuccess: (data) {
-                if (data.isFalse && settingCont.isLoading.isTrue) {
-                  return const ShimmerAccountSetting();
-                } else {
-                  return ListView.builder(
-                    itemCount: settingCont.settingList.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      SettingModel settingData = settingCont.settingList[index];
-                      if (selectedAccountProfile.value.isChildProfile == 1 && settingData.title == locale.value.parentalControl) {
-                        return Offstage();
-                      }
-                      return InkWell(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          navigateScreen(aboutDataModel: settingData);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-                          padding: const EdgeInsets.all(16),
-                          decoration: boxDecorationDefault(
-                            color: canvasColor,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    settingData.icon,
-                                    height: 16,
-                                    width: 16,
-                                    fit: BoxFit.cover,
-                                    color: iconColor,
-                                  ),
-                                  16.width,
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Marquee(
-                                        child: Text(
-                                          settingData.title,
-                                          style: primaryTextStyle(),
-                                        ),
-                                      ),
-                                      6.height.visible(settingData.subTitle?.isNotEmpty ?? false),
-                                      Text(
-                                        settingData.subTitle ?? "",
-                                        style: secondaryTextStyle(),
-                                      ).visible(settingData.subTitle?.isNotEmpty ?? false),
-                                      10.height.visible(settingData.showSwitch && settingCont.isChildrenProfileEnabled.value),
-                                    ],
-                                  ).expand(),
-                                  if (settingData.showArrow)
-                                    const Icon(
-                                      Icons.keyboard_arrow_right_rounded,
-                                      size: 18,
-                                      color: iconColor,
-                                    ),
-                                  if (settingData.showSwitch && !selectedAccountProfile.value.isChildProfile.getBoolInt())
-                                    Obx(
-                                      () {
-                                        return ToggleWidget(
-                                          isSwitched: settingCont.isChildrenProfileEnabled.value,
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topCenter,
+                radius: 1.5,
+                colors: [
+                  appColorPrimary.withOpacity(0.1),
+                  appScreenBackgroundDark,
+                ],
+              ),
+            ),
+          ),
 
-                                          onSwitch: (isEnable) {
-                                            settingCont.handleParentalLock(isEnable);
-                                          },
-                                        );
-                                      },
-                                    )
-                                ],
+          // Floating Particles
+          ...List.generate(
+            15,
+            (index) => Positioned(
+              top: Get.height * 0.1 + (index * 30),
+              left: Get.width * (index % 3) * 0.33,
+              child: Container(
+                width: 2,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+
+          AnimatedScrollView(
+            padding: EdgeInsets.only(bottom: 120, top: 8),
+            physics: AlwaysScrollableScrollPhysics(),
+            refreshIndicatorColor: appColorPrimary,
+            onSwipeRefresh: () async {
+              await settingCont.init(true);
+            },
+            children: [
+              Obx(
+                () => SnapHelperWidget(
+                  future: settingCont.getSettingInitialize.value,
+                  loadingWidget: const ShimmerAccountSetting(),
+                  onSuccess: (data) {
+                    if (data.isFalse && settingCont.isLoading.isTrue) {
+                      return const ShimmerAccountSetting();
+                    } else {
+                      return ListView.builder(
+                        itemCount: settingCont.settingList.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          SettingModel settingData =
+                              settingCont.settingList[index];
+                          if (selectedAccountProfile.value.isChildProfile ==
+                                  1 &&
+                              settingData.title ==
+                                  locale.value.parentalControl) {
+                            return Offstage();
+                          }
+                          return InkWell(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              navigateScreen(aboutDataModel: settingData);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                bottom: 16,
+                                left: 16,
+                                right: 16,
                               ),
-                              //  10.height,
-                              Obx(
-                                () {
-                                  return Column(
+                              padding: const EdgeInsets.all(16),
+                              decoration: boxDecorationDefault(
+                                color: appColorPrimary.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Divider(
-                                        color: greyBtnColor,
-                                      ).paddingOnly(left: 30).visible(settingData.showSwitch && settingCont.isChildrenProfileEnabled.value),
-                                      //  10.height,
-                                      if (settingData.showSwitch && settingCont.isChildrenProfileEnabled.value)
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              Assets.iconsIcSwap,
-                                              height: 16,
-                                              width: 16,
-                                              fit: BoxFit.cover,
-                                              color: iconColor,
-                                            ),
-                                            10.width,
-                                            Text(
-                                              (selectedAccountProfile.value.isProtectedProfile.getBoolInt() && selectedAccountProfile.value.profilePin.isEmpty)
-                                                  ? locale.value.setPIN
-                                                  : locale.value.changePIN,
+                                      Image.asset(
+                                        settingData.icon,
+                                        height: 16,
+                                        width: 16,
+                                        fit: BoxFit.cover,
+                                        color: iconColor,
+                                      ),
+                                      16.width,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Marquee(
+                                            child: Text(
+                                              settingData.title,
                                               style: primaryTextStyle(),
                                             ),
-                                          ],
-                                        ).paddingOnly(left: 30).onTap(() {
-                                          if (selectedAccountProfile.value.isProtectedProfile.getBoolInt() && profilePin.value.isNotEmpty) {
-                                            settingCont.initializeCodeResendTimer;
-                                            settingCont.isLoading(true);
-                                            CoreServiceApis.sendOtp(loginUserData.value.id)
-                                                .then((value) {
-                                                  settingCont.isLoading(false);
-                                                  toast(locale.value.otpSentSuccessfully);
-                                                  if (value.status == true) {
-                                                    Get.bottomSheet(
-                                                      isDismissible: true,
-                                                      isScrollControlled: true,
-                                                      enableDrag: false,
-                                                      OtpVerificationBottomSheet(settingCont: settingCont),
-                                                    );
-                                                  }
-                                                })
-                                                .whenComplete(() => settingCont.isLoading(false))
-                                                .catchError((e) {
-                                                  settingCont.isLoading(false);
-                                                  toast(e.toString());
-                                                });
-                                          } else {
-                                            Get.bottomSheet(
-                                              isDismissible: true,
-                                              enableDrag: true,
-                                              isScrollControlled: true,
-                                              PinGenerationBottomSheet(),
-                                            );
-                                          }
-                                        }).visible(settingData.showSwitch && settingCont.isChildrenProfileEnabled.value),
+                                          ),
+                                          6.height.visible(
+                                            settingData.subTitle?.isNotEmpty ??
+                                                false,
+                                          ),
+                                          Text(
+                                            settingData.subTitle ?? "",
+                                            style: secondaryTextStyle(),
+                                          ).visible(
+                                            settingData.subTitle?.isNotEmpty ??
+                                                false,
+                                          ),
+                                          10.height.visible(
+                                            settingData.showSwitch &&
+                                                settingCont
+                                                    .isChildrenProfileEnabled
+                                                    .value,
+                                          ),
+                                        ],
+                                      ).expand(),
+                                      if (settingData.showArrow)
+                                        const Icon(
+                                          Icons.keyboard_arrow_right_rounded,
+                                          size: 18,
+                                          color: iconColor,
+                                        ),
+                                      if (settingData.showSwitch &&
+                                          !selectedAccountProfile
+                                              .value
+                                              .isChildProfile
+                                              .getBoolInt())
+                                        Obx(() {
+                                          return ToggleWidget(
+                                            isSwitched: settingCont
+                                                .isChildrenProfileEnabled
+                                                .value,
+
+                                            onSwitch: (isEnable) {
+                                              settingCont.handleParentalLock(
+                                                isEnable,
+                                              );
+                                            },
+                                          );
+                                        }),
                                     ],
-                                  ).visible(settingCont.isChildrenProfileEnabled.value && !selectedAccountProfile.value.isChildProfile.getBoolInt());
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ).visible(data.isTrue && settingCont.isLoading.isFalse);
-                }
-              },
-            ),
+                                  ),
+                                  //  10.height,
+                                  Obx(() {
+                                    return Column(
+                                      children: [
+                                        Divider(color: greyBtnColor)
+                                            .paddingOnly(left: 30)
+                                            .visible(
+                                              settingData.showSwitch &&
+                                                  settingCont
+                                                      .isChildrenProfileEnabled
+                                                      .value,
+                                            ),
+                                        //  10.height,
+                                        if (settingData.showSwitch &&
+                                            settingCont
+                                                .isChildrenProfileEnabled
+                                                .value)
+                                          Row(
+                                                children: [
+                                                  Image.asset(
+                                                    Assets.iconsIcSwap,
+                                                    height: 16,
+                                                    width: 16,
+                                                    fit: BoxFit.cover,
+                                                    color: iconColor,
+                                                  ),
+                                                  10.width,
+                                                  Text(
+                                                    (selectedAccountProfile
+                                                                .value
+                                                                .isProtectedProfile
+                                                                .getBoolInt() &&
+                                                            selectedAccountProfile
+                                                                .value
+                                                                .profilePin
+                                                                .isEmpty)
+                                                        ? locale.value.setPIN
+                                                        : locale
+                                                              .value
+                                                              .changePIN,
+                                                    style: primaryTextStyle(),
+                                                  ),
+                                                ],
+                                              )
+                                              .paddingOnly(left: 30)
+                                              .onTap(() {
+                                                if (selectedAccountProfile
+                                                        .value
+                                                        .isProtectedProfile
+                                                        .getBoolInt() &&
+                                                    profilePin
+                                                        .value
+                                                        .isNotEmpty) {
+                                                  settingCont
+                                                      .initializeCodeResendTimer;
+                                                  settingCont.isLoading(true);
+                                                  CoreServiceApis.sendOtp(
+                                                        loginUserData.value.id,
+                                                      )
+                                                      .then((value) {
+                                                        settingCont.isLoading(
+                                                          false,
+                                                        );
+                                                        toast(
+                                                          locale
+                                                              .value
+                                                              .otpSentSuccessfully,
+                                                        );
+                                                        if (value.status ==
+                                                            true) {
+                                                          Get.bottomSheet(
+                                                            isDismissible: true,
+                                                            isScrollControlled:
+                                                                true,
+                                                            enableDrag: false,
+                                                            OtpVerificationBottomSheet(
+                                                              settingCont:
+                                                                  settingCont,
+                                                            ),
+                                                          );
+                                                        }
+                                                      })
+                                                      .whenComplete(
+                                                        () => settingCont
+                                                            .isLoading(false),
+                                                      )
+                                                      .catchError((e) {
+                                                        settingCont.isLoading(
+                                                          false,
+                                                        );
+                                                        toast(e.toString());
+                                                      });
+                                                } else {
+                                                  Get.bottomSheet(
+                                                    isDismissible: true,
+                                                    enableDrag: true,
+                                                    isScrollControlled: true,
+                                                    PinGenerationBottomSheet(),
+                                                  );
+                                                }
+                                              })
+                                              .visible(
+                                                settingData.showSwitch &&
+                                                    settingCont
+                                                        .isChildrenProfileEnabled
+                                                        .value,
+                                              ),
+                                      ],
+                                    ).visible(
+                                      settingCont
+                                              .isChildrenProfileEnabled
+                                              .value &&
+                                          !selectedAccountProfile
+                                              .value
+                                              .isChildProfile
+                                              .getBoolInt(),
+                                    );
+                                  }),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ).visible(data.isTrue && settingCont.isLoading.isFalse);
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -207,9 +325,7 @@ class SettingScreen extends StatelessWidget {
         children: [
           VersionInfoWidget(
             prefixText: '${locale.value.version}: ',
-            textStyle: boldTextStyle(
-              size: 14,
-            ),
+            textStyle: boldTextStyle(size: 14),
           ).paddingSymmetric(vertical: 16),
         ],
       ),
@@ -221,7 +337,12 @@ class SettingScreen extends StatelessWidget {
       Get.to(() => LanguageScreen(settingController: settingCont));
     } else if (aboutDataModel.title == locale.value.accountSettings) {
       log(settingCont.profileDetailsResp.value.toJson());
-      Get.to(() => AccountSettingScreen(profileInfo: settingCont.profileDetailsResp.value, settingController: settingCont));
+      Get.to(
+        () => AccountSettingScreen(
+          profileInfo: settingCont.profileDetailsResp.value,
+          settingController: settingCont,
+        ),
+      );
     } else if (aboutDataModel.title == locale.value.changePassword) {
       Get.to(() => ChangePasswordScreen());
     } else if (aboutDataModel.title == locale.value.subscriptionHistory) {
