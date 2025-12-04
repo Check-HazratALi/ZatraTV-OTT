@@ -35,7 +35,7 @@ class SliderComponent extends StatelessWidget {
           Stack(
             children: [
               SizedBox(
-                height: Get.height * 0.5,
+                height: Get.height * 0.4,
                 width: Get.width,
                 child: sliders.isNotEmpty
                     ? PageView.builder(
@@ -173,7 +173,6 @@ class SliderComponent extends StatelessWidget {
               currentDotWidth: 6,
               dotSize: 6,
             ),
-          20.height,
         ],
       );
     });
@@ -220,12 +219,12 @@ class RoundIconOutlinedButton extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: appColorPrimary,
+            color: Colors.white,
           ),
         ),
         style: OutlinedButton.styleFrom(
           foregroundColor: appColorPrimary,
-          side: BorderSide(color: appColorPrimary.withOpacity(0.6), width: 2),
+          side: BorderSide(color: appColorPrimary, width: 2),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

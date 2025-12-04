@@ -85,66 +85,95 @@ class PosterCardComponent extends StatelessWidget {
               }
             }
           },
-      child: Stack(
-        children: [
-          if (isLoading)
-            ShimmerWidget(
-              height: isTop10 ? 150 : height ?? double.infinity,
-              width: width ?? (isSearch ? Get.width * 0.28 : Get.width / 3 - 24),
-              radius: 6,
-            )
-          else
-            CachedImageWidget(
-              url: posterDetail.posterImage,
-              height: isTop10 ? 150 : height ?? double.infinity,
-              width: width ?? (isSearch ? Get.width * 0.28 : 110),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-              radius: 6,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 4),
             ),
-          if (posterDetail.planId != 0)
-            if ((posterDetail.movieAccess == MovieAccess.paidAccess || posterDetail.access == MovieAccess.paidAccess) && isMoviePaid(requiredPlanLevel: posterDetail.requiredPlanLevel))
-              Positioned(
-                right: isHorizontalList && !isSearch ? 8 : 6,
-                top: 4,
-                child: Container(
-                  height: isHorizontalList && !isSearch ? 18 : 14,
-                  width: isHorizontalList && !isSearch ? 18 : 14,
-                  padding: const EdgeInsets.all(4),
-                  decoration: boxDecorationDefault(shape: BoxShape.circle, color: yellowColor),
-                  child: const CachedImageWidget(
-                    url: Assets.iconsIcVector,
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
+            children: [
+              if (isLoading)
+                ShimmerWidget(
+                  height: isTop10 ? 150 : height ?? double.infinity,
+                  width: width ?? (isSearch ? Get.width * 0.28 : Get.width / 3 - 24),
+                  radius: 12,
+                )
+              else
+                CachedImageWidget(
+                  url: posterDetail.posterImage,
+                  height: isTop10 ? 150 : height ?? double.infinity,
+                  width: width ?? (isSearch ? Get.width * 0.28 : 110),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              if (posterDetail.planId != 0)
+                if ((posterDetail.movieAccess == MovieAccess.paidAccess || posterDetail.access == MovieAccess.paidAccess) && isMoviePaid(requiredPlanLevel: posterDetail.requiredPlanLevel))
+                  Positioned(
+                    top: 4,
+                    left: 5,
+                    child: Container(
+                      height: isHorizontalList && !isSearch ? 20 : 16,
+                      width: isHorizontalList && !isSearch ? 20 : 16,
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: yellowColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: const CachedImageWidget(
+                        url: Assets.iconsIcVector,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-          if (posterDetail.movieAccess == MovieAccess.payPerView)
-            Positioned(
-              top: 4,
-              left: 5,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                decoration: boxDecorationDefault(
-                  borderRadius: BorderRadius.circular(4),
-                  color: rentedColor,
-                ),
-                child: Row(
-                  spacing: 4,
-                  children: [
-                    const CachedImageWidget(
-                      url: Assets.iconsIcRent,
-                      height: 8,
-                      width: 8,
-                      color: Colors.white,
+              if (posterDetail.movieAccess == MovieAccess.payPerView)
+                Positioned(
+                  top: 4,
+                  left: 5,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: rentedColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4,
+                        ),
+                      ],
                     ),
-                    Text(
-                      posterDetail.isPurchased == true ? locale.value.rented : locale.value.rent,
-                      style: secondaryTextStyle(color: white, size: 10),
+                    child: Row(
+                      spacing: 4,
+                      children: [
+                        const CachedImageWidget(
+                          url: Assets.iconsIcRent,
+                          height: 8,
+                          width: 8,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          posterDetail.isPurchased == true ? locale.value.rented : locale.value.rent,
+                          style: secondaryTextStyle(color: white, size: 10),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            )
-        ],
+                  ),
+                )
+            ],
+          ),
+        ),
       ),
     );
   }
