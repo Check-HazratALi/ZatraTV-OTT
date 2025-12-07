@@ -16,17 +16,15 @@ class VideoDetailResponse {
   factory VideoDetailResponse.fromJson(Map<String, dynamic> json) {
     return VideoDetailResponse(
       status: json['status'] is bool ? json['status'] : false,
-      data: json['data'] is Map ? VideoDetailsModel.fromJson(json['data']) : VideoDetailsModel(),
+      data: json['data'] is Map
+          ? VideoDetailsModel.fromJson(json['data'])
+          : VideoDetailsModel(),
       message: json['message'] is String ? json['message'] : "",
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'data': data.toJson(),
-      'message': message,
-    };
+    return {'status': status, 'data': data.toJson(), 'message': message};
   }
 }
 
@@ -56,6 +54,8 @@ class VideoDetailsModel {
   List<DownloadQuality> downloadQuality;
   bool downloadStatus;
   bool isLiked;
+  int totalLikes;
+  int totalViews;
   int downloadId;
 
   bool isDeviceSupported;
@@ -86,7 +86,7 @@ class VideoDetailsModel {
     this.videoUploadType = "",
     this.videoUrlInput = "",
     this.downloadStatus = false,
-    this.downloadType='',
+    this.downloadType = '',
     this.downloadUrl = '',
     this.posterImage = "",
     this.videoLinks = const <VideoLinks>[],
@@ -96,6 +96,8 @@ class VideoDetailsModel {
     this.isDownload = false,
     this.downloadQuality = const <DownloadQuality>[],
     this.isLiked = false,
+    this.totalLikes = 0,
+    this.totalViews = 0,
     this.downloadId = -1,
     this.isDeviceSupported = false,
     this.requiredPlanLevel = 0,
@@ -118,32 +120,63 @@ class VideoDetailsModel {
       isRestricted: json['is_restricted'] is int ? json['is_restricted'] : -1,
       shortDesc: json['short_desc'] is String ? json['short_desc'] : "",
       description: json['description'] is String ? json['description'] : "",
-      enableQuality: json['enable_quality'] is int ? json['enable_quality'] : -1,
-      videoUploadType: json['video_upload_type'] is String ? json['video_upload_type'] : "",
-      videoUrlInput: json['video_url_input'] is String ? json['video_url_input'] : "",
+      enableQuality: json['enable_quality'] is int
+          ? json['enable_quality']
+          : -1,
+      videoUploadType: json['video_upload_type'] is String
+          ? json['video_upload_type']
+          : "",
+      videoUrlInput: json['video_url_input'] is String
+          ? json['video_url_input']
+          : "",
       downloadStatus: json['download_status'] is int
           ? (json['download_status'] as int).getBoolInt()
           : json['download_status'] is bool
-              ? json['download_status']
-              : false,
+          ? json['download_status']
+          : false,
 
       downloadUrl: json['download_url'] is String ? json['download_url'] : "",
       posterImage: json['poster_image'] is String ? json['poster_image'] : "",
-      videoLinks: json['video_links'] is List ? List<VideoLinks>.from(json['video_links'].map((x) => VideoLinks.fromJson(x))) : [],
-      moreItems: json['more_items'] is List ? List<VideoPlayerModel>.from(json['more_items'].map((x) => VideoPlayerModel.fromJson(x))) : [],
+      videoLinks: json['video_links'] is List
+          ? List<VideoLinks>.from(
+              json['video_links'].map((x) => VideoLinks.fromJson(x)),
+            )
+          : [],
+      moreItems: json['more_items'] is List
+          ? List<VideoPlayerModel>.from(
+              json['more_items'].map((x) => VideoPlayerModel.fromJson(x)),
+            )
+          : [],
       status: json['status'] is int ? json['status'] : -1,
-      isWatchList: json['is_watch_list'] is bool ? json['is_watch_list'] : false,
-      downloadType: json['download_type'] is String ? json['download_type'] : "",
+      isWatchList: json['is_watch_list'] is bool
+          ? json['is_watch_list']
+          : false,
+      downloadType: json['download_type'] is String
+          ? json['download_type']
+          : "",
       isDownload: json['is_download'] is bool ? json['is_download'] : false,
-      downloadQuality: json['download_quality'] is List ? List<DownloadQuality>.from(json['download_quality'].map((x) => DownloadQuality.fromJson(x))) : [],
+      totalLikes: json['total_likes'] is int ? json['total_likes'] : 0,
+      totalViews: json['total_views'] is int ? json['total_views'] : 0,
+      downloadQuality: json['download_quality'] is List
+          ? List<DownloadQuality>.from(
+              json['download_quality'].map((x) => DownloadQuality.fromJson(x)),
+            )
+          : [],
       isLiked: json['is_likes'] is bool ? json['is_likes'] : false,
       downloadId: json['download_id'] is int ? json['download_id'] : -1,
-      isDeviceSupported: json['is_device_supported'] is bool ? json['is_device_supported'] : true,
+      isDeviceSupported: json['is_device_supported'] is bool
+          ? json['is_device_supported']
+          : true,
       requiredPlanLevel: json['plan_leve'] is int ? json['plan_level'] : 0,
-      isCastingAvailable: json['is_casting_available'] is int ? json['is_casting_available'] : 0,
+      isCastingAvailable: json['is_casting_available'] is int
+          ? json['is_casting_available']
+          : 0,
       isPurchased: json['is_purchased'] is bool ? json['is_purchased'] : false,
-      availableSubTitle: json['subtitle_info'] is List ? List<SubtitleModel>.from(json['subtitle_info'].map((x) => SubtitleModel.fromJson(x))) : [],
-
+      availableSubTitle: json['subtitle_info'] is List
+          ? List<SubtitleModel>.from(
+              json['subtitle_info'].map((x) => SubtitleModel.fromJson(x)),
+            )
+          : [],
     );
   }
 
@@ -176,13 +209,14 @@ class VideoDetailsModel {
       'is_likes': isLiked,
       'type': 'video',
       'download_id': downloadId,
+      'total_likes': totalLikes,
+      'total_views': totalViews,
       'is_device_supported': isDeviceSupported,
       'plan_level': requiredPlanLevel,
       'is_casting_available': isCastingAvailable,
-      'download_type':downloadType,
+      'download_type': downloadType,
       'is_purchased': isPurchased,
       'subtitle_info': availableSubTitle.map((e) => e.toJson()).toList(),
-
     };
   }
 }

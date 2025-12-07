@@ -21,8 +21,8 @@ class ProfilePicComponent extends StatelessWidget {
             url: profileCont.imageFile.value.path.isNotEmpty
                 ? profileCont.imageFile.value.path
                 : profileCont.profilePic.value.isNotEmpty
-                    ? profileCont.profilePic.value
-                    : Assets.iconsIcUser,
+                ? profileCont.profilePic.value
+                : Assets.iconsIcUser,
             height: 120,
             width: 120,
             circle: true,
@@ -32,7 +32,10 @@ class ProfilePicComponent extends StatelessWidget {
             Container(
               height: 120,
               width: 120,
-              decoration: boxDecorationDefault(shape: BoxShape.circle, color: black.withValues(alpha: 0.6)),
+              decoration: boxDecorationDefault(
+                shape: BoxShape.circle,
+                color: black.withValues(alpha: 0.6),
+              ),
               child: const LoaderWidget(),
             ),
           Positioned(
@@ -58,7 +61,7 @@ class ProfilePicComponent extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

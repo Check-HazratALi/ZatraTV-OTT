@@ -28,13 +28,12 @@ import 'local_storage.dart';
 bool isDynamic = true;
 
 Widget get commonDivider => const Column(
-      children: [
-        Divider(height: 1, thickness: 0.6, color: borderColor),
-      ],
-    );
+  children: [Divider(height: 1, thickness: 0.6, color: borderColor)],
+);
 
-final fontFamilyWeight700 =
-    GoogleFonts.interTight(fontWeight: FontWeight.w700).fontFamily;
+final fontFamilyWeight700 = GoogleFonts.interTight(
+  fontWeight: FontWeight.w700,
+).fontFamily;
 
 void handleRate() async {
   if (isIOS) {
@@ -83,8 +82,11 @@ List<LanguageDataModel> languageList() {
   ];
 }
 
-Widget appCloseIconButton(BuildContext context,
-    {required void Function() onPressed, double size = 12}) {
+Widget appCloseIconButton(
+  BuildContext context, {
+  required void Function() onPressed,
+  double size = 12,
+}) {
   return IconButton(
     iconSize: size,
     padding: EdgeInsets.zero,
@@ -92,19 +94,19 @@ Widget appCloseIconButton(BuildContext context,
     icon: Container(
       padding: EdgeInsets.all(size - 8),
       decoration: boxDecorationDefault(
-          color: context.cardColor,
-          borderRadius: BorderRadius.circular(size - 4),
-          border: Border.all()),
-      child: Icon(
-        Icons.close_rounded,
-        size: size,
+        color: context.cardColor,
+        borderRadius: BorderRadius.circular(size - 4),
+        border: Border.all(),
       ),
+      child: Icon(Icons.close_rounded, size: size),
     ),
   );
 }
 
-Future<void> commonLaunchUrl(String address,
-    {LaunchMode launchMode = LaunchMode.inAppWebView}) async {
+Future<void> commonLaunchUrl(
+  String address, {
+  LaunchMode launchMode = LaunchMode.inAppWebView,
+}) async {
   await launchUrl(Uri.parse(address), mode: launchMode).catchError((e) {
     toast('${locale.value.invalidUrl}: $address');
   });
@@ -207,29 +209,35 @@ InputDecoration inputDecoration(
     prefixIconConstraints: prefixIconConstraints,
     suffixIcon: suffixIcon,
     suffixIconConstraints: suffixIconConstraints,
-    enabledBorder: enabledBorder ??
+    enabledBorder:
+        enabledBorder ??
         const UnderlineInputBorder(
           borderSide: BorderSide(color: borderColor, width: 0.0),
         ),
-    focusedErrorBorder: focusedErrorBorder ??
+    focusedErrorBorder:
+        focusedErrorBorder ??
         const UnderlineInputBorder(
           borderSide: BorderSide(color: appColorPrimary, width: 0.0),
         ),
-    errorBorder: errorBorder ??
+    errorBorder:
+        errorBorder ??
         const UnderlineInputBorder(
           borderSide: BorderSide(color: appColorPrimary, width: 1.0),
         ),
     errorMaxLines: 2,
-    border: border ??
+    border:
+        border ??
         const UnderlineInputBorder(
           borderSide: BorderSide(color: borderColor, width: 0.0),
         ),
-    disabledBorder: disabledBorder ??
+    disabledBorder:
+        disabledBorder ??
         const UnderlineInputBorder(
           borderSide: BorderSide(color: borderColor, width: 0.0),
         ),
     errorStyle: primaryTextStyle(color: appColorPrimary, size: 12),
-    focusedBorder: focusedBorder ??
+    focusedBorder:
+        focusedBorder ??
         const UnderlineInputBorder(
           borderSide: BorderSide(color: white, width: 0.0),
         ),
@@ -249,8 +257,12 @@ InputDecoration inputDecorationWithFillBorder(
   Color? fillColor,
 }) {
   return InputDecoration(
-    contentPadding:
-        const EdgeInsets.only(left: 12, bottom: 10, top: 10, right: 10),
+    contentPadding: const EdgeInsets.only(
+      left: 12,
+      bottom: 10,
+      top: 10,
+      right: 10,
+    ),
     labelText: labelText,
     hintText: hintText,
     hintStyle: secondaryTextStyle(size: 12),
@@ -297,8 +309,11 @@ Widget backButton({Object? result, double size = 20, EdgeInsets? padding}) {
     onPressed: () {
       Get.back(result: result);
     },
-    icon: Icon(Icons.arrow_back_ios_new_outlined,
-        color: Colors.white, size: size),
+    icon: Icon(
+      Icons.arrow_back_ios_new_outlined,
+      color: Colors.white,
+      size: size,
+    ),
   );
 }
 
@@ -321,8 +336,11 @@ String movieDurationTime(String time) {
   int seconds = parts.length > 2 ? int.parse(parts[2]) : 0;
 
   // Create a Duration object
-  Duration duration =
-      Duration(hours: hours, minutes: minutes, seconds: seconds);
+  Duration duration = Duration(
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+  );
 
   // Extract hours, minutes, and seconds
   int h = duration.inHours;
@@ -346,8 +364,11 @@ String movieDurationTimeWithFull(String time) {
   int seconds = parts.length > 2 ? int.parse(parts[2]) : 0;
 
   // Create a Duration object
-  Duration duration =
-      Duration(hours: hours, minutes: minutes, seconds: seconds);
+  Duration duration = Duration(
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+  );
 
   // Extract hours, minutes, and seconds
   int h = duration.inHours;
@@ -368,7 +389,9 @@ String movieDurationTimeWithFull(String time) {
 
 // Pending Movie Percentage
 (double pendingPercentage, String timeLeft) calculatePendingPercentage(
-    String totalDuration, String pendingDuration) {
+  String totalDuration,
+  String pendingDuration,
+) {
   Duration parseTime(String time) {
     if (time.isEmpty) {
       return Duration.zero; // Handle empty input
@@ -485,19 +508,31 @@ String formatMobileNumber(String mobileNumber) {
 }
 
 DateTime calculateExpirationDate(
-    DateTime startDate, String duration, int durationTime) {
+  DateTime startDate,
+  String duration,
+  int durationTime,
+) {
   int durationTimes = durationTime;
 
   switch (duration.toLowerCase()) {
     case 'month':
       return DateTime(
-          startDate.year, startDate.month + durationTimes, startDate.day);
+        startDate.year,
+        startDate.month + durationTimes,
+        startDate.day,
+      );
     case 'year':
       return DateTime(
-          startDate.year + durationTimes, startDate.month, startDate.day);
+        startDate.year + durationTimes,
+        startDate.month,
+        startDate.day,
+      );
     case 'quarterly':
       return DateTime(
-          startDate.year, startDate.month + (durationTimes * 3), startDate.day);
+        startDate.year,
+        startDate.month + (durationTimes * 3),
+        startDate.day,
+      );
     case 'week':
       return startDate.add(Duration(days: durationTimes * 7));
 
@@ -507,8 +542,10 @@ DateTime calculateExpirationDate(
   }
 }
 
-Future<SnackbarController> errorSnackBar(
-    {required dynamic error, SnackPosition? position}) async {
+Future<SnackbarController> errorSnackBar({
+  required dynamic error,
+  SnackPosition? position,
+}) async {
   String message = '';
   if (error is String) {
     message = error;
@@ -632,18 +669,32 @@ Future<void> playMovie({
   VideoPlayerModel? videoModel,
 }) async {
   if (changeVideo) {
-    LiveStream().emit(changeVideoInPodPlayer,
-        [newURL, false, urlType, videoType, videoModel]);
+    LiveStream().emit(changeVideoInPodPlayer, [
+      newURL,
+      false,
+      urlType,
+      videoType,
+      videoModel,
+    ]);
   }
 
   if (isWatchVideo) {
-    LiveStream()
-        .emit(mOnWatchVideo, [newURL, false, urlType, videoType, videoModel]);
+    LiveStream().emit(mOnWatchVideo, [
+      newURL,
+      false,
+      urlType,
+      videoType,
+      videoModel,
+    ]);
   }
 }
 
-Widget commonLeadingWid(
-    {required String imgPath, IconData? icon, Color? color, double size = 20}) {
+Widget commonLeadingWid({
+  required String imgPath,
+  IconData? icon,
+  Color? color,
+  double size = 20,
+}) {
   return Image.asset(
     imgPath,
     width: size,
@@ -780,8 +831,10 @@ String getSubscriptionPlanStatus(String status) {
   }
 }
 
-void showNewUpdateDialog(BuildContext context,
-    {required int currentAppVersionCode}) async {
+void showNewUpdateDialog(
+  BuildContext context, {
+  required int currentAppVersionCode,
+}) async {
   showInDialog(
     context,
     contentPadding: EdgeInsets.zero,
@@ -790,10 +843,12 @@ void showNewUpdateDialog(BuildContext context,
       return WillPopScope(
         onWillPop: () {
           return Future(
-              () => currentAppVersionCode >= getPlatformMinimumVersion());
+            () => currentAppVersionCode >= getPlatformMinimumVersion(),
+          );
         },
         child: NewUpdateDialog(
-            canClose: currentAppVersionCode >= getPlatformMinimumVersion()),
+          canClose: currentAppVersionCode >= getPlatformMinimumVersion(),
+        ),
       );
     },
   );
@@ -804,5 +859,28 @@ int getPlatformMinimumVersion() {
     return appConfigs.value.iosMinimumForceUpdateCode;
   } else {
     return appConfigs.value.androidMinimumForceUpdateCode;
+  }
+}
+
+extension NumberFormatter on int {
+  String formatNumber() {
+    if (this >= 1000000) {
+      return '${(this / 1000000).toStringAsFixed(1)}M';
+    } else if (this >= 1000) {
+      return '${(this / 1000).toStringAsFixed(1)}K';
+    }
+    return toString();
+  }
+}
+
+// num এর জন্যও একই extension
+extension NumFormatter on num {
+  String formatNumber() {
+    if (this >= 1000000) {
+      return '${(this / 1000000).toStringAsFixed(1)}M';
+    } else if (this >= 1000) {
+      return '${(this / 1000).toStringAsFixed(1)}K';
+    }
+    return toStringAsFixed(0);
   }
 }

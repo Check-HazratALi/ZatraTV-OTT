@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/screens/dashboard/components/floating_widget.dart';
 import 'package:zatra_tv/screens/movie_list/shimmer_movie_list/shimmer_movie_list.dart';
 import 'package:zatra_tv/screens/slider/banner_widget.dart';
 import 'package:zatra_tv/screens/video/video_details_screen.dart';

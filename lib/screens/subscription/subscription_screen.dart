@@ -20,8 +20,9 @@ class SubscriptionScreen extends StatelessWidget {
 
   SubscriptionScreen({super.key, required this.launchDashboard});
 
-  final SubscriptionController subscriptionCont =
-      Get.put(SubscriptionController());
+  final SubscriptionController subscriptionCont = Get.put(
+    SubscriptionController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -34,70 +35,98 @@ class SubscriptionScreen extends StatelessWidget {
         height: 50,
         width: 50,
       ),
-      body: RefreshIndicator(
-        color: appColorPrimary,
-        onRefresh: () async {
-          return await subscriptionCont.getSubscriptionDetails();
-        },
-        child: Obx(
-          () => SnapHelperWidget(
-            future: subscriptionCont.getSubscriptionFuture.value,
-            loadingWidget: subscriptionCont.isLoading.value
-                ? const ShimmerSubscriptionList()
-                : const ShimmerSubscriptionList(),
-            errorBuilder: (error) {
-              return NoDataWidget(
-                titleTextStyle: secondaryTextStyle(color: white),
-                subTitleTextStyle: primaryTextStyle(color: white),
-                title: error,
-                retryText: locale.value.reload,
-                imageWidget: const ErrorStateWidget(),
-                onRetry: () {
-                  subscriptionCont.getSubscriptionDetails();
-                },
-              );
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topCenter,
+                radius: 1.5,
+                colors: [
+                  appColorPrimary.withOpacity(0.1),
+                  appScreenBackgroundDark,
+                ],
+              ),
+            ),
+          ),
+
+          // Floating Particles
+          ...List.generate(
+            15,
+            (index) => Positioned(
+              top: Get.height * 0.1 + (index * 30),
+              left: Get.width * (index % 3) * 0.33,
+              child: Container(
+                width: 2,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          RefreshIndicator(
+            color: appColorPrimary,
+            onRefresh: () async {
+              return await subscriptionCont.getSubscriptionDetails();
             },
-            onSuccess: (res) {
-              return AnimatedScrollView(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                padding: EdgeInsets.only(bottom: 30),
-                refreshIndicatorColor: appColorPrimary,
-                children: [
-                  14.height,
-                  SubscriptionComponent(
-                    planDetails: currentSubscription.value,
-                    callback: () {
+            child: Obx(
+              () => SnapHelperWidget(
+                future: subscriptionCont.getSubscriptionFuture.value,
+                loadingWidget: subscriptionCont.isLoading.value
+                    ? const ShimmerSubscriptionList()
+                    : const ShimmerSubscriptionList(),
+                errorBuilder: (error) {
+                  return NoDataWidget(
+                    titleTextStyle: secondaryTextStyle(color: white),
+                    subTitleTextStyle: primaryTextStyle(color: white),
+                    title: error,
+                    retryText: locale.value.reload,
+                    imageWidget: const ErrorStateWidget(),
+                    onRetry: () {
                       subscriptionCont.getSubscriptionDetails();
                     },
-                  ),
-                  16.height,
-                  if (subscriptionCont.planList.isEmpty &&
-                      !subscriptionCont.isLoading.value)
-                    NoDataWidget(
-                      titleTextStyle: boldTextStyle(color: white),
-                      subTitleTextStyle: primaryTextStyle(color: white),
-                      title: locale.value.noDataFound,
-                      retryText: "",
-                      imageWidget: const EmptyStateWidget(),
-                    ).paddingSymmetric(horizontal: 16)
-                  else
-                    SubscriptionListComponent(
-                      planList: subscriptionCont.planList,
-                      subscriptionController: subscriptionCont,
-                    )
-                        .paddingBottom(16)
-                        .visible(!subscriptionCont.isLoading.value),
-                ],
-              ).paddingSymmetric(horizontal: 16);
-            },
+                  );
+                },
+                onSuccess: (res) {
+                  return AnimatedScrollView(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    padding: EdgeInsets.only(bottom: 30),
+                    refreshIndicatorColor: appColorPrimary,
+                    children: [
+                      16.height,
+                      if (subscriptionCont.planList.isEmpty &&
+                          !subscriptionCont.isLoading.value)
+                        NoDataWidget(
+                          titleTextStyle: boldTextStyle(color: white),
+                          subTitleTextStyle: primaryTextStyle(color: white),
+                          title: locale.value.noDataFound,
+                          retryText: "",
+                          imageWidget: const EmptyStateWidget(),
+                        ).paddingSymmetric(horizontal: 16)
+                      else
+                        SubscriptionListComponent(
+                              planList: subscriptionCont.planList,
+                              subscriptionController: subscriptionCont,
+                            )
+                            .paddingBottom(16)
+                            .visible(!subscriptionCont.isLoading.value),
+                    ],
+                  ).paddingSymmetric(horizontal: 16);
+                },
+              ),
+            ),
           ),
-        ),
+        ],
       ),
-      bottomNavBar: Obx(() => PriceComponent(
-            launchDashboard: launchDashboard,
-            subscriptionCont: subscriptionCont,
-          ).visible(subscriptionCont.selectPlan.value.name.isNotEmpty)),
+      bottomNavBar: Obx(
+        () => PriceComponent(
+          launchDashboard: launchDashboard,
+          subscriptionCont: subscriptionCont,
+        ).visible(subscriptionCont.selectPlan.value.name.isNotEmpty),
+      ),
     );
   }
 }

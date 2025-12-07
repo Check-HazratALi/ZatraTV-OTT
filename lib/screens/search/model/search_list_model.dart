@@ -5,16 +5,18 @@ class SearchListResponse {
 
   SearchListResponse({this.status, this.data, this.message});
 
-  // Factory method to create an instance from a JSON map
   factory SearchListResponse.fromJson(Map<String, dynamic> json) {
     return SearchListResponse(
-      status: json['status'] ?? false,
-      data: (json['data'] as List<dynamic>).map((e) => SearchData.fromJson(e)).toList(),
-      message: json['message'] ?? '',
+      status: json['status'] is bool ? json['status'] : false,
+      data: json['data'] is List
+          ? List<SearchData>.from(
+              json['data'].map((e) => SearchData.fromJson(e)),
+            )
+          : [],
+      message: json['message'] is String ? json['message'] : '',
     );
   }
 
-  // Method to convert the model back to JSON
   Map<String, dynamic> toJson() {
     return {
       'status': status,
@@ -29,35 +31,52 @@ class SearchData {
   int userId;
   int profileId;
   String searchQuery;
+  String type;
+  int searchId;
   String fileUrl;
 
   SearchData({
-    required this.id,
-    required this.userId,
-    required this.profileId,
-    required this.searchQuery,
-    required this.fileUrl,
+    this.id = -1,
+    this.userId = -1,
+    this.profileId = -1,
+    this.searchQuery = "",
+    this.type = "",
+    this.searchId = -1,
+    this.fileUrl = "",
   });
 
-  // Factory method to create an instance from a JSON map
   factory SearchData.fromJson(Map<String, dynamic> json) {
     return SearchData(
-      id: json['id'] ?? 0,
-      userId: json['user_id'] ?? 0,
-      profileId: json['profile_id'] ?? 0,
-      searchQuery: json['search_query'] ?? '',
-      fileUrl: json['file_url'] ?? '',
+      id: _parseInt(json['id']),
+      userId: _parseInt(json['user_id']),
+      profileId: _parseInt(json['profile_id']),
+      searchQuery: json['search_query'] is String ? json['search_query'] : "",
+      type: json['type'] is String ? json['type'] : "",
+      searchId: _parseInt(json['search_id']),
+      fileUrl: json['file_url'] is String ? json['file_url'] : "",
     );
   }
 
-  // Method to convert the model back to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'user_id': userId,
       'profile_id': profileId,
       'search_query': searchQuery,
+      'type': type,
+      'search_id': searchId,
       'file_url': fileUrl,
     };
+  }
+
+  // Helper method to safely parse int from dynamic value
+  static int _parseInt(dynamic value) {
+    if (value == null) return -1;
+    if (value is int) return value;
+    if (value is String) {
+      return int.tryParse(value) ?? -1;
+    }
+    if (value is num) return value.toInt();
+    return -1;
   }
 }

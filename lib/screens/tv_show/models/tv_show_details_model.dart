@@ -31,6 +31,8 @@ class TvShowDetailsModel {
   String thumbnailImage;
   bool isWatchList;
   bool isLiked;
+  int totalLikes;
+  int totalViews;
   ReviewModel yourReview;
   List<GenreModel> genres;
   List<SubscriptionPlanModel> plans;
@@ -69,6 +71,8 @@ class TvShowDetailsModel {
     this.videoUrlInput = '',
     this.enableQuality = -1,
     this.downloadUrl = '',
+    this.totalLikes = 0,
+    this.totalViews = 0,
     this.posterImage = "",
     this.thumbnailImage = "",
     this.isWatchList = false,
@@ -97,42 +101,92 @@ class TvShowDetailsModel {
       id: json['id'] is int ? json['id'] : -1,
       name: json['name'] is String ? json['name'] : "",
       description: json['description'] is String ? json['description'] : "",
-      trailerUrlType: json['trailer_url_type'] is String ? json['trailer_url_type'] : "",
+      trailerUrlType: json['trailer_url_type'] is String
+          ? json['trailer_url_type']
+          : "",
       type: json['type'] is String ? json['type'] : "",
       trailerUrl: json['trailer_url'] is String ? json['trailer_url'] : "",
       movieAccess: json['movie_access'] is String ? json['movie_access'] : "",
       planId: json['plan_id'] is int ? json['plan_id'] : -1,
       language: json['language'] is String ? json['language'] : "",
       imdbRating: json['imdb_rating'] is String ? json['imdb_rating'] : '',
-      contentRating: json['content_rating'] is String ? json['content_rating'] : "",
+      contentRating: json['content_rating'] is String
+          ? json['content_rating']
+          : "",
       duration: json['duration'] is String ? json['duration'] : "",
       releaseDate: json['release_date'] is String ? json['release_date'] : "",
       releaseYear: json['release_year'] is int ? json['release_year'] : -1,
       isRestricted: json['is_restricted'] is int ? json['is_restricted'] : -1,
-      videoUploadType: json['video_upload_type'] is String ? json['video_upload_type'] : "",
-      videoUrlInput: json['video_url_input'] is String ? json['video_url_input'] : "",
-      enableQuality: json['enable_quality'] is int ? json['enable_quality'] : -1,
+      videoUploadType: json['video_upload_type'] is String
+          ? json['video_upload_type']
+          : "",
+      videoUrlInput: json['video_url_input'] is String
+          ? json['video_url_input']
+          : "",
+      enableQuality: json['enable_quality'] is int
+          ? json['enable_quality']
+          : -1,
       downloadUrl: json['download_url'] is String ? json['download_url'] : "",
       posterImage: json['poster_image'] is String ? json['poster_image'] : "",
-      thumbnailImage: json['thumbnail_image'] is String ? json['thumbnail_image'] : "",
-      isWatchList: json['is_watch_list'] is int ? (json['is_watch_list'] as int).getBoolInt() : false,
-      isLiked: json['is_likes'] is int ? (json['is_likes'] as int).getBoolInt() : false,
-      yourReview: json['your_review'] is Map ? ReviewModel.fromJson(json['your_review']) : ReviewModel(),
-      genres: json['genres'] is List ? List<GenreModel>.from(json['genres'].map((x) => GenreModel.fromJson(x))) : [],
-      plans: json['plans'] is List ? List<SubscriptionPlanModel>.from(json['plans'].map((x) => SubscriptionPlanModel.fromJson(x))) : [],
-      reviews: json['reviews'] is List ? List<ReviewModel>.from(json['reviews'].map((x) => ReviewModel.fromJson(x))) : [],
-      casts: json['casts'] is List ? List<PersonModel>.from(json['casts'].map((x) => PersonModel.fromJson(x))) : [],
-      directors: json['directors'] is List ? List<PersonModel>.from(json['directors'].map((x) => PersonModel.fromJson(x))) : [],
-      tvShowLinks: json['tvShowLinks'] is List ? List<SeasonModel>.from(json['tvShowLinks'].map((x) => SeasonModel.fromJson(x))) : [],
-      moreItems: json['more_items'] is List ? List<VideoPlayerModel>.from(json['more_items'].map((x) => VideoPlayerModel.fromJson(x))) : [],
+      thumbnailImage: json['thumbnail_image'] is String
+          ? json['thumbnail_image']
+          : "",
+      isWatchList: json['is_watch_list'] is int
+          ? (json['is_watch_list'] as int).getBoolInt()
+          : false,
+      isLiked: json['is_likes'] is int
+          ? (json['is_likes'] as int).getBoolInt()
+          : false,
+      yourReview: json['your_review'] is Map
+          ? ReviewModel.fromJson(json['your_review'])
+          : ReviewModel(),
+      genres: json['genres'] is List
+          ? List<GenreModel>.from(
+              json['genres'].map((x) => GenreModel.fromJson(x)),
+            )
+          : [],
+      plans: json['plans'] is List
+          ? List<SubscriptionPlanModel>.from(
+              json['plans'].map((x) => SubscriptionPlanModel.fromJson(x)),
+            )
+          : [],
+      reviews: json['reviews'] is List
+          ? List<ReviewModel>.from(
+              json['reviews'].map((x) => ReviewModel.fromJson(x)),
+            )
+          : [],
+      casts: json['casts'] is List
+          ? List<PersonModel>.from(
+              json['casts'].map((x) => PersonModel.fromJson(x)),
+            )
+          : [],
+      directors: json['directors'] is List
+          ? List<PersonModel>.from(
+              json['directors'].map((x) => PersonModel.fromJson(x)),
+            )
+          : [],
+      tvShowLinks: json['tvShowLinks'] is List
+          ? List<SeasonModel>.from(
+              json['tvShowLinks'].map((x) => SeasonModel.fromJson(x)),
+            )
+          : [],
+      moreItems: json['more_items'] is List
+          ? List<VideoPlayerModel>.from(
+              json['more_items'].map((x) => VideoPlayerModel.fromJson(x)),
+            )
+          : [],
       status: json['status'] is int ? json['status'] : -1,
       createdBy: json['created_by'] is int ? json['created_by'] : -1,
       updatedBy: json['updated_by'] is int ? json['updated_by'] : -1,
       deletedBy: json['deleted_by'] is int ? json['deleted_by'] : -1,
+      totalLikes: json['total_likes'] is int ? json['total_likes'] : 0,
+      totalViews: json['total_views'] is int ? json['total_views'] : 0,
       createdAt: json['created_at'] is String ? json['created_at'] : "",
       updatedAt: json['updated_at'] is String ? json['updated_at'] : "",
       deletedAt: json['deleted_at'] is String ? json['deleted_at'] : "",
-      isDeviceSupported: json['is_device_supported'] is bool ? json['is_device_supported'] : true,
+      isDeviceSupported: json['is_device_supported'] is bool
+          ? json['is_device_supported']
+          : true,
       requiredPlanLevel: json['plan_level'] is int ? json['plan_level'] : 0,
     );
   }
@@ -162,6 +216,8 @@ class TvShowDetailsModel {
       'thumbnail_image': thumbnailImage,
       'is_watch_list': isWatchList,
       'is_likes': isLiked,
+      'total_likes': totalLikes,
+      'total_views': totalViews,
       'your_review': yourReview,
       'genres': genres.map((e) => e.toJson()).toList(),
       'plans': plans.map((e) => e.toJson()).toList(),

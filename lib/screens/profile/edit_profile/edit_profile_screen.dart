@@ -18,13 +18,43 @@ class EditProfileScreen extends StatelessWidget {
       isLoading: profileCont.isLoading,
       scaffoldBackgroundColor: appScreenBackgroundDark,
       appBartitleText: locale.value.editProfile,
-      body: AnimatedScrollView(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Stack(
         children: [
-          ProfilePicComponent(),
-          EditFormFieldComponent(),
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topCenter,
+                radius: 1.5,
+                colors: [
+                  appColorPrimary.withOpacity(0.1),
+                  appScreenBackgroundDark,
+                ],
+              ),
+            ),
+          ),
+
+          // Floating Particles
+          ...List.generate(
+            15,
+            (index) => Positioned(
+              top: Get.height * 0.1 + (index * 30),
+              left: Get.width * (index % 3) * 0.33,
+              child: Container(
+                width: 2,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+          AnimatedScrollView(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [ProfilePicComponent(), EditFormFieldComponent()],
+          ).paddingAll(16),
         ],
-      ).paddingAll(16),
+      ),
     );
   }
 }

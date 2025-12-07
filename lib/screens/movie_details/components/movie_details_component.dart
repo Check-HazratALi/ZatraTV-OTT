@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chrome_cast/_discovery_manager/discovery_manager.dart';
 import 'package:flutter_chrome_cast/_session_manager/cast_session_manager.dart';
@@ -39,6 +37,10 @@ class MovieDetailsComponent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          16.height,
+          // ১. Total Likes এবং Views এর জন্য Row যোগ করুন
+          _buildStatsRow(context),
+
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -54,14 +56,18 @@ class MovieDetailsComponent extends StatelessWidget {
                   onTap: () {
                     if (isLoggedIn.isTrue) {
                       movieDetCont.saveWatchList(
-                          addToWatchList:
-                              !movieDetCont.movieDetailsResp.value.isWatchList);
+                        addToWatchList:
+                            !movieDetCont.movieDetailsResp.value.isWatchList,
+                      );
                     } else {
                       Get.to(() => SignInScreen())?.then((value) {
                         if (isLoggedIn.isTrue) {
                           movieDetCont.saveWatchList(
-                              addToWatchList: !movieDetCont
-                                  .movieDetailsResp.value.isWatchList);
+                            addToWatchList: !movieDetCont
+                                .movieDetailsResp
+                                .value
+                                .isWatchList,
+                          );
                         }
                       });
                     }
@@ -72,8 +78,9 @@ class MovieDetailsComponent extends StatelessWidget {
                   title: locale.value.share,
                   onTap: () {
                     shareVideo(
-                        type: VideoType.movie,
-                        videoId: movieDetCont.movieDetailsResp.value.id);
+                      type: VideoType.movie,
+                      videoId: movieDetCont.movieDetailsResp.value.id,
+                    );
                     // viewFiles(movieDetCont.movieDetailsResp.value.name);
                   },
                 ),
@@ -84,7 +91,8 @@ class MovieDetailsComponent extends StatelessWidget {
                         : Assets.iconsIcDownload,
                     title: locale.value.download,
                     isTrue: movieDetCont.isDownloaded.value,
-                    iconWidget: movieDetCont.downloadPercentage.value >= 1 &&
+                    iconWidget:
+                        movieDetCont.downloadPercentage.value >= 1 &&
                                 movieDetCont.downloadPercentage.value < 100 ||
                             movieDetCont.isDownloading.value
                         ? Stack(
@@ -100,9 +108,11 @@ class MovieDetailsComponent extends StatelessWidget {
                                     '${movieDetCont.downloadPercentage.value}'
                                         .suffixText(value: '%'),
                                     style: primaryTextStyle(
-                                        color: appColorPrimary, size: 10),
+                                      color: appColorPrimary,
+                                      size: 10,
+                                    ),
                                   ),
-                                )
+                                ),
                             ],
                           )
                         : null,
@@ -110,7 +120,9 @@ class MovieDetailsComponent extends StatelessWidget {
                     onTap: () async {
                       if (movieDetCont.isDownloaded.value ||
                           movieDetCont
-                                  .movieDetailsResp.value.requiredPlanLevel ==
+                                  .movieDetailsResp
+                                  .value
+                                  .requiredPlanLevel ==
                               0) {
                         movieDetCont.handleDownloads();
                       } else {
@@ -120,18 +132,23 @@ class MovieDetailsComponent extends StatelessWidget {
                           callBack: () {
                             if (currentSubscription.value.level >=
                                 movieDetCont
-                                    .movieDetailsResp.value.requiredPlanLevel) {
+                                    .movieDetailsResp
+                                    .value
+                                    .requiredPlanLevel) {
                               movieDetCont.handleDownloads();
                             }
                           },
                           planId: movieDetCont.movieDetailsResp.value.planId,
                           planLevel: movieDetCont
-                              .movieDetailsResp.value.requiredPlanLevel,
+                              .movieDetailsResp
+                              .value
+                              .requiredPlanLevel,
                           isPurchased:
                               movieDetCont.movieDetailsResp.value.isPurchased,
-
                         );
-                        print("==========================${movieDetCont.movieDetailsResp.value.isPurchased}================================");
+                        print(
+                          "==========================${movieDetCont.movieDetailsResp.value.isPurchased}================================",
+                        );
                       }
                     },
                   ),
@@ -150,82 +167,76 @@ class MovieDetailsComponent extends StatelessWidget {
                   isTrue: movieDetCont.movieDetailsResp.value.isLike,
                   checkIcon: Assets.iconsIcLike,
                 ),
-                // CustomIconButton(
-                //   icon: Assets.iconsIcPictureInPicture,
-                //   color: Colors.grey,
-                //   title: locale.value.pip,
-                //   onTap: () async {
-                //     /// Handle Picture In Picture Mode
-                //     handlePip(controller: movieDetCont, context: context);
-                //   },
-                // ),
-                Obx(
-                  () {
-                    if (isCastingAvailable.value) {
-                      return StreamBuilder<GoogleCastSession?>(
-                        stream: GoogleCastSessionManager
-                            .instance.currentSessionStream,
-                        builder: (context, snapshot) {
-                          final bool isConnected = GoogleCastSessionManager
-                                  .instance.connectionState ==
-                              GoogleCastConnectState.connected;
-                          return CustomIconButton(
-                            icon: '',
-                            title: locale.value.videoCast,
-                            titleTextStyle: !checkCastSupport()
-                                ? secondaryTextStyle(size: 14, color: grey)
-                                : null,
-                            iconWidget: Icon(
-                              isConnected ? Icons.cast_connected : Icons.cast,
-                              size: 20,
-                              color: !checkCastSupport() ? grey : white,
-                            ),
-                            onTap: () {
-                              if (!checkCastSupport()) {
-                                toast(locale.value.castSupportInfo);
-                                return;
-                              }
-                              doIfLogin(
-                                onLoggedIn: () {
-                                  checkCastSupported(
-                                    onCastSupported: () {
-                                      if (isConnected) {
-                                        GoogleCastDiscoveryManager.instance
-                                            .stopDiscovery();
-                                        GoogleCastSessionManager.instance
-                                            .endSessionAndStopCasting();
-                                      } else {
-                                        LiveStream().emit(podPlayerPauseKey);
-                                        movieDetCont
-                                            .openBottomSheetForFCCastAvailableDevices(
-                                                context);
-                                      }
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
-                    } else {
-                      return Offstage();
-                    }
-                  },
-                ),
+                Obx(() {
+                  if (isCastingAvailable.value) {
+                    return StreamBuilder<GoogleCastSession?>(
+                      stream: GoogleCastSessionManager
+                          .instance
+                          .currentSessionStream,
+                      builder: (context, snapshot) {
+                        final bool isConnected =
+                            GoogleCastSessionManager.instance.connectionState ==
+                            GoogleCastConnectState.connected;
+                        return CustomIconButton(
+                          icon: '',
+                          title: locale.value.videoCast,
+                          titleTextStyle: !checkCastSupport()
+                              ? secondaryTextStyle(size: 14, color: grey)
+                              : null,
+                          iconWidget: Icon(
+                            isConnected ? Icons.cast_connected : Icons.cast,
+                            size: 20,
+                            color: !checkCastSupport() ? grey : white,
+                          ),
+                          onTap: () {
+                            if (!checkCastSupport()) {
+                              toast(locale.value.castSupportInfo);
+                              return;
+                            }
+                            doIfLogin(
+                              onLoggedIn: () {
+                                checkCastSupported(
+                                  onCastSupported: () {
+                                    if (isConnected) {
+                                      GoogleCastDiscoveryManager.instance
+                                          .stopDiscovery();
+                                      GoogleCastSessionManager.instance
+                                          .endSessionAndStopCasting();
+                                    } else {
+                                      LiveStream().emit(podPlayerPauseKey);
+                                      movieDetCont
+                                          .openBottomSheetForFCCastAvailableDevices(
+                                            context,
+                                          );
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  } else {
+                    return Offstage();
+                  }
+                }),
               ],
             ).paddingSymmetric(vertical: 16, horizontal: 2),
           ),
           ActorComponent(
-              castDetails: movieDetCont.movieDetailsResp.value.casts,
-              title: locale.value.cast).visible(movieDetCont.movieDetailsResp.value.casts.isNotEmpty),
+            castDetails: movieDetCont.movieDetailsResp.value.casts,
+            title: locale.value.cast,
+          ).visible(movieDetCont.movieDetailsResp.value.casts.isNotEmpty),
           ActorComponent(
-              castDetails: movieDetCont.movieDetailsResp.value.directors,
-              title: locale.value.directors).visible(movieDetCont.movieDetailsResp.value.directors.isNotEmpty),
+            castDetails: movieDetCont.movieDetailsResp.value.directors,
+            title: locale.value.directors,
+          ).visible(movieDetCont.movieDetailsResp.value.directors.isNotEmpty),
           Obx(() {
             final ads = getDashboardController().getBannerAdsForCategory(
-                targetContentType: 'movie',
-                categoryId: movieDetCont.movieDetailsResp.value.id);
+              targetContentType: 'movie',
+              categoryId: movieDetCont.movieDetailsResp.value.id,
+            );
             if (ads.isEmpty) {
               return const SizedBox.shrink();
             }
@@ -258,11 +269,84 @@ class MovieDetailsComponent extends StatelessWidget {
             isMovie: true,
           ).visible(movieDetCont.movieDetailsResp.value.reviews.isNotEmpty),
           MoreListComponent(
-                  moreList: movieDetCont.movieDetailsResp.value.moreItems)
-              .visible(
-                  movieDetCont.movieDetailsResp.value.moreItems.isNotEmpty),
+            moreList: movieDetCont.movieDetailsResp.value.moreItems,
+          ).visible(movieDetCont.movieDetailsResp.value.moreItems.isNotEmpty),
         ],
       ),
+    );
+  }
+
+  Widget _buildStatsRow(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: boxDecorationDefault(
+        color: appColorPrimary.withOpacity(0.1),
+        borderRadius: radius(),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // Likes
+          _buildStatItem(
+            icon: Icons.thumb_up_outlined,
+            value: movieDetCont.movieDetailsResp.value.totalLikes
+                .formatNumber(),
+            label: "Likes",
+            color: appColorPrimary,
+          ),
+
+          // Views
+          _buildStatItem(
+            icon: Icons.remove_red_eye_outlined,
+            value: movieDetCont.movieDetailsResp.value.totalViews
+                .formatNumber(),
+            label: "Views",
+            color: Colors.blue,
+          ),
+
+          // Rating (IMDb)
+          if (movieDetCont.movieDetailsResp.value.imdbRating > 0)
+            _buildStatItem(
+              icon: Icons.star_outlined,
+              value: movieDetCont.movieDetailsResp.value.imdbRating
+                  .toStringAsFixed(1),
+              label: 'IMDb',
+              color: Colors.amber,
+            ),
+
+          // Duration
+          if (movieDetCont.movieDetailsResp.value.duration.isNotEmpty)
+            _buildStatItem(
+              icon: Icons.access_time_outlined,
+              value: movieDetCont.movieDetailsResp.value.duration,
+              label: "Duration",
+              color: Colors.green,
+            ),
+        ],
+      ),
+    ).paddingOnly(bottom: 8);
+  }
+
+  Widget _buildStatItem({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color, size: 20),
+        SizedBox(height: 4),
+        Text(
+          value,
+          style: boldTextStyle(size: 14, color: textPrimaryColorGlobal),
+        ),
+        Text(
+          label,
+          style: secondaryTextStyle(size: 12, color: textSecondaryColorGlobal),
+        ),
+      ],
     );
   }
 
@@ -288,11 +372,7 @@ class MovieDetailsComponent extends StatelessWidget {
           color: circleColor,
           shape: BoxShape.circle,
         ),
-        child: CachedImageWidget(
-          url: icon,
-          height: 18,
-          width: 18,
-        ),
+        child: CachedImageWidget(url: icon, height: 18, width: 18),
       ),
     );
   }

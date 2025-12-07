@@ -38,6 +38,10 @@ class VideoDetailsComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        16.height,
+        
+        _buildStatsRow(context),
+
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
@@ -52,13 +56,15 @@ class VideoDetailsComponent extends StatelessWidget {
                 onTap: () {
                   if (isLoggedIn.isTrue) {
                     movieDetailCont.saveWatchList(
-                        addToWatchList: !videoDetail.isWatchList);
+                      addToWatchList: !videoDetail.isWatchList,
+                    );
                   } else {
                     LiveStream().emit(podPlayerPauseKey);
                     Get.to(() => SignInScreen())?.then((value) {
                       if (isLoggedIn.isTrue) {
                         movieDetailCont.saveWatchList(
-                            addToWatchList: !videoDetail.isWatchList);
+                          addToWatchList: !videoDetail.isWatchList,
+                        );
                       }
                     });
                   }
@@ -73,69 +79,72 @@ class VideoDetailsComponent extends StatelessWidget {
                   shareVideo(type: VideoType.video, videoId: videoDetail.id);
                 },
               ),
-              Obx(
-                () {
-                  if (movieDetailCont.showDownload.value) {
-                    return CustomIconButton(
-                      icon: movieDetailCont.isDownloaded.value
-                          ? Assets.iconsIcDownloaded
-                          : Assets.iconsIcDownload,
-                      title: locale.value.download,
-                      isTrue: movieDetailCont.isDownloaded.value,
-                      iconWidget: movieDetailCont.downloadPercentage.value >=
-                                      1 &&
-                                  movieDetailCont.downloadPercentage.value <
-                                      100 ||
-                              movieDetailCont.isDownloading.value
-                          ? Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                LoaderWidget(
-                                  size: 30,
-                                  loaderColor: appColorPrimary,
-                                ),
-                                if (movieDetailCont.downloadPercentage.value >
-                                    0)
-                                  Marquee(
-                                    child: Text(
-                                      '${movieDetailCont.downloadPercentage.value}'
-                                          .suffixText(value: '%'),
-                                      style: primaryTextStyle(
-                                          color: appColorPrimary, size: 10),
+              Obx(() {
+                if (movieDetailCont.showDownload.value) {
+                  return CustomIconButton(
+                    icon: movieDetailCont.isDownloaded.value
+                        ? Assets.iconsIcDownloaded
+                        : Assets.iconsIcDownload,
+                    title: locale.value.download,
+                    isTrue: movieDetailCont.isDownloaded.value,
+                    iconWidget:
+                        movieDetailCont.downloadPercentage.value >= 1 &&
+                                movieDetailCont.downloadPercentage.value <
+                                    100 ||
+                            movieDetailCont.isDownloading.value
+                        ? Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              LoaderWidget(
+                                size: 30,
+                                loaderColor: appColorPrimary,
+                              ),
+                              if (movieDetailCont.downloadPercentage.value > 0)
+                                Marquee(
+                                  child: Text(
+                                    '${movieDetailCont.downloadPercentage.value}'
+                                        .suffixText(value: '%'),
+                                    style: primaryTextStyle(
+                                      color: appColorPrimary,
+                                      size: 10,
                                     ),
-                                  )
-                              ],
-                            )
-                          : null,
-                      color: iconColor,
-                      onTap: () async {
-                        if (movieDetailCont.isDownloaded.value ||
-                            movieDetailCont
-                                    .movieDetailsResp.value.requiredPlanLevel ==
-                                0) {
-                          movieDetailCont.handleDownload(context);
-                        } else {
-                          onSubscriptionLoginCheck(
-                            videoAccess:
-                                movieDetailCont.movieDetailsResp.value.access,
-                            callBack: () {
-                              if (currentSubscription.value.level >=
-                                  movieDetailCont.movieDetailsResp.value
-                                      .requiredPlanLevel) {
-                                movieDetailCont.handleDownload(context);
-                              }
-                            },
-                            planId: videoDetail.planId,
-                            planLevel: videoDetail.requiredPlanLevel,
-                          );
-                        }
-                      },
-                    );
-                  } else {
-                    return Offstage();
-                  }
-                },
-              ),
+                                  ),
+                                ),
+                            ],
+                          )
+                        : null,
+                    color: iconColor,
+                    onTap: () async {
+                      if (movieDetailCont.isDownloaded.value ||
+                          movieDetailCont
+                                  .movieDetailsResp
+                                  .value
+                                  .requiredPlanLevel ==
+                              0) {
+                        movieDetailCont.handleDownload(context);
+                      } else {
+                        onSubscriptionLoginCheck(
+                          videoAccess:
+                              movieDetailCont.movieDetailsResp.value.access,
+                          callBack: () {
+                            if (currentSubscription.value.level >=
+                                movieDetailCont
+                                    .movieDetailsResp
+                                    .value
+                                    .requiredPlanLevel) {
+                              movieDetailCont.handleDownload(context);
+                            }
+                          },
+                          planId: videoDetail.planId,
+                          planLevel: videoDetail.requiredPlanLevel,
+                        );
+                      }
+                    },
+                  );
+                } else {
+                  return Offstage();
+                }
+              }),
               CustomIconButton(
                 icon: Assets.iconsIcThumbsup,
                 title: locale.value.like,
@@ -163,74 +172,129 @@ class VideoDetailsComponent extends StatelessWidget {
               //     handlePip(controller: movieDetailCont, context: context);
               //   },
               // ),
-              Obx(
-                () {
-                  if (isCastingAvailable.value) {
-                    return StreamBuilder<GoogleCastSession?>(
-                      stream: GoogleCastSessionManager
-                          .instance.currentSessionStream,
-                      builder: (context, snapshot) {
-                        final bool isConnected =
-                            GoogleCastSessionManager.instance.connectionState ==
-                                GoogleCastConnectState.connected;
-                        return CustomIconButton(
-                          icon: '',
-                          title: locale.value.videoCast,
-                          titleTextStyle: !checkCastSupport()
-                              ? secondaryTextStyle(size: 14, color: grey)
-                              : null,
-                          iconWidget: Icon(
-                            isConnected ? Icons.cast_connected : Icons.cast,
-                            size: 20,
-                            color: !checkCastSupport() ? grey : white,
-                          ),
-                          onTap: () {
-                            if (!checkCastSupport()) {
-                              toast(locale.value.castSupportInfo);
-                              return;
-                            }
+              Obx(() {
+                if (isCastingAvailable.value) {
+                  return StreamBuilder<GoogleCastSession?>(
+                    stream:
+                        GoogleCastSessionManager.instance.currentSessionStream,
+                    builder: (context, snapshot) {
+                      final bool isConnected =
+                          GoogleCastSessionManager.instance.connectionState ==
+                          GoogleCastConnectState.connected;
+                      return CustomIconButton(
+                        icon: '',
+                        title: locale.value.videoCast,
+                        titleTextStyle: !checkCastSupport()
+                            ? secondaryTextStyle(size: 14, color: grey)
+                            : null,
+                        iconWidget: Icon(
+                          isConnected ? Icons.cast_connected : Icons.cast,
+                          size: 20,
+                          color: !checkCastSupport() ? grey : white,
+                        ),
+                        onTap: () {
+                          if (!checkCastSupport()) {
+                            toast(locale.value.castSupportInfo);
+                            return;
+                          }
 
-                            doIfLogin(
-                              onLoggedIn: () {
-                                checkCastSupported(
-                                  onCastSupported: () async {
-                                    if (isConnected) {
-                                      await GoogleCastDiscoveryManager.instance
-                                          .stopDiscovery();
-                                      await GoogleCastSessionManager.instance
-                                          .endSessionAndStopCasting();
-                                    } else {
-                                      LiveStream().emit(podPlayerPauseKey);
-                                      movieDetailCont
-                                          .openBottomSheetForFCCastAvailableDevices(
-                                              context);
-                                    }
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        );
-                      },
-                    );
-                  } else {
-                    return Offstage();
-                  }
-                },
-              ),
+                          doIfLogin(
+                            onLoggedIn: () {
+                              checkCastSupported(
+                                onCastSupported: () async {
+                                  if (isConnected) {
+                                    await GoogleCastDiscoveryManager.instance
+                                        .stopDiscovery();
+                                    await GoogleCastSessionManager.instance
+                                        .endSessionAndStopCasting();
+                                  } else {
+                                    LiveStream().emit(podPlayerPauseKey);
+                                    movieDetailCont
+                                        .openBottomSheetForFCCastAvailableDevices(
+                                          context,
+                                        );
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  return Offstage();
+                }
+              }),
             ],
           ).paddingSymmetric(vertical: 16),
         ),
         Obx(() {
           final ads = getDashboardController().getBannerAdsForCategory(
-              targetContentType: 'video', categoryId: videoDetail.id);
+            targetContentType: 'video',
+            categoryId: videoDetail.id,
+          );
           if (ads.isEmpty) {
             return const SizedBox.shrink();
           }
           return CustomAdComponent(ads: ads);
         }),
-        MoreListComponent(moreList: videoDetail.moreItems)
-            .visible(videoDetail.moreItems.isNotEmpty),
+        MoreListComponent(
+          moreList: videoDetail.moreItems,
+        ).visible(videoDetail.moreItems.isNotEmpty),
+      ],
+    );
+  }
+
+  Widget _buildStatsRow(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: boxDecorationDefault(
+        color: appColorPrimary.withOpacity(0.1),
+        borderRadius: radius(),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // Likes - Null Check
+          _buildStatItem(
+            icon: Icons.thumb_up_outlined,
+            value: (videoDetail.totalLikes ?? 0).formatNumber(),
+            label: "Likes",
+            color: appColorPrimary,
+          ),
+
+          // Views - Null Check
+          _buildStatItem(
+            icon: Icons.remove_red_eye_outlined,
+            value: (videoDetail.totalViews ?? 0).formatNumber(),
+            label: "Views",
+            color: Colors.blue,
+          ),
+        ],
+      ),
+    ).paddingOnly(bottom: 8);
+  }
+
+  Widget _buildStatItem({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color, size: 20),
+        SizedBox(height: 4),
+        Text(
+          value,
+          style: boldTextStyle(size: 14, color: textPrimaryColorGlobal),
+        ),
+        Text(
+          label,
+          style: secondaryTextStyle(size: 12, color: textSecondaryColorGlobal),
+        ),
       ],
     );
   }

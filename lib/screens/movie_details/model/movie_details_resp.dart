@@ -62,6 +62,8 @@ class MovieDetailModel {
   String thumbnailImage;
   bool isWatchList;
   bool isLike;
+  int totalLikes;
+  int totalViews;
   int status;
   bool isDeviceSupported;
   int requiredPlanLevel;
@@ -108,6 +110,8 @@ class MovieDetailModel {
     this.thumbnailImage = "",
     this.isWatchList = false,
     this.isLike = false,
+    this.totalLikes = 0,
+    this.totalViews = 0,
     required this.yourReview,
     this.genres = const <GenreModel>[],
     this.plans = const <SubscriptionPlanModel>[],
@@ -233,6 +237,8 @@ class MovieDetailModel {
           : [],
       status: json['status'] is int ? json['status'] : -1,
       downloadId: json['download_id'] is int ? json['download_id'] : -1,
+      totalLikes: json['total_likes'] is int ? json['total_likes'] : 0,
+      totalViews: json['total_views'] is int ? json['total_views'] : 0,
       isDeviceSupported: json['is_device_supported'] is bool
           ? json['is_device_supported']
           : true,
@@ -277,6 +283,8 @@ class MovieDetailModel {
       'thumbnail_image': thumbnailImage,
       'is_watch_list': isWatchList,
       'is_likes': isLike,
+      'total_likes': totalLikes,
+      'total_views': totalViews,
       'your_review': yourReview,
       'genres': genres.map((e) => e.toJson()).toList(),
       'plans': plans.map((e) => e.toJson()).toList(),

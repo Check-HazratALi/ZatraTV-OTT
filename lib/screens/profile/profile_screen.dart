@@ -120,12 +120,6 @@ class ProfileScreen extends StatelessWidget {
                     }
                   },
                   children: [
-                    SubscriptionComponent(
-                      planDetails: currentSubscription.value,
-                      callback: () {
-                        profileCont.getProfileDetail(showLoader: false);
-                      },
-                    ),
                     ProfileCardComponent(
                       profileInfo: profileCont.profileDetailsResp.value,
                     ),
@@ -143,6 +137,12 @@ class ProfileScreen extends StatelessWidget {
                         },
                       ).paddingSymmetric(horizontal: 16, vertical: 8),
                     ],
+                    SubscriptionComponent(
+                      planDetails: currentSubscription.value,
+                      callback: () {
+                        profileCont.getProfileDetail(showLoader: false);
+                      },
+                    ),
                     if (isLoggedIn.value) UserProfileComponent(),
                     if (appConfigs.value.enableContinueWatch)
                       ContinueWatchComponent(

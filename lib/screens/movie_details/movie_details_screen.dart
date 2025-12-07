@@ -98,6 +98,7 @@ class MovieDetailsScreen extends StatelessWidget {
                       },
                     ),
                   ),
+
                   if (!isPipModeOn.value)
                     SnapHelperWidget(
                       future: movieDetCont.getMovieDetailsFuture.value,

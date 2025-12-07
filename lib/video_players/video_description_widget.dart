@@ -52,7 +52,10 @@ class VideoDescriptionWidget extends StatelessWidget {
                 color: white,
               ),
               alignment: Alignment.center,
-              child: Text(locale.value.ua18.suffixText(value: "+"), style: boldTextStyle(size: 10, color: Colors.black)),
+              child: Text(
+                locale.value.ua18.suffixText(value: "+"),
+                style: boldTextStyle(size: 10, color: Colors.black),
+              ),
             ).paddingDirectional(start: 10, end: 10, bottom: 4, top: 4),
           if (videoDescription.genres.isNotEmpty)
             Marquee(
@@ -80,7 +83,10 @@ class VideoDescriptionWidget extends StatelessWidget {
                   Text(
                     videoDescription.releaseYear.toString(),
                     style: commonSecondaryTextStyle(),
-                  ).paddingDirectional(start: isRTL.value ? 24 : 0, end: isRTL.value ? 0 : 24),
+                  ).paddingDirectional(
+                    start: isRTL.value ? 24 : 0,
+                    end: isRTL.value ? 0 : 24,
+                  ),
                 const CachedImageWidget(
                   url: Assets.iconsIcTranslate,
                   height: 14,
@@ -104,13 +110,17 @@ class VideoDescriptionWidget extends StatelessWidget {
                     style: commonSecondaryTextStyle(),
                   ),
                 ],
-                24.width.visible(videoDescription.imdbRating != -1 ? true : false),
+                24.width.visible(
+                  videoDescription.imdbRating != -1 ? true : false,
+                ),
                 const CachedImageWidget(
                   url: Assets.iconsIcStar,
                   height: 10,
                   width: 10,
                 ).visible(videoDescription.imdbRating != -1 ? true : false),
-                6.width.visible(videoDescription.imdbRating != -1 ? true : false),
+                6.width.visible(
+                  videoDescription.imdbRating != -1 ? true : false,
+                ),
                 Text(
                   "${videoDescription.imdbRating.toString()} (${locale.value.imdb})",
                   style: commonSecondaryTextStyle(size: 12),
@@ -118,31 +128,38 @@ class VideoDescriptionWidget extends StatelessWidget {
               ],
             ),
           ).paddingSymmetric(horizontal: 10, vertical: 8),
-          if (videoDescription.contentRating.isNotEmpty && isContentRating == true)
+          if (videoDescription.contentRating.isNotEmpty &&
+              isContentRating == true)
             Text(
               "${locale.value.contentRating} : ${videoDescription.contentRating}",
-              style: secondaryTextStyle(size: 12, color: darkGrayTextColor, weight: FontWeight.w800),
+              style: secondaryTextStyle(
+                size: 12,
+                color: darkGrayTextColor,
+                weight: FontWeight.w800,
+              ),
             ).paddingOnly(left: 10, right: 10, top: 8, bottom: 8),
           if (showWatchNow == true && isTrailer)
-            if (videoDescription.movieAccess == MovieAccess.payPerView && videoDescription.isPurchased == false)
+            if (videoDescription.movieAccess == MovieAccess.payPerView &&
+                videoDescription.isPurchased == false)
               rentAndPaidButton(
-                  isTrailer: isTrailer,
-                  planId: videoDescription.planId,
-                  btnText: videoDescription.price,
-                  discount: videoDescription.discount,
-                  discountPrice: videoDescription.discountedPrice,
-                  requiredPlanLevel: videoDescription.requiredPlanLevel,
-                  callBack: () async {
-                    await videoPlayersController?.pause();
-                    Get.bottomSheet(
-                      PriceComponent(
-                        launchDashboard: false,
-                        subscriptionCont: SubscriptionController(),
-                        isRent: true,
-                        rentVideo: videoDescription,
-                      ),
-                    );
-                  }).paddingSymmetric(vertical: 8)
+                isTrailer: isTrailer,
+                planId: videoDescription.planId,
+                btnText: videoDescription.price,
+                discount: videoDescription.discount,
+                discountPrice: videoDescription.discountedPrice,
+                requiredPlanLevel: videoDescription.requiredPlanLevel,
+                callBack: () async {
+                  await videoPlayersController?.pause();
+                  Get.bottomSheet(
+                    PriceComponent(
+                      launchDashboard: false,
+                      subscriptionCont: SubscriptionController(),
+                      isRent: true,
+                      rentVideo: videoDescription,
+                    ),
+                  );
+                },
+              ).paddingSymmetric(vertical: 8)
             else if (showWatchNow || videoDescription.isPurchased == true)
               watchNowButton(
                 isTrailer: isTrailer,

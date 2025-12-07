@@ -21,13 +21,16 @@ class SearchScreenController extends GetxController {
   RxBool isLastPage = false.obs;
   TextEditingController searchCont = TextEditingController();
   FocusNode searchFocus = FocusNode();
-  Rx<Future<SearchListResponse>> getSearchListApiFuture = Future(() => SearchListResponse()).obs;
-  Rx<Future<SearchResponse>> getSearchMovieFuture = Future(() => SearchResponse()).obs;
+  Rx<Future<SearchListResponse>> getSearchListApiFuture = Future(
+    () => SearchListResponse(),
+  ).obs;
+  Rx<Future<SearchResponse>> getSearchMovieFuture = Future(
+    () => SearchResponse(),
+  ).obs;
   RxList<VideoPlayerModel> searchMovieDetails = RxList();
   stt.SpeechToText speechToText = stt.SpeechToText();
   RxBool isListening = false.obs;
   RxList<SearchData> searchListData = <SearchData>[].obs;
-
   CategoryListModel defaultPopularList = CategoryListModel();
   RxBool isTyping = false.obs;
   RxInt page = 1.obs;
@@ -48,29 +51,35 @@ class SearchScreenController extends GetxController {
     isTyping.value = false;
   }
 
-//Get Search Movie Details
+  //Get Search Movie Details
   Future<void> getSearchMovieDetail({bool showLoader = true}) async {
     searchMovieDetails.value = [];
     if (showLoader) {
       isLoading(true);
     }
     log(searchCont.text.trim());
-    await getSearchMovieFuture(CoreServiceApis.getSearchDetails(search: searchCont.text)).then((value) {
-      searchMovieDetails.clear();
-      searchMovieDetails.addAll(value.movieList);
-      searchMovieDetails.addAll(value.tvShowList);
-      searchMovieDetails.addAll(value.videoList);
-      searchMovieDetails.addAll(value.seasonList);
-    }).whenComplete(() => isLoading(false));
+    await getSearchMovieFuture(
+          CoreServiceApis.getSearchDetails(search: searchCont.text),
+        )
+        .then((value) {
+          searchMovieDetails.clear();
+          searchMovieDetails.addAll(value.movieList);
+          searchMovieDetails.addAll(value.tvShowList);
+          searchMovieDetails.addAll(value.videoList);
+          searchMovieDetails.addAll(value.seasonList);
+        })
+        .whenComplete(() => isLoading(false));
   }
 
   //Get Search List
   Future<void> getSearchListHistory({bool showLoader = true}) async {
     isLoading(showLoader);
-    await getSearchListApiFuture(CoreServiceApis.getSearchList()).then((value) {
-      searchMovieDetails.clear();
-      searchListData(value.data);
-    }).whenComplete(() => isLoading(false));
+    await getSearchListApiFuture(CoreServiceApis.getSearchList())
+        .then((value) {
+          searchMovieDetails.clear();
+          searchListData(value.data);
+        })
+        .whenComplete(() => isLoading(false));
   }
 
   void onSearch({required String searchVal}) {
@@ -95,15 +104,17 @@ class SearchScreenController extends GetxController {
     );
     if (available) {
       isListening(true);
-      speechToText.listen(onResult: (result) {
-        searchCont.text = result.recognizedWords;
+      speechToText.listen(
+        onResult: (result) {
+          searchCont.text = result.recognizedWords;
 
-        if (searchCont.text.length > 2) {
-          getSearchMovieDetail();
-        } /*else if (searchCont.text.length == 3) {
+          if (searchCont.text.length > 2) {
+            getSearchMovieDetail();
+          } /*else if (searchCont.text.length == 3) {
           searchValue("");
         }*/
-      });
+        },
+      );
     }
   }
 
@@ -113,36 +124,94 @@ class SearchScreenController extends GetxController {
     searchCont.clear();
   }
 
-  Future<void> saveSearch({required String searchQuery, required String type, required String searchID}) async {
+  Future<void> saveSearch({
+    required String searchQuery,
+    required String type,
+    required String searchID,
+  }) async {
     isLoading(true);
     CoreServiceApis.saveSearch(
-      request: {
-        "search_query": searchQuery,
-        "profile_id": profileId.value,
-        "search_id": searchID,
-        "type": type,
-      },
-    ).then((value) async {
-      getSearchList();
-      searchCont.clear();
-    }).catchError((e) {
-      isLoading(false);
-    }).whenComplete(() {
-      isLoading(false);
-    });
+          request: {
+            "search_query": searchQuery,
+            "profile_id": profileId.value,
+            "search_id": searchID,
+            "type": type,
+          },
+        )
+        .then((value) async {
+          getSearchList();
+          searchCont.clear();
+        })
+        .catchError((e) {
+          isLoading(false);
+        })
+        .whenComplete(() {
+          isLoading(false);
+        });
   }
 
   ///Get search List
   Future<void> getSearchList() async {
-    if (getStringAsync(SharedPreferenceConst.POPULAR_MOVIE, defaultValue: '').isNotEmpty) {
-      String defaultData = getStringAsync(SharedPreferenceConst.POPULAR_MOVIE);
-      List<VideoPlayerModel> list = ((jsonDecode(defaultData)) as List).map((item) => VideoPlayerModel.fromJson(item)).toList();
+    try {
+      // First, try to clear if there's corrupted data
+      if (getStringAsync(
+        SharedPreferenceConst.POPULAR_MOVIE,
+        defaultValue: '',
+      ).isNotEmpty) {
+        String defaultData = getStringAsync(
+          SharedPreferenceConst.POPULAR_MOVIE,
+        );
 
-      defaultPopularList = CategoryListModel(showViewAll: false, sectionType: locale.value.popularMovies, data: list);
-    }
+        try {
+          // Try to decode
+          dynamic decoded = jsonDecode(defaultData);
 
-    if (isLoggedIn.isTrue) {
-      await getSearchListHistory();
+          if (decoded is! List) {
+            // If it's not a List, clear it
+            log("Corrupted data found, clearing...");
+            await removeKey(SharedPreferenceConst.POPULAR_MOVIE);
+            defaultPopularList = CategoryListModel(
+              showViewAll: false,
+              sectionType: locale.value.popularMovies,
+              data: [],
+            );
+          } else {
+            List<VideoPlayerModel> list = (decoded as List)
+                .map((item) => VideoPlayerModel.fromJson(item))
+                .toList();
+            defaultPopularList = CategoryListModel(
+              showViewAll: false,
+              sectionType: locale.value.popularMovies,
+              data: list,
+            );
+          }
+        } catch (e) {
+          log("JSON decode error, clearing data: $e");
+          await removeKey(SharedPreferenceConst.POPULAR_MOVIE);
+          defaultPopularList = CategoryListModel(
+            showViewAll: false,
+            sectionType: locale.value.popularMovies,
+            data: [],
+          );
+        }
+      } else {
+        defaultPopularList = CategoryListModel(
+          showViewAll: false,
+          sectionType: locale.value.popularMovies,
+          data: [],
+        );
+      }
+
+      if (isLoggedIn.isTrue) {
+        await getSearchListHistory();
+      }
+    } catch (e) {
+      log("Unexpected error in getSearchList: $e");
+      defaultPopularList = CategoryListModel(
+        showViewAll: false,
+        sectionType: locale.value.popularMovies,
+        data: [],
+      );
     }
   }
 
@@ -151,7 +220,10 @@ class SearchScreenController extends GetxController {
     try {
       isLoading(true);
       // Try the API call
-      final result = await CoreServiceApis.particularSearchDelete(id, profileId.value);
+      final result = await CoreServiceApis.particularSearchDelete(
+        id,
+        profileId.value,
+      );
       log(result.message);
     } catch (e) {
       log("Error: $e");
@@ -165,7 +237,9 @@ class SearchScreenController extends GetxController {
     try {
       isLoading(true);
       // Try the API call
-      final result = await CoreServiceApis.clearAll(profileId.value).then((value) async {
+      final result = await CoreServiceApis.clearAll(profileId.value).then((
+        value,
+      ) async {
         await getSearchList();
       });
       log(result.message);

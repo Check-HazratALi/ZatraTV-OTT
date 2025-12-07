@@ -6,7 +6,6 @@ import 'package:zatra_tv/generated/assets.dart';
 
 import '../../../../components/cached_image_widget.dart';
 import '../../../../main.dart';
-import '../../../../utils/common_base.dart';
 
 class RemoveContinueWatchingComponent extends StatelessWidget {
   final VoidCallback onRemoveTap;

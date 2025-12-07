@@ -7,7 +7,6 @@ import 'package:zatra_tv/screens/profile/watching_profile/watching_profile_contr
 import 'package:zatra_tv/screens/setting/pin_generation_bottom_sheet.dart';
 import 'package:zatra_tv/utils/app_common.dart';
 import 'package:zatra_tv/utils/colors.dart';
-import 'package:zatra_tv/utils/common_base.dart';
 
 class AddProfileComponent extends StatefulWidget {
   final WatchingProfileController profileWatchingController;

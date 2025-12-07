@@ -38,18 +38,19 @@ class SubscriptionCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: boxDecorationDefault(
-              gradient: isSelected
-                  ? LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [
-                        lightRedColor.withValues(alpha: 0.2),
-                        darkRedColor.withValues(alpha: 0.4),
-                      ],
-                    )
-                  : null,
-              borderRadius: BorderRadius.circular(6),
-              color: canvasColor),
+            gradient: isSelected
+                ? LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      lightRedColor.withValues(alpha: 0.2),
+                      darkRedColor.withValues(alpha: 0.4),
+                    ],
+                  )
+                : null,
+            borderRadius: BorderRadius.circular(6),
+            color: canvasColor,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -61,18 +62,20 @@ class SubscriptionCard extends StatelessWidget {
                   if (planDet.discountPercentage > 0)
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 6),
+                        horizontal: 6,
+                        vertical: 6,
+                      ),
                       decoration: boxDecorationDefault(
-                          color: appColorPrimary,
-                          borderRadius: BorderRadius.circular(4)),
+                        color: appColorPrimary,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       margin: const EdgeInsets.only(right: 12),
                       child: Text(
                         locale.value.save.suffixText(
-                            value:
-                                ' ${planDet.discountPercentage.toString().suffixText(value: '%')}'),
-                        style: boldTextStyle(
-                          size: 12,
+                          value:
+                              ' ${planDet.discountPercentage.toString().suffixText(value: '%')}',
                         ),
+                        style: boldTextStyle(size: 12),
                       ),
                     ),
                   Text(
@@ -123,7 +126,9 @@ class SubscriptionCard extends StatelessWidget {
                           text:
                               " / ${planDet.duration == "1" ? "" : getNumberInString(planDet.durationValue)} ",
                           style: primaryTextStyle(
-                              size: 14, color: darkGrayTextColor),
+                            size: 14,
+                            color: darkGrayTextColor,
+                          ),
                         ),
                         TextSpan(
                           text: planDet.duration.toLowerCase(),
@@ -137,9 +142,7 @@ class SubscriptionCard extends StatelessWidget {
                           TextSpan(
                             text:
                                 ' (${planDet.discountPercentage} % discount included)',
-                            style: boldTextStyle(
-                              size: 14,
-                            ),
+                            style: boldTextStyle(size: 14),
                           ),
                       ],
                     ),
@@ -161,8 +164,8 @@ class SubscriptionCard extends StatelessWidget {
                   itemBuilder: (context, index) {
                     if (planDet.planType[index].status.getBoolInt()) {
                       return subscriptionBenefitsTile(
-                              planType: planDet.planType[index])
-                          .paddingBottom(8);
+                        planType: planDet.planType[index],
+                      ).paddingBottom(8);
                     } else {
                       return Offstage();
                     }
@@ -193,19 +196,18 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
           Marquee(
             child: Text(
               planType.message,
-              style: primaryTextStyle(
-                size: 12,
-                color: darkGrayTextColor,
-              ),
+              style: primaryTextStyle(size: 12, color: darkGrayTextColor),
             ),
           ).expand(),
         ],
-      ).visible(planType.slug != SubscriptionTitle.supportedDeviceType &&
-          planType.slug != SubscriptionTitle.profileLimit &&
-          planType.slug != SubscriptionTitle.downloadStatus &&
-          planType.slug != SubscriptionTitle.videoCast &&
-          planType.slug != SubscriptionTitle.ads &&
-          planType.slug != SubscriptionTitle.deviceLimit),
+      ).visible(
+        planType.slug != SubscriptionTitle.supportedDeviceType &&
+            planType.slug != SubscriptionTitle.profileLimit &&
+            planType.slug != SubscriptionTitle.downloadStatus &&
+            planType.slug != SubscriptionTitle.videoCast &&
+            planType.slug != SubscriptionTitle.ads &&
+            planType.slug != SubscriptionTitle.deviceLimit,
+      ),
       if (planType.slug == SubscriptionTitle.deviceLimit &&
           planType.limitationValue.getBoolInt() &&
           planType.limit.value.isNotEmpty)
@@ -224,10 +226,7 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
               Marquee(
                 child: Text(
                   "You can use up to ${planType.limit.value} device(${planType.limit.value.validate().toInt() > 0 ? 's' : ''}) simultaneously.",
-                  style: primaryTextStyle(
-                    size: 12,
-                    color: darkGrayTextColor,
-                  ),
+                  style: primaryTextStyle(size: 12, color: darkGrayTextColor),
                 ),
               ).expand(),
             ],
@@ -255,10 +254,7 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
                   planType.limitationValue == 1
                       ? "Video Casting is enabled."
                       : "Video Casting is not available.",
-                  style: primaryTextStyle(
-                    size: 12,
-                    color: darkGrayTextColor,
-                  ),
+                  style: primaryTextStyle(size: 12, color: darkGrayTextColor),
                 ),
               ).expand(),
             ],
@@ -285,10 +281,7 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
                   planType.limitationValue == 1
                       ? "Ads will be shown"
                       : "Ads will not be shown",
-                  style: primaryTextStyle(
-                    size: 12,
-                    color: darkGrayTextColor,
-                  ),
+                  style: primaryTextStyle(size: 12, color: darkGrayTextColor),
                 ),
               ).expand(),
             ],
@@ -314,36 +307,35 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
               Marquee(
                 child: Text(
                   planType.limitationTitle,
-                  style: primaryTextStyle(
-                    size: 12,
-                    color: darkGrayTextColor,
-                  ),
+                  style: primaryTextStyle(size: 12, color: darkGrayTextColor),
                 ),
               ).expand(),
             ],
           ),
           edgeInsets: EdgeInsets.only(left: 16, top: 2, bottom: 2),
           customSymbol: SizedBox.shrink(),
-          children: getSupportedDeviceText(
-            isDesktopSupported:
-                planType.limit.enableLaptop.toInt().getBoolInt(),
-            isMobileSupported: planType.limit.enableMobile.toInt().getBoolInt(),
-            isTabletSupported: planType.limit.enableTablet.toInt().getBoolInt(),
-          )
-              .map(
-                (e) => Row(
-                  children: [
-                    Icon(
-                      e.$2,
-                      size: 12,
-                      color: e.$3,
+          children:
+              getSupportedDeviceText(
+                    isDesktopSupported: planType.limit.enableLaptop
+                        .toInt()
+                        .getBoolInt(),
+                    isMobileSupported: planType.limit.enableMobile
+                        .toInt()
+                        .getBoolInt(),
+                    isTabletSupported: planType.limit.enableTablet
+                        .toInt()
+                        .getBoolInt(),
+                  )
+                  .map(
+                    (e) => Row(
+                      children: [
+                        Icon(e.$2, size: 12, color: e.$3),
+                        2.width,
+                        Text(e.$1, style: secondaryTextStyle()),
+                      ],
                     ),
-                    2.width,
-                    Text(e.$1, style: secondaryTextStyle()),
-                  ],
-                ),
-              )
-              .toList(),
+                  )
+                  .toList(),
         ),
       if (planType.slug == SubscriptionTitle.profileLimit &&
           planType.limit.value.isNotEmpty &&
@@ -363,10 +355,7 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
               Marquee(
                 child: Text(
                   "You can create up to ${planType.limit.value} profiles on this plan for different users.",
-                  style: primaryTextStyle(
-                    size: 12,
-                    color: darkGrayTextColor,
-                  ),
+                  style: primaryTextStyle(size: 12, color: darkGrayTextColor),
                 ),
               ).expand(),
             ],
@@ -392,10 +381,7 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
               Marquee(
                 child: Text(
                   'Download Resolution',
-                  style: primaryTextStyle(
-                    size: 12,
-                    color: darkGrayTextColor,
-                  ),
+                  style: primaryTextStyle(size: 12, color: darkGrayTextColor),
                 ),
               ).expand(),
             ],
@@ -412,23 +398,23 @@ Widget subscriptionBenefitsTile({required PlanType planType}) {
                     color: discountColor,
                   ),
                   2.width,
-                  Text(getDownloadQuality(planType.limit).$1,
-                      style: secondaryTextStyle()),
+                  Text(
+                    getDownloadQuality(planType.limit).$1,
+                    style: secondaryTextStyle(),
+                  ),
                 ],
               ),
             if (getDownloadQuality(planType.limit).$2.isNotEmpty)
               Row(
                 children: [
-                  Icon(
-                    Icons.clear,
-                    size: 12,
-                    color: appColorPrimary,
-                  ),
+                  Icon(Icons.clear, size: 12, color: appColorPrimary),
                   2.width,
-                  Text(getDownloadQuality(planType.limit).$2,
-                      style: secondaryTextStyle()),
+                  Text(
+                    getDownloadQuality(planType.limit).$2,
+                    style: secondaryTextStyle(),
+                  ),
                 ],
-              )
+              ),
           ],
         ),
     ],
