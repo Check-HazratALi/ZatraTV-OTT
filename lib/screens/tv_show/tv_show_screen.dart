@@ -48,54 +48,70 @@ class TvShowScreen extends StatelessWidget {
                       tvShowController.isTrailer.value && !isFromContinueWatch,
                   isPipMode: isPipModeOn.value,
                   videoModel: getVideoPlayerResp(
-                      tvShowController.showData.value.toJson()),
+                    tvShowController.showData.value.toJson(),
+                  ),
                   showWatchNow: tvShowController.isTrailer.isTrue
                       ? true
                       : isMoviePaid(
                               requiredPlanLevel: tvShowController
-                                  .selectedEpisode.value.requiredPlanLevel) ||
-                          tvShowController.showData.value.isPurchased == false,
-                  hasNextEpisode: tvShowController.currentEpisodeIndex.value <
+                                  .selectedEpisode
+                                  .value
+                                  .requiredPlanLevel,
+                            ) ||
+                            tvShowController.showData.value.isPurchased ==
+                                false,
+                  hasNextEpisode:
+                      tvShowController.currentEpisodeIndex.value <
                       tvShowController.episodeList.length,
                   onWatchNow: () {
-                    tvShowController.isTrailer(true);
-                    tvShowController.currentEpisodeIndex.value++;
-                    tvShowController.playNextEpisode(
-                        tvShowController.episodeList[
-                            tvShowController.currentEpisodeIndex.value]);
+                    // ট্রেইলার বন্ধ করুন এবং অ্যাকচুয়াল ভিডিও চালু করুন
+                    tvShowController.isTrailer(false);
+
+                    // বর্তমান এপিসোডের অ্যাকচুয়াল ভিডিও চালান
+                    if (tvShowController.currentEpisodeIndex.value >= 0) {
+                      tvShowController.getEpisodeDetail(
+                        episodeId: tvShowController.selectedEpisode.value.id,
+                        tvShowId:
+                            tvShowController.showData.value.entertainmentId,
+                        changeVideo: true,
+                        isWatchVideo: true,
+                      );
+                    }
                   },
                   onWatchNextEpisode: () {
                     if (tvShowController.currentEpisodeIndex.value <
                         tvShowController.episodeList.length) {
                       tvShowController.currentEpisodeIndex.value++;
                       tvShowController.playNextEpisode(
-                          tvShowController.episodeList[
-                              tvShowController.currentEpisodeIndex.value]);
+                        tvShowController.episodeList[tvShowController
+                            .currentEpisodeIndex
+                            .value],
+                      );
                     }
                   },
                 ),
               ),
-              if(currentSubscription.value.planId > 0)
-              if (!isPipModeOn.value)
-                SnapHelperWidget(
-                  future: tvShowController.getTvShowDetailsFuture.value,
-                  loadingWidget:Offstage(),
-                  errorBuilder: (error) {
-                    return NoDataWidget(
-                      titleTextStyle: secondaryTextStyle(color: white),
-                      subTitleTextStyle: primaryTextStyle(color: white),
-                      title: error,
-                      retryText: locale.value.reload,
-                      imageWidget: const ErrorStateWidget(),
-                      onRetry: () {
-                        tvShowController.getTvShowDetail(showLoader: true);
-                      },
-                    ).visible(tvShowController.isLoading.value);
-                  },
-                  onSuccess: (data) {
-                    return TvShowDetailsComponent();
-                  },
-                ),
+              if (currentSubscription.value.planId > 0)
+                if (!isPipModeOn.value)
+                  SnapHelperWidget(
+                    future: tvShowController.getTvShowDetailsFuture.value,
+                    loadingWidget: Offstage(),
+                    errorBuilder: (error) {
+                      return NoDataWidget(
+                        titleTextStyle: secondaryTextStyle(color: white),
+                        subTitleTextStyle: primaryTextStyle(color: white),
+                        title: error,
+                        retryText: locale.value.reload,
+                        imageWidget: const ErrorStateWidget(),
+                        onRetry: () {
+                          tvShowController.getTvShowDetail(showLoader: true);
+                        },
+                      ).visible(tvShowController.isLoading.value);
+                    },
+                    onSuccess: (data) {
+                      return TvShowDetailsComponent();
+                    },
+                  ),
             ],
           );
         }),

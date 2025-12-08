@@ -11,7 +11,12 @@ class LoaderWidget extends StatelessWidget {
   final Color? loaderColor;
   final double? size;
 
-  const LoaderWidget({super.key, this.loaderColor, this.size, this.isBlurBackground = false});
+  const LoaderWidget({
+    super.key,
+    this.loaderColor,
+    this.size,
+    this.isBlurBackground = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +26,20 @@ class LoaderWidget extends StatelessWidget {
               height: Get.height,
               width: Get.width,
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0, tileMode: TileMode.mirror),
+                filter: ImageFilter.blur(
+                  sigmaX: 4.0,
+                  sigmaY: 4.0,
+                  tileMode: TileMode.mirror,
+                ),
                 child: SpinKitFadingCircle(
                   size: size ?? 50,
                   itemBuilder: (BuildContext context, int index) {
                     return DecoratedBox(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: loaderColor ?? appColorPrimary.withValues(alpha: 0.4),
+                        color:
+                            loaderColor ??
+                            appColorPrimary.withValues(alpha: 0.4),
                       ),
                     );
                   },

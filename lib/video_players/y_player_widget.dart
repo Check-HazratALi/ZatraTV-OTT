@@ -127,7 +127,8 @@ class YPlayerWidget extends StatefulWidget {
 ///
 /// This class manages the lifecycle of the video player and handles
 /// initialization, playback control, and UI updates.
-class YPlayerWidgetState extends State<YPlayerWidget> with SingleTickerProviderStateMixin {
+class YPlayerWidgetState extends State<YPlayerWidget>
+    with SingleTickerProviderStateMixin {
   /// The controller for managing the YouTube player.
   late YPlayerController _controller;
 
@@ -158,8 +159,14 @@ class YPlayerWidgetState extends State<YPlayerWidget> with SingleTickerProviderS
     Future.microtask(_initializePlayer);
 
     // Cache widgets
-    _cachedLoadingWidget = widget.loadingWidget ?? const CircularProgressIndicator.adaptive();
-    _cachedErrorWidget = widget.errorWidget ?? const Text('Error loading video', style: TextStyle(color: appColorPrimary));
+    _cachedLoadingWidget =
+        widget.loadingWidget ?? const CircularProgressIndicator.adaptive();
+    _cachedErrorWidget =
+        widget.errorWidget ??
+        const Text(
+          'Error loading video',
+          style: TextStyle(color: appColorPrimary),
+        );
     _cachedPlaceholder = widget.placeholder ?? const SizedBox.shrink();
   }
 
@@ -262,7 +269,12 @@ class YPlayerWidgetState extends State<YPlayerWidget> with SingleTickerProviderS
   }
 
   /// Builds the main content of the player based on its current state.
-  Widget _buildPlayerContent(double width, double height, YPlayerStatus status, bool showNextEpisodeButton) {
+  Widget _buildPlayerContent(
+    double width,
+    double height,
+    YPlayerStatus status,
+    bool showNextEpisodeButton,
+  ) {
     if (_isControllerReady && _controller.isInitialized) {
       // Always set speed since controller does not expose currentSpeed
       _controller.speed(currentSpeed);
@@ -275,13 +287,17 @@ class YPlayerWidgetState extends State<YPlayerWidget> with SingleTickerProviderS
           seekBarPositionColor: widget.color ?? const Color(0xFFFF0000),
           seekBarThumbColor: widget.color ?? const Color(0xFFFF0000),
           seekBarMargin: widget.seekBarMargin ?? EdgeInsets.zero,
-          bottomButtonBarMargin: widget.bottomButtonBarMargin ?? const EdgeInsets.only(left: 16, right: 8),
+          bottomButtonBarMargin:
+              widget.bottomButtonBarMargin ??
+              const EdgeInsets.only(left: 16, right: 8),
           brightnessGesture: true,
           volumeGesture: true,
           bottomButtonBar: [
             const MaterialPositionIndicator(),
             const Spacer(),
-            CustomMaterialFullscreenButton(videoPlayersController: widget.videoPlayerController),
+            CustomMaterialFullscreenButton(
+              videoPlayersController: widget.videoPlayerController,
+            ),
           ],
         ),
         fullscreen: MaterialVideoControlsThemeData(
@@ -289,7 +305,9 @@ class YPlayerWidgetState extends State<YPlayerWidget> with SingleTickerProviderS
           brightnessGesture: false,
           seekOnDoubleTap: true,
           seekBarMargin: widget.fullscreenSeekBarMargin ?? EdgeInsets.zero,
-          bottomButtonBarMargin: widget.fullscreenBottomButtonBarMargin ?? const EdgeInsets.only(left: 16, right: 8, bottom: 16),
+          bottomButtonBarMargin:
+              widget.fullscreenBottomButtonBarMargin ??
+              const EdgeInsets.only(left: 16, right: 8, bottom: 16),
           seekBarBufferColor: Colors.grey,
           seekBarPositionColor: widget.color ?? const Color(0xFFFF0000),
           seekBarThumbColor: widget.color ?? const Color(0xFFFF0000),
@@ -310,7 +328,11 @@ class YPlayerWidgetState extends State<YPlayerWidget> with SingleTickerProviderS
           onEnterFullscreen: _handleEnterFullscreen,
           onExitFullscreen: _handleExitFullscreen,
           aspectRatio: 16 / 9,
-          subtitleViewConfiguration: SubtitleViewConfiguration(visible: true, textAlign: TextAlign.center, style: primaryTextStyle()),
+          subtitleViewConfiguration: SubtitleViewConfiguration(
+            visible: true,
+            textAlign: TextAlign.center,
+            style: primaryTextStyle(),
+          ),
         ),
       );
     } else if (status == YPlayerStatus.loading) {
@@ -350,18 +372,28 @@ class CustomMaterialFullscreenButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () => toggleFullscreen(context, videoPlayersController),
-      icon: icon ?? (isFullscreen(context) ? const Icon(Icons.fullscreen_exit) : const Icon(Icons.fullscreen)),
+      icon:
+          icon ??
+          (isFullscreen(context)
+              ? const Icon(Icons.fullscreen_exit)
+              : const Icon(Icons.fullscreen)),
       iconSize: iconSize ?? _theme(context).buttonBarButtonSize,
       color: iconColor ?? _theme(context).buttonBarButtonColor,
     );
   }
 }
 
-MaterialVideoControlsThemeData _theme(BuildContext context) => FullscreenInheritedWidget.maybeOf(context) == null
-    ? MaterialVideoControlsTheme.maybeOf(context)?.normal ?? kDefaultMaterialVideoControlsThemeData
-    : MaterialVideoControlsTheme.maybeOf(context)?.fullscreen ?? kDefaultMaterialVideoControlsThemeDataFullscreen;
+MaterialVideoControlsThemeData _theme(BuildContext context) =>
+    FullscreenInheritedWidget.maybeOf(context) == null
+    ? MaterialVideoControlsTheme.maybeOf(context)?.normal ??
+          kDefaultMaterialVideoControlsThemeData
+    : MaterialVideoControlsTheme.maybeOf(context)?.fullscreen ??
+          kDefaultMaterialVideoControlsThemeDataFullscreen;
 
-Future<void> toggleFullscreen(BuildContext context, VideoPlayersController videoPlayersController) {
+Future<void> toggleFullscreen(
+  BuildContext context,
+  VideoPlayersController videoPlayersController,
+) {
   if (isFullscreen(context)) {
     return _exitFullscreen(context);
   } else {
@@ -395,7 +427,8 @@ Widget _overlayView(VideoPlayersController videoPlayersController) {
       bottom: isPipModeOn.value ? 2 : 40,
       child: OverlayAdWidget(
         overlayAd: overlayAd,
-        isFullScreen: MediaQuery.of(Get.context!).orientation == Orientation.landscape,
+        isFullScreen:
+            MediaQuery.of(Get.context!).orientation == Orientation.landscape,
         onClose: () {
           videoPlayersController.currentOverlayAd.value = null;
           videoPlayersController.overlayAdTimer?.cancel();
@@ -405,14 +438,19 @@ Widget _overlayView(VideoPlayersController videoPlayersController) {
   });
 }
 
-Future<void> _yPlayerDefaultEnterFullscreen(BuildContext context, VideoPlayersController videoPlayersController) {
+Future<void> _yPlayerDefaultEnterFullscreen(
+  BuildContext context,
+  VideoPlayersController videoPlayersController,
+) {
   final BuildContext ctx = context;
   return lock.synchronized(() async {
     if (!isFullscreen(ctx)) {
       if (ctx.mounted) {
         final stateValue = state(ctx);
         final contextNotifierValue = contextNotifier(ctx);
-        final videoViewParametersNotifierValue = videoViewParametersNotifier(ctx);
+        final videoViewParametersNotifierValue = videoViewParametersNotifier(
+          ctx,
+        );
         final controllerValue = controller(ctx);
 
         Navigator.of(ctx, rootNavigator: true).push(
@@ -429,7 +467,8 @@ Future<void> _yPlayerDefaultEnterFullscreen(BuildContext context, VideoPlayersCo
                     child: VideoStateInheritedWidget(
                       state: stateValue,
                       contextNotifier: contextNotifierValue,
-                      videoViewParametersNotifier: videoViewParametersNotifierValue,
+                      videoViewParametersNotifier:
+                          videoViewParametersNotifierValue,
                       disposeNotifiers: false,
                       child: FullscreenInheritedWidget(
                         parent: stateValue,
@@ -437,7 +476,8 @@ Future<void> _yPlayerDefaultEnterFullscreen(BuildContext context, VideoPlayersCo
                         child: VideoStateInheritedWidget(
                           state: stateValue,
                           contextNotifier: contextNotifierValue,
-                          videoViewParametersNotifier: videoViewParametersNotifierValue,
+                          videoViewParametersNotifier:
+                              videoViewParametersNotifierValue,
                           disposeNotifiers: false,
                           child: Video(
                             controller: controllerValue,
@@ -446,17 +486,33 @@ Future<void> _yPlayerDefaultEnterFullscreen(BuildContext context, VideoPlayersCo
                             height: null,
                             fit: videoViewParametersNotifierValue.value.fit,
                             fill: videoViewParametersNotifierValue.value.fill,
-                            alignment: videoViewParametersNotifierValue.value.alignment,
-                            aspectRatio: videoViewParametersNotifierValue.value.aspectRatio,
-                            filterQuality: videoViewParametersNotifierValue.value.filterQuality,
-                            controls: videoViewParametersNotifierValue.value.controls,
+                            alignment: videoViewParametersNotifierValue
+                                .value
+                                .alignment,
+                            aspectRatio: videoViewParametersNotifierValue
+                                .value
+                                .aspectRatio,
+                            filterQuality: videoViewParametersNotifierValue
+                                .value
+                                .filterQuality,
+                            controls:
+                                videoViewParametersNotifierValue.value.controls,
                             // Do not acquire or modify existing wakelock in fullscreen mode:
                             wakelock: false,
-                            pauseUponEnteringBackgroundMode: stateValue.widget.pauseUponEnteringBackgroundMode,
-                            resumeUponEnteringForegroundMode: stateValue.widget.resumeUponEnteringForegroundMode,
-                            subtitleViewConfiguration: videoViewParametersNotifierValue.value.subtitleViewConfiguration,
-                            onEnterFullscreen: stateValue.widget.onEnterFullscreen,
-                            onExitFullscreen: stateValue.widget.onExitFullscreen,
+                            pauseUponEnteringBackgroundMode: stateValue
+                                .widget
+                                .pauseUponEnteringBackgroundMode,
+                            resumeUponEnteringForegroundMode: stateValue
+                                .widget
+                                .resumeUponEnteringForegroundMode,
+                            subtitleViewConfiguration:
+                                videoViewParametersNotifierValue
+                                    .value
+                                    .subtitleViewConfiguration,
+                            onEnterFullscreen:
+                                stateValue.widget.onEnterFullscreen,
+                            onExitFullscreen:
+                                stateValue.widget.onExitFullscreen,
                           ),
                         ),
                       ),
@@ -570,8 +626,12 @@ class SpeedSliderSheetState extends State<SpeedSliderSheet> {
                       "${speed}x",
                       style: const TextStyle(fontSize: 12),
                     ),
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40))),
-                    backgroundColor: _speedValue == speed ? widget.primaryColor.withValues(alpha: 0.8) : Colors.transparent,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                    ),
+                    backgroundColor: _speedValue == speed
+                        ? widget.primaryColor.withValues(alpha: 0.8)
+                        : Colors.transparent,
                     labelStyle: TextStyle(
                       color: _speedValue == speed ? Colors.white : Colors.black,
                     ),
@@ -641,7 +701,9 @@ class QualitySelectionSheet extends StatelessWidget {
 
                 return ListTile(
                   title: Text(option.label),
-                  trailing: isSelected ? Icon(Icons.check, color: primaryColor) : null,
+                  trailing: isSelected
+                      ? Icon(Icons.check, color: primaryColor)
+                      : null,
                   selected: isSelected,
                   selectedColor: primaryColor,
                   onTap: () {

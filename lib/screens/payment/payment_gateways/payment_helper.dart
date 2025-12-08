@@ -46,7 +46,8 @@ Future<void> postPaymentSuccess({
       print("✅ Payment success posted to backend: ${response.body}");
     } else {
       print(
-          "❌ Failed to post payment: ${response.statusCode} ${response.body}");
+        "❌ Failed to post payment: ${response.statusCode} ${response.body}",
+      );
     }
   } catch (e) {
     print("⚠️ Error posting payment success: $e");
@@ -62,7 +63,7 @@ Future<void> PaymentSuccess({
 }) async {
   final url = Uri.parse('$DOMAIN_URL/api/payment/success');
 
- final body = {
+  final body = {
     "plan_id": planId.toString(),
     "user_id": userId.toString(),
     "amount": amount.toString(),
@@ -84,13 +85,13 @@ Future<void> PaymentSuccess({
       print("✅ Payment success posted to backend: ${response.body}");
     } else {
       print(
-          "❌ Failed to post payment: ${response.statusCode} ${response.body}");
+        "❌ Failed to post payment: ${response.statusCode} ${response.body}",
+      );
     }
   } catch (e) {
     print("⚠️ Error posting payment success: $e");
   }
 }
-
 
 String generateTranId() {
   final now = DateTime.now();
@@ -134,17 +135,17 @@ void sslcommerz({
   Sslcommerz sslcommerz = Sslcommerz(
     initializer: SSLCommerzInitialization(
       //live
-      // store_id: "rafusoft0live",
-      // store_passwd: "679A1049A3D9C60860",
+      store_id: "rafusoft0live",
+      store_passwd: "679A1049A3D9C60860",
       //test
-      store_id: "timed68bfc4b5ba8e3",
-      store_passwd: "timed68bfc4b5ba8e3@ssl",
+      // store_id: "timed68bfc4b5ba8e3",
+      // store_passwd: "timed68bfc4b5ba8e3@ssl",
       total_amount: totalAmount,
       currency: SSLCurrencyType.BDT,
       tran_id: tranId,
       product_category: productInfo["category"]!,
-      // sdkType: SSLCSdkType.LIVE,
-      sdkType: SSLCSdkType.TESTBOX,
+      sdkType: SSLCSdkType.LIVE,
+      // sdkType: SSLCSdkType.TESTBOX,
     ),
   );
 

@@ -27,7 +27,9 @@ class HomeController extends GetxController {
   RxBool isWatchListLoading = false.obs;
   RxBool isRefresh = false.obs;
 
-  Rx<Future<DashboardDetailResponse>> getDashboardDetailFuture = Future(() => DashboardDetailResponse(data: DashboardModel())).obs;
+  Rx<Future<DashboardDetailResponse>> getDashboardDetailFuture = Future(
+    () => DashboardDetailResponse(data: DashboardModel()),
+  ).obs;
 
   Rx<DashboardModel> dashboardDetail = DashboardModel().obs;
   Rx<PageController> sliderPageController = PageController(initialPage: 0).obs;
@@ -63,7 +65,11 @@ class HomeController extends GetxController {
     cachedDashboardDetailResponse = null;
   }
 
-  Future<void> init({bool forceSync = false, bool showLoader = false, bool forceConfigSync = false}) async {
+  Future<void> init({
+    bool forceSync = false,
+    bool showLoader = false,
+    bool forceConfigSync = false,
+  }) async {
     getAppConfigurations(forceConfigSync);
     if (appConfigs.value.enableAds.getBoolInt()) bannerLoad();
     checkApiCallIsWithinTimeSpan(
@@ -72,7 +78,8 @@ class HomeController extends GetxController {
         getDashboardDetail(startTimer: true, showLoader: showLoader);
         // AdPlayerController().startAutoSlider(AdPlayerController().sliderAds.first.type ?? 'video');
       },
-      sharePreferencesKey: SharedPreferenceConst.DASHBOARD_DETAIL_LAST_CALL_TIME,
+      sharePreferencesKey:
+          SharedPreferenceConst.DASHBOARD_DETAIL_LAST_CALL_TIME,
     );
   }
 
@@ -101,88 +108,154 @@ class HomeController extends GetxController {
   }
 
   ///Get Dashboard List
-  Future<void> getDashboardDetail({bool showLoader = false, bool startTimer = false}) async {
+  Future<void> getDashboardDetail({
+    bool showLoader = false,
+    bool startTimer = false,
+  }) async {
     isLoading(showLoader);
     isWatchListLoading(showLoader);
 
-    await getDashboardDetailFuture(CoreServiceApis.getDashboard()).then((value) async {
-      value.data.continueWatch?.data = List<VideoPlayerModel>.from(value.data.continueWatch?.data ?? []);
-      value.data.continueWatch?.data?.removeWhere((continueWatchData) {
-        return calculatePendingPercentage(
-              continueWatchData.totalWatchedTime.isEmpty || continueWatchData.totalWatchedTime == "00:00:00" ? "00:00:01" : continueWatchData.totalWatchedTime,
-              continueWatchData.watchedTime.isEmpty || continueWatchData.watchedTime == "00:00:00" ? "00:00:01" : continueWatchData.watchedTime,
-            ).$1 ==
-            1;
-      });
+    await getDashboardDetailFuture(CoreServiceApis.getDashboard())
+        .then((value) async {
+          value.data.continueWatch?.data = List<VideoPlayerModel>.from(
+            value.data.continueWatch?.data ?? [],
+          );
+          value.data.continueWatch?.data?.removeWhere((continueWatchData) {
+            return calculatePendingPercentage(
+                  continueWatchData.totalWatchedTime.isEmpty ||
+                          continueWatchData.totalWatchedTime == "00:00:00"
+                      ? "00:00:01"
+                      : continueWatchData.totalWatchedTime,
+                  continueWatchData.watchedTime.isEmpty ||
+                          continueWatchData.watchedTime == "00:00:00"
+                      ? "00:00:01"
+                      : continueWatchData.watchedTime,
+                ).$1 ==
+                1;
+          });
 
-      value.data.slider = List<SliderModel>.from(value.data.slider ?? []);
-      if (value.data.slider?.isNotEmpty ?? false) {
-        value.data.slider?.removeWhere((element) => element.data.status == 0);
-        value.data.slider?.removeWhere((element) => element.data.id == -1);
-      }
+          value.data.slider = List<SliderModel>.from(value.data.slider ?? []);
+          if (value.data.slider?.isNotEmpty ?? false) {
+            value.data.slider?.removeWhere(
+              (element) => element.data.status == 0,
+            );
+            value.data.slider?.removeWhere((element) => element.data.id == -1);
+          }
 
-      setValue(SharedPreferenceConst.DASHBOARD_DETAIL_LAST_CALL_TIME, DateTime.timestamp().millisecondsSinceEpoch);
-      await createCategorySections(value.data, true);
-      dashboardDetail(value.data);
-      getOtherDashboardDetails(showLoader: true);
-      isLoading(false);
-      isWatchListLoading(false);
+          setValue(
+            SharedPreferenceConst.DASHBOARD_DETAIL_LAST_CALL_TIME,
+            DateTime.timestamp().millisecondsSinceEpoch,
+          );
+          await createCategorySections(value.data, true);
+          dashboardDetail(value.data);
+          getOtherDashboardDetails(showLoader: true);
+          isLoading(false);
+          isWatchListLoading(false);
 
-      if (startTimer) startAutoSlider();
-    }).catchError((e) {
-      isWatchListLoading(false);
-      isLoading(false);
-    });
+          if (startTimer) startAutoSlider();
+        })
+        .catchError((e) {
+          isWatchListLoading(false);
+          isLoading(false);
+        });
   }
 
   Future<void> getOtherDashboardDetails({bool showLoader = false}) async {
     showCategoryShimmer(showLoader);
-    await CoreServiceApis.getDashboardDetailOtherData().then((value) async {
-      await createCategorySections(value.data, false);
-      showCategoryShimmer(false);
-      DashboardModel res = dashboardDetail.value;
-      dashboardDetail(value.data);
-      dashboardDetail.value.slider = res.slider;
-      dashboardDetail.value.continueWatch = res.continueWatch;
-      dashboardDetail.value.top10List = res.top10List;
-      cachedDashboardDetailResponse = value;
-      setValue(SharedPreferenceConst.CACHE_DASHBOARD, value.toJson());
-    }).catchError((e) {
-      showCategoryShimmer(false);
-    });
+    await CoreServiceApis.getDashboardDetailOtherData()
+        .then((value) async {
+          await createCategorySections(value.data, false);
+          showCategoryShimmer(false);
+          DashboardModel res = dashboardDetail.value;
+          dashboardDetail(value.data);
+          dashboardDetail.value.slider = res.slider;
+          dashboardDetail.value.continueWatch = res.continueWatch;
+          dashboardDetail.value.top10List = res.top10List;
+          cachedDashboardDetailResponse = value;
+          setValue(SharedPreferenceConst.CACHE_DASHBOARD, value.toJson());
+        })
+        .catchError((e) {
+          showCategoryShimmer(false);
+        });
   }
 
-  Future<void> createCategorySections(DashboardModel dashboard, bool isFirstPage) async {
+  Future<void> createCategorySections(
+    DashboardModel dashboard,
+    bool isFirstPage,
+  ) async {
     isLoading(true);
     if (isFirstPage) sectionList.clear();
     if (!appConfigs.value.enableMovie) {
-      dashboard.basedOnLastWatchMovieList.removeWhere((element) => element.type == VideoType.movie);
-      dashboard.trendingInCountryMovieList.removeWhere((element) => element.type == VideoType.movie);
-      dashboard.trendingMovieList.removeWhere((element) => element.type == VideoType.movie);
-      dashboard.likeMovieList.removeWhere((element) => element.type == VideoType.movie);
-      dashboard.viewedMovieList.removeWhere((element) => element.type == VideoType.movie);
-      dashboard.payPerView.removeWhere((element) => element.type == VideoType.movie);
+      dashboard.basedOnLastWatchMovieList.removeWhere(
+        (element) => element.type == VideoType.movie,
+      );
+      dashboard.trendingInCountryMovieList.removeWhere(
+        (element) => element.type == VideoType.movie,
+      );
+      dashboard.trendingMovieList.removeWhere(
+        (element) => element.type == VideoType.movie,
+      );
+      dashboard.likeMovieList.removeWhere(
+        (element) => element.type == VideoType.movie,
+      );
+      dashboard.viewedMovieList.removeWhere(
+        (element) => element.type == VideoType.movie,
+      );
+      dashboard.payPerView.removeWhere(
+        (element) => element.type == VideoType.movie,
+      );
     }
 
     if (!appConfigs.value.enableTvShow) {
-      dashboard.basedOnLastWatchMovieList.removeWhere((element) => element.type == VideoType.tvshow);
-      dashboard.trendingInCountryMovieList.removeWhere((element) => element.type == VideoType.tvshow);
-      dashboard.trendingMovieList.removeWhere((element) => element.type == VideoType.tvshow);
-      dashboard.likeMovieList.removeWhere((element) => element.type == VideoType.tvshow);
-      dashboard.viewedMovieList.removeWhere((element) => element.type == VideoType.tvshow);
-      dashboard.payPerView.removeWhere((element) => element.type == VideoType.tvshow || element.type == VideoType.episode);
+      dashboard.basedOnLastWatchMovieList.removeWhere(
+        (element) => element.type == VideoType.tvshow,
+      );
+      dashboard.trendingInCountryMovieList.removeWhere(
+        (element) => element.type == VideoType.tvshow,
+      );
+      dashboard.trendingMovieList.removeWhere(
+        (element) => element.type == VideoType.tvshow,
+      );
+      dashboard.likeMovieList.removeWhere(
+        (element) => element.type == VideoType.tvshow,
+      );
+      dashboard.viewedMovieList.removeWhere(
+        (element) => element.type == VideoType.tvshow,
+      );
+      dashboard.payPerView.removeWhere(
+        (element) =>
+            element.type == VideoType.tvshow ||
+            element.type == VideoType.episode,
+      );
     }
 
     if (!appConfigs.value.enableVideo) {
-      dashboard.basedOnLastWatchMovieList.removeWhere((element) => element.type == VideoType.video);
-      dashboard.trendingInCountryMovieList.removeWhere((element) => element.type == VideoType.video);
-      dashboard.trendingMovieList.removeWhere((element) => element.type == VideoType.video);
-      dashboard.likeMovieList.removeWhere((element) => element.type == VideoType.video);
-      dashboard.viewedMovieList.removeWhere((element) => element.type == VideoType.video);
-      dashboard.payPerView.removeWhere((element) => element.type == VideoType.video);
+      dashboard.basedOnLastWatchMovieList.removeWhere(
+        (element) => element.type == VideoType.video,
+      );
+      dashboard.trendingInCountryMovieList.removeWhere(
+        (element) => element.type == VideoType.video,
+      );
+      dashboard.trendingMovieList.removeWhere(
+        (element) => element.type == VideoType.video,
+      );
+      dashboard.likeMovieList.removeWhere(
+        (element) => element.type == VideoType.video,
+      );
+      dashboard.viewedMovieList.removeWhere(
+        (element) => element.type == VideoType.video,
+      );
+      dashboard.payPerView.removeWhere(
+        (element) => element.type == VideoType.video,
+      );
     }
 
-    if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.top10).isNegative && dashboard.top10List.isNotEmpty) {
+    if (sectionList
+            .indexWhere(
+              (element) => element.sectionType == DashboardCategoryType.top10,
+            )
+            .isNegative &&
+        dashboard.top10List.isNotEmpty) {
       sectionList.add(
         CategoryListModel(
           name: locale.value.top10,
@@ -192,7 +265,13 @@ class HomeController extends GetxController {
       );
     }
 
-    if (appConfigs.value.enableAds.getBoolInt() && sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.advertisement).isNegative) {
+    if (appConfigs.value.enableAds.getBoolInt() &&
+        sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.advertisement,
+            )
+            .isNegative) {
       sectionList.add(
         CategoryListModel(
           name: "",
@@ -202,7 +281,14 @@ class HomeController extends GetxController {
       );
     }
 
-    if (appConfigs.value.enableMovie && sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.latestMovies).isNegative && (dashboard.latestList?.data?.isNotEmpty ?? false)) {
+    if (appConfigs.value.enableMovie &&
+        sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.latestMovies,
+            )
+            .isNegative &&
+        (dashboard.latestList?.data?.isNotEmpty ?? false)) {
       sectionList.add(
         CategoryListModel(
           name: locale.value.latestMovies,
@@ -210,7 +296,11 @@ class HomeController extends GetxController {
           data: dashboard.latestList?.data ?? [],
         ),
       );
-      if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.customAd).isNegative) {
+      if (sectionList
+          .indexWhere(
+            (element) => element.sectionType == DashboardCategoryType.customAd,
+          )
+          .isNegative) {
         sectionList.add(
           CategoryListModel(
             name: "",
@@ -221,7 +311,14 @@ class HomeController extends GetxController {
       }
     }
 
-    if (appConfigs.value.enableLiveTv && sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.channels).isNegative && (dashboard.topChannelList?.data?.isNotEmpty ?? false)) {
+    if (appConfigs.value.enableLiveTv &&
+        sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.channels,
+            )
+            .isNegative &&
+        (dashboard.topChannelList?.data?.isNotEmpty ?? false)) {
       sectionList.add(
         CategoryListModel(
           name: dashboard.topChannelList?.name ?? '',
@@ -233,10 +330,19 @@ class HomeController extends GetxController {
     }
 
     if (appConfigs.value.enableMovie &&
-        sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.movie).isNegative &&
+        sectionList
+            .indexWhere(
+              (element) => element.sectionType == DashboardCategoryType.movie,
+            )
+            .isNegative &&
         (dashboard.popularMovieList?.data?.isNotEmpty ?? false) &&
-        sectionList.indexWhere((element) => element.name == locale.value.popularMovies).isNegative) {
-      setValue(SharedPreferenceConst.POPULAR_MOVIE, jsonEncode(dashboard.popularMovieList));
+        sectionList
+            .indexWhere((element) => element.name == locale.value.popularMovies)
+            .isNegative) {
+      setValue(
+        SharedPreferenceConst.POPULAR_MOVIE,
+        jsonEncode(dashboard.popularMovieList),
+      );
       sectionList.add(
         CategoryListModel(
           name: locale.value.popularMovies,
@@ -247,7 +353,16 @@ class HomeController extends GetxController {
       );
     }
 
-    if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.payPerView).isNegative && dashboard.payPerView.isNotEmpty && sectionList.indexWhere((element) => element.name == 'Pay Per View').isNegative) {
+    if (sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.payPerView,
+            )
+            .isNegative &&
+        dashboard.payPerView.isNotEmpty &&
+        sectionList
+            .indexWhere((element) => element.name == 'Pay Per View')
+            .isNegative) {
       sectionList.add(
         CategoryListModel(
           name: locale.value.payPerView,
@@ -257,7 +372,13 @@ class HomeController extends GetxController {
         ),
       );
     }
-    if (appConfigs.value.enableTvShow && sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.tvShow).isNegative && (dashboard.popularTvShowList?.data?.isNotEmpty ?? false)) {
+    if (appConfigs.value.enableTvShow &&
+        sectionList
+            .indexWhere(
+              (element) => element.sectionType == DashboardCategoryType.tvShow,
+            )
+            .isNegative &&
+        (dashboard.popularTvShowList?.data?.isNotEmpty ?? false)) {
       sectionList.add(
         CategoryListModel(
           name: dashboard.popularTvShowList?.name ?? '',
@@ -268,7 +389,13 @@ class HomeController extends GetxController {
       );
     }
 
-    if (appConfigs.value.enableVideo && sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.video).isNegative && (dashboard.popularVideoList?.data?.isNotEmpty ?? false)) {
+    if (appConfigs.value.enableVideo &&
+        sectionList
+            .indexWhere(
+              (element) => element.sectionType == DashboardCategoryType.video,
+            )
+            .isNegative &&
+        (dashboard.popularVideoList?.data?.isNotEmpty ?? false)) {
       sectionList.add(
         CategoryListModel(
           name: dashboard.popularVideoList?.name ?? '',
@@ -280,9 +407,15 @@ class HomeController extends GetxController {
     }
 
     if (appConfigs.value.enableMovie &&
-        sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.free).isNegative &&
+        sectionList
+            .indexWhere(
+              (element) => element.sectionType == DashboardCategoryType.free,
+            )
+            .isNegative &&
         (dashboard.freeMovieList?.data?.isNotEmpty ?? false) &&
-        sectionList.indexWhere((element) => element.name == locale.value.freeMovies).isNegative) {
+        sectionList
+            .indexWhere((element) => element.name == locale.value.freeMovies)
+            .isNegative) {
       sectionList.add(
         CategoryListModel(
           name: dashboard.freeMovieList?.name ?? '',
@@ -293,7 +426,15 @@ class HomeController extends GetxController {
       );
     }
 
-    if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.genres).isNegative && (dashboard.genreList?.data.isNotEmpty ?? false) && sectionList.indexWhere((element) => element.name == locale.value.genres).isNegative) {
+    if (sectionList
+            .indexWhere(
+              (element) => element.sectionType == DashboardCategoryType.genres,
+            )
+            .isNegative &&
+        (dashboard.genreList?.data.isNotEmpty ?? false) &&
+        sectionList
+            .indexWhere((element) => element.name == locale.value.genres)
+            .isNegative) {
       sectionList.add(
         CategoryListModel(
           name: dashboard.genreList?.name ?? locale.value.genres,
@@ -304,56 +445,100 @@ class HomeController extends GetxController {
       );
     }
 
-    if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.language).isNegative && (dashboard.popularLanguageList?.data?.isNotEmpty ?? false)) {
-      sectionList.add(CategoryListModel(
-        name: dashboard.popularLanguageList?.name ?? '',
-        sectionType: DashboardCategoryType.language,
-        data: dashboard.popularLanguageList?.data ?? [],
-        showViewAll: dashboard.popularLanguageList?.data?.isNotEmpty ?? false,
-      ));
+    if (sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.language,
+            )
+            .isNegative &&
+        (dashboard.popularLanguageList?.data?.isNotEmpty ?? false)) {
+      sectionList.add(
+        CategoryListModel(
+          name: dashboard.popularLanguageList?.name ?? '',
+          sectionType: DashboardCategoryType.language,
+          data: dashboard.popularLanguageList?.data ?? [],
+          showViewAll: dashboard.popularLanguageList?.data?.isNotEmpty ?? false,
+        ),
+      );
     }
 
-    if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.personality).isNegative &&
+    if (sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.personality,
+            )
+            .isNegative &&
         (dashboard.actorList?.data.isNotEmpty ?? false) &&
-        sectionList.indexWhere((element) => element.name == locale.value.actors).isNegative) {
-      sectionList.add(CategoryListModel(
-        name: dashboard.actorList?.name ?? "",
-        sectionType: DashboardCategoryType.personality,
-        data: dashboard.actorList?.data ?? [],
-        showViewAll: dashboard.actorList?.data.isNotEmpty ?? false,
-      ));
+        sectionList
+            .indexWhere((element) => element.name == locale.value.actors)
+            .isNegative) {
+      sectionList.add(
+        CategoryListModel(
+          name: dashboard.actorList?.name ?? "",
+          sectionType: DashboardCategoryType.personality,
+          data: dashboard.actorList?.data ?? [],
+          showViewAll: dashboard.actorList?.data.isNotEmpty ?? false,
+        ),
+      );
     }
 
-    if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.trending).isNegative && dashboard.trendingMovieList.isNotEmpty) {
-      sectionList.add(CategoryListModel(
-        name: locale.value.trendingMovies,
-        sectionType: DashboardCategoryType.trending,
-        data: dashboard.trendingMovieList,
-        showViewAll: true,
-      ));
+    if (sectionList
+            .indexWhere(
+              (element) =>
+                  element.sectionType == DashboardCategoryType.trending,
+            )
+            .isNegative &&
+        dashboard.trendingMovieList.isNotEmpty) {
+      sectionList.add(
+        CategoryListModel(
+          name: locale.value.trendingMovies,
+          sectionType: DashboardCategoryType.trending,
+          data: dashboard.trendingMovieList,
+          showViewAll: true,
+        ),
+      );
     }
 
     if (isLoggedIn.value) {
-
-      if (dashboard.trendingInCountryMovieList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.trendingInYourCountry).isNegative) {
-        sectionList.add(CategoryListModel(
-          name: locale.value.trendingInYourCountry,
-          sectionType: DashboardCategoryType.personalised,
-          data: dashboard.trendingInCountryMovieList,
-          showViewAll: false,
-        ));
+      if (dashboard.trendingInCountryMovieList.isNotEmpty &&
+          sectionList
+              .indexWhere(
+                (element) => element.name == locale.value.trendingInYourCountry,
+              )
+              .isNegative) {
+        sectionList.add(
+          CategoryListModel(
+            name: locale.value.trendingInYourCountry,
+            sectionType: DashboardCategoryType.personalised,
+            data: dashboard.trendingInCountryMovieList,
+            showViewAll: false,
+          ),
+        );
       }
 
-      if (dashboard.favGenreList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.favoriteGenres).isNegative) {
-        sectionList.add(CategoryListModel(
-          name: locale.value.favoriteGenres,
-          sectionType: DashboardCategoryType.genres,
-          data: dashboard.favGenreList,
-          showViewAll: false,
-        ));
+      if (dashboard.favGenreList.isNotEmpty &&
+          sectionList
+              .indexWhere(
+                (element) => element.name == locale.value.favoriteGenres,
+              )
+              .isNegative) {
+        sectionList.add(
+          CategoryListModel(
+            name: locale.value.favoriteGenres,
+            sectionType: DashboardCategoryType.genres,
+            data: dashboard.favGenreList,
+            showViewAll: false,
+          ),
+        );
       }
 
-      if ((dashboard.basedOnLastWatchMovieList.isNotEmpty) && sectionList.indexWhere((element) => element.name == locale.value.basedOnYourPreviousWatch).isNegative) {
+      if ((dashboard.basedOnLastWatchMovieList.isNotEmpty) &&
+          sectionList
+              .indexWhere(
+                (element) =>
+                    element.name == locale.value.basedOnYourPreviousWatch,
+              )
+              .isNegative) {
         sectionList.add(
           CategoryListModel(
             name: locale.value.basedOnYourPreviousWatch,
@@ -364,18 +549,33 @@ class HomeController extends GetxController {
         );
       }
 
-      if (sectionList.indexWhere((element) => element.sectionType == DashboardCategoryType.personality).isNegative &&
+      if (sectionList
+              .indexWhere(
+                (element) =>
+                    element.sectionType == DashboardCategoryType.personality,
+              )
+              .isNegative &&
           (dashboard.favActorList.isNotEmpty) &&
-          sectionList.indexWhere((element) => element.name == locale.value.yourFavoritePersonalities).isNegative) {
-        sectionList.add(CategoryListModel(
-          name: locale.value.yourFavoritePersonalities,
-          sectionType: DashboardCategoryType.personality,
-          data: dashboard.favActorList,
-          showViewAll: false,
-        ));
+          sectionList
+              .indexWhere(
+                (element) =>
+                    element.name == locale.value.yourFavoritePersonalities,
+              )
+              .isNegative) {
+        sectionList.add(
+          CategoryListModel(
+            name: locale.value.yourFavoritePersonalities,
+            sectionType: DashboardCategoryType.personality,
+            data: dashboard.favActorList,
+            showViewAll: false,
+          ),
+        );
       }
 
-      if ((dashboard.viewedMovieList.isNotEmpty) && sectionList.indexWhere((element) => element.name == locale.value.mostViewed).isNegative) {
+      if ((dashboard.viewedMovieList.isNotEmpty) &&
+          sectionList
+              .indexWhere((element) => element.name == locale.value.mostViewed)
+              .isNegative) {
         sectionList.add(
           CategoryListModel(
             name: locale.value.mostViewed,
@@ -385,7 +585,10 @@ class HomeController extends GetxController {
           ),
         );
       }
-      if (dashboard.likeMovieList.isNotEmpty && sectionList.indexWhere((element) => element.name == locale.value.mostLiked).isNegative) {
+      if (dashboard.likeMovieList.isNotEmpty &&
+          sectionList
+              .indexWhere((element) => element.name == locale.value.mostLiked)
+              .isNegative) {
         sectionList.add(
           CategoryListModel(
             name: locale.value.mostLiked,
@@ -397,13 +600,12 @@ class HomeController extends GetxController {
       }
     }
 
-    if (appConfigs.value.enableRateUs && sectionList.indexWhere((element) => element.sectionType != "rate-our-app").isNegative) {
+    if (appConfigs.value.enableRateUs &&
+        sectionList
+            .indexWhere((element) => element.sectionType != "rate-our-app")
+            .isNegative) {
       sectionList.add(
-        CategoryListModel(
-          name: "",
-          sectionType: "rate-our-app",
-          data: [],
-        ),
+        CategoryListModel(name: "", sectionType: "rate-our-app", data: []),
       );
     }
     isLoading(false);
@@ -421,49 +623,70 @@ class HomeController extends GetxController {
     dashboardDetail.refresh();
     if (addToWatchList) {
       CoreServiceApis.saveWatchList(
-        request: {
-          "entertainment_id": dashboardDetail.value.slider?[index].data.id,
-          if (profileId.value != 0) "profile_id": profileId.value,
-        },
-      ).then((value) async {
-        await getDashboardDetail();
-        successSnackBar(locale.value.addedToWatchList);
-        updateWatchList();
-      }).catchError((e) {
-        errorSnackBar(error: e);
-      }).whenComplete(() {
-        isWatchListLoading(false);
-      });
+            request: {
+              "entertainment_id": dashboardDetail.value.slider?[index].data.id,
+              if (profileId.value != 0) "profile_id": profileId.value,
+            },
+          )
+          .then((value) async {
+            await getDashboardDetail();
+            successSnackBar(locale.value.addedToWatchList);
+            updateWatchList();
+          })
+          .catchError((e) {
+            errorSnackBar(error: e);
+          })
+          .whenComplete(() {
+            isWatchListLoading(false);
+          });
     } else {
-      CoreServiceApis.deleteFromWatchlist(idList: [dashboardDetail.value.slider?[index].data.id ?? -1]).then((value) async {
-        await getDashboardDetail();
-        successSnackBar(locale.value.removedFromWatchList);
-        updateWatchList();
-      }).catchError((e) {
-        errorSnackBar(error: e);
-      }).whenComplete(() {
-        isWatchListLoading(false);
-      });
+      CoreServiceApis.deleteFromWatchlist(
+            idList: [dashboardDetail.value.slider?[index].data.id ?? -1],
+          )
+          .then((value) async {
+            await getDashboardDetail();
+            successSnackBar(locale.value.removedFromWatchList);
+            updateWatchList();
+          })
+          .catchError((e) {
+            errorSnackBar(error: e);
+          })
+          .whenComplete(() {
+            isWatchListLoading(false);
+          });
     }
   }
 
   void updateWatchList() {
-    Get.isRegistered<ProfileController>() ? Get.find<ProfileController>() : Get.put(ProfileController());
+    Get.isRegistered<ProfileController>()
+        ? Get.find<ProfileController>()
+        : Get.put(ProfileController());
 
-    WatchListController controller = Get.isRegistered<WatchListController>() ? Get.find<WatchListController>() : Get.put(WatchListController());
+    WatchListController controller = Get.isRegistered<WatchListController>()
+        ? Get.find<WatchListController>()
+        : Get.put(WatchListController());
     controller.getWatchList(showLoader: false);
   }
 
   Future<void> startAutoSlider() async {
-    if ((dashboardDetail.value.slider?.length ?? 0) >= 2 && !isWatchListLoading.value) {
-      timer.value = Timer.periodic(const Duration(milliseconds: DASHBOARD_AUTO_SLIDER_SECOND), (Timer timer) {
-        if (_currentPage < (dashboardDetail.value.slider?.length ?? 0) - 1) {
-          _currentPage.value++;
-        } else {
-          _currentPage.value = 0;
-        }
-        if (sliderPageController.value.hasClients) sliderPageController.value.animateToPage(_currentPage.value, duration: const Duration(milliseconds: 950), curve: Curves.easeOutQuart);
-      });
+    if ((dashboardDetail.value.slider?.length ?? 0) >= 2 &&
+        !isWatchListLoading.value) {
+      timer.value = Timer.periodic(
+        const Duration(milliseconds: DASHBOARD_AUTO_SLIDER_SECOND),
+        (Timer timer) {
+          if (_currentPage < (dashboardDetail.value.slider?.length ?? 0) - 1) {
+            _currentPage.value++;
+          } else {
+            _currentPage.value = 0;
+          }
+          if (sliderPageController.value.hasClients)
+            sliderPageController.value.animateToPage(
+              _currentPage.value,
+              duration: const Duration(milliseconds: 950),
+              curve: Curves.easeOutQuart,
+            );
+        },
+      );
       sliderPageController.value.addListener(() {
         _currentPage.value = sliderPageController.value.page!.toInt();
       });

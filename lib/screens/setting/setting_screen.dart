@@ -349,9 +349,11 @@ class SettingScreen extends StatelessWidget {
       Get.to(() => SubscriptionHistoryScreen());
     } else if (aboutDataModel.title == "Rental History") {
       Get.to(() => RentalHistoryScreen());
-    } else if (aboutDataModel.title == locale.value.yourDownloads) {
-      Get.to(() => DownloadVideosScreen());
-    } else if (aboutDataModel.title == locale.value.watchlist) {
+    } 
+    // else if (aboutDataModel.title == locale.value.yourDownloads) {
+    //   Get.to(() => DownloadVideosScreen());
+    // } 
+    else if (aboutDataModel.title == locale.value.watchlist) {
       Get.to(() => WatchListScreen());
     } else if ((aboutDataModel.slug == AppPages.aboutUs ||
         aboutDataModel.slug == AppPages.privacyPolicy ||

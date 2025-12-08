@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/components/app_scaffold.dart';
 import 'package:zatra_tv/configs.dart';
 import 'package:zatra_tv/generated/assets.dart';
 import 'package:zatra_tv/main.dart';

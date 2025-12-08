@@ -250,14 +250,14 @@ class SettingController extends GetxController {
           showArrow: true,
         ),
       );
-      settingList.add(
-        SettingModel(
-          icon: Assets.iconsIcDownload,
-          title: locale.value.yourDownloads,
-          subTitle: "",
-          showArrow: true,
-        ),
-      );
+      // settingList.add(
+      //   SettingModel(
+      //     icon: Assets.iconsIcDownload,
+      //     title: locale.value.yourDownloads,
+      //     subTitle: "",
+      //     showArrow: true,
+      //   ),
+      // );
       settingList.add(
         SettingModel(
           icon: Assets.iconsIcPaymentHistory,

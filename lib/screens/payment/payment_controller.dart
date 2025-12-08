@@ -17,15 +17,15 @@ import '../../utils/common_base.dart';
 import '../coupon/coupon_list_controller.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../subscription/model/subscription_plan_model.dart';
-import 'payment_gateways/flutter_wave_service.dart';
 
 class PaymentController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isPaymentLoading = false.obs;
   RxString paymentOption = PaymentMethods.PAYMENT_METHOD_STRIPE.obs;
   RxList<PaymentSetting> originalPaymentList = RxList();
-  Rx<Future<RxList<PaymentSetting>>> getPaymentFuture =
-      Future(() => RxList<PaymentSetting>()).obs;
+  Rx<Future<RxList<PaymentSetting>>> getPaymentFuture = Future(
+    () => RxList<PaymentSetting>(),
+  ).obs;
   Rx<SubscriptionPlanModel> selectPlan = SubscriptionPlanModel().obs;
   RxDouble price = 0.0.obs;
   RxDouble discount = 0.0.obs;
@@ -34,9 +34,6 @@ class PaymentController extends GetxController {
   Rx<DateTime> currentDate = DateTime.now().obs;
   Rx<PaymentSetting> selectPayment = PaymentSetting().obs;
   Rx<VideoPlayerModel> videoPlayerModel = VideoPlayerModel().obs;
-
-  // Payment Class
-  FlutterWaveService flutterWaveServices = FlutterWaveService();
 
   Rx<Future<RxBool>> getPaymentInitialized = Future(() => false.obs).obs;
 
@@ -75,28 +72,32 @@ class PaymentController extends GetxController {
     isLoading(true);
     await couponListClassCont
         .getCouponList(
-      selectedPlanId: selectPlan.value.planId.toString(),
-      perPageItem: 2,
-    )
+          selectedPlanId: selectPlan.value.planId.toString(),
+          perPageItem: 2,
+        )
         .then((value) {
-      isLoading(false);
-    }).onError((error, stackTrace) {
-      isLoading(false);
-      log('Coupon List Error: ${error.toString()}');
-    });
+          isLoading(false);
+        })
+        .onError((error, stackTrace) {
+          isLoading(false);
+          log('Coupon List Error: ${error.toString()}');
+        });
   }
 
   Future<void> getAppConfigurations() async {
     isPaymentLoading(true);
     await AuthServiceApis.getAppConfigurations(forceSync: true)
         .then((value) async {
-      getPaymentInitialized(Future(() async => getPayment()))
-          .whenComplete(() => isLoading(false));
-    }).onError((error, stackTrace) {
-      toast(error.toString());
-    }).whenComplete(() {
-      isPaymentLoading(false);
-    });
+          getPaymentInitialized(
+            Future(() async => getPayment()),
+          ).whenComplete(() => isLoading(false));
+        })
+        .onError((error, stackTrace) {
+          toast(error.toString());
+        })
+        .whenComplete(() {
+          isPaymentLoading(false);
+        });
   }
 
   Future<void> initInAppPurchase() async {}
@@ -112,8 +113,9 @@ class PaymentController extends GetxController {
           title: "SslCommerz",
           type: PaymentMethods.PAYMENT_METHOD_STRIPE,
           liveValue: LiveValue(
-              stripePublickey: appConfigs.value.stripePay.stripePublickey,
-              stripeKey: appConfigs.value.stripePay.stripeSecretkey),
+            stripePublickey: appConfigs.value.stripePay.stripePublickey,
+            stripeKey: appConfigs.value.stripePay.stripeSecretkey,
+          ),
         ),
       );
     }
@@ -122,10 +124,12 @@ class PaymentController extends GetxController {
     return true.obs;
   }
 
-//saveSubscriptionDetails
+  //saveSubscriptionDetails
 
-  void saveSubscriptionDetails(
-      {required String transactionId, required String paymentType}) {
+  void saveSubscriptionDetails({
+    required String transactionId,
+    required String paymentType,
+  }) {
     isLoading(true);
     Map<String, dynamic> request = {
       "plan_id": selectPlan.value.planId,
@@ -139,7 +143,9 @@ class PaymentController extends GetxController {
 
     if (couponListClassCont.appliedCouponData.value.code.isNotEmpty) {
       request.putIfAbsent(
-          'coupon_id', () => couponListClassCont.appliedCouponData.value.id);
+        'coupon_id',
+        () => couponListClassCont.appliedCouponData.value.id,
+      );
     }
 
     if (paymentType == PaymentMethods.PAYMENT_METHOD_IN_APP_PURCHASE) {
@@ -150,56 +156,67 @@ class PaymentController extends GetxController {
             : selectPlan.value.googleInAppPurchaseIdentifier,
       );
     }
-    CoreServiceApis.saveSubscriptionDetails(
-      request: request,
-    ).then((value) async {
-      if (launchDashboard.value) {
-        Get.offAll(() =>
-            DashboardScreen(dashboardController: getDashboardController()));
-      } else {
-        Get.back();
-        Get.back();
-      }
-      getDashboardController().getActiveVastAds();
-      getDashboardController().getActiveCustomAds().then((value) {
-        getDashboardController().adPlayerController.getCustomAds();
-      });
+    CoreServiceApis.saveSubscriptionDetails(request: request)
+        .then((value) async {
+          if (launchDashboard.value) {
+            Get.offAll(
+              () => DashboardScreen(
+                dashboardController: getDashboardController(),
+              ),
+            );
+          } else {
+            Get.back();
+            Get.back();
+          }
+          getDashboardController().getActiveVastAds();
+          getDashboardController().getActiveCustomAds().then((value) {
+            getDashboardController().adPlayerController.getCustomAds();
+          });
 
-      setValue(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
-      // successSnackBar(value.message.toString());
-      currentSubscription(value.data);
-      if (currentSubscription.value.level > -1 &&
-          currentSubscription.value.planType.isNotEmpty &&
-          currentSubscription.value.planType
-              .any((element) => element.slug == SubscriptionTitle.videoCast)) {
-        isCastingSupported(currentSubscription.value.planType
-            .firstWhere(
-                (element) => element.slug == SubscriptionTitle.videoCast)
-            .limitationValue
-            .getBoolInt());
-      } else {
-        isCastingSupported(false);
-      }
-      currentSubscription.value.activePlanInAppPurchaseIdentifier = isIOS
-          ? currentSubscription.value.appleInAppPurchaseIdentifier
-          : currentSubscription.value.googleInAppPurchaseIdentifier;
-      setValue(
-          SharedPreferenceConst.USER_SUBSCRIPTION_DATA, value.data.toJson());
-      setValue(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
+          setValue(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
+          // successSnackBar(value.message.toString());
+          currentSubscription(value.data);
+          if (currentSubscription.value.level > -1 &&
+              currentSubscription.value.planType.isNotEmpty &&
+              currentSubscription.value.planType.any(
+                (element) => element.slug == SubscriptionTitle.videoCast,
+              )) {
+            isCastingSupported(
+              currentSubscription.value.planType
+                  .firstWhere(
+                    (element) => element.slug == SubscriptionTitle.videoCast,
+                  )
+                  .limitationValue
+                  .getBoolInt(),
+            );
+          } else {
+            isCastingSupported(false);
+          }
+          currentSubscription.value.activePlanInAppPurchaseIdentifier = isIOS
+              ? currentSubscription.value.appleInAppPurchaseIdentifier
+              : currentSubscription.value.googleInAppPurchaseIdentifier;
+          setValue(
+            SharedPreferenceConst.USER_SUBSCRIPTION_DATA,
+            value.data.toJson(),
+          );
+          setValue(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
 
-      successSnackBar(value.message.toString());
-    }).catchError((e) {
-      isLoading(false);
-      errorSnackBar(error: e);
-    }).whenComplete(() {
-      isLoading(false);
-    });
+          successSnackBar(value.message.toString());
+        })
+        .catchError((e) {
+          isLoading(false);
+          errorSnackBar(error: e);
+        })
+        .whenComplete(() {
+          isLoading(false);
+        });
   }
 
-  Future<void> saveRentDetails(
-      {required String transactionId,
-      required String paymentType,
-      required VoidCallback onSuccess}) async {
+  Future<void> saveRentDetails({
+    required String transactionId,
+    required String paymentType,
+    required VoidCallback onSuccess,
+  }) async {
     if (isLoading.value) return;
     isLoading(true);
     String typeValue = videoPlayerModel.value.type.validate();
@@ -220,27 +237,31 @@ class PaymentController extends GetxController {
       "type": typeValue,
     };
 
-    await CoreServiceApis.saveRentDetails(request: request).then((value) async {
-      Get.back();
-      videoPlayerModel.refresh();
-      if (videoPlayerModel.value.type == VideoType.movie) {
-        final movieDetCont = Get.find<MovieDetailsController>();
-        movieDetCont.getMovieDetail();
-      } else if (videoPlayerModel.value.type == VideoType.episode ||
-          typeValue == VideoType.episode) {
-        final tvShowCont = Get.find<TvShowController>();
-        tvShowCont.refresh();
-        tvShowCont.getEpisodeDetail(
-            episodeId: videoPlayerModel.value.episodeId);
-      } else if (videoPlayerModel.value.type == VideoType.video) {
-        final videoCont = Get.find<VideoDetailsController>();
-        videoCont.getMovieDetail();
-      }
-      onSuccess.call();
-    }).catchError((e) {
-      errorSnackBar(error: e);
-    }).whenComplete(() async {
-      isLoading(false);
-    });
+    await CoreServiceApis.saveRentDetails(request: request)
+        .then((value) async {
+          Get.back();
+          videoPlayerModel.refresh();
+          if (videoPlayerModel.value.type == VideoType.movie) {
+            final movieDetCont = Get.find<MovieDetailsController>();
+            movieDetCont.getMovieDetail();
+          } else if (videoPlayerModel.value.type == VideoType.episode ||
+              typeValue == VideoType.episode) {
+            final tvShowCont = Get.find<TvShowController>();
+            tvShowCont.refresh();
+            tvShowCont.getEpisodeDetail(
+              episodeId: videoPlayerModel.value.episodeId,
+            );
+          } else if (videoPlayerModel.value.type == VideoType.video) {
+            final videoCont = Get.find<VideoDetailsController>();
+            videoCont.getMovieDetail();
+          }
+          onSuccess.call();
+        })
+        .catchError((e) {
+          errorSnackBar(error: e);
+        })
+        .whenComplete(() async {
+          isLoading(false);
+        });
   }
 }
