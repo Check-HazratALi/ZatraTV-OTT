@@ -64,19 +64,12 @@ class TvShowScreen extends StatelessWidget {
                       tvShowController.currentEpisodeIndex.value <
                       tvShowController.episodeList.length,
                   onWatchNow: () {
-                    // ট্রেইলার বন্ধ করুন এবং অ্যাকচুয়াল ভিডিও চালু করুন
-                    tvShowController.isTrailer(false);
-
-                    // বর্তমান এপিসোডের অ্যাকচুয়াল ভিডিও চালান
-                    if (tvShowController.currentEpisodeIndex.value >= 0) {
-                      tvShowController.getEpisodeDetail(
-                        episodeId: tvShowController.selectedEpisode.value.id,
-                        tvShowId:
-                            tvShowController.showData.value.entertainmentId,
-                        changeVideo: true,
-                        isWatchVideo: true,
-                      );
-                    }
+                    tvShowController.currentEpisodeIndex.value++;
+                    tvShowController.playNextEpisode(
+                      tvShowController.episodeList[tvShowController
+                          .currentEpisodeIndex
+                          .value],
+                    );
                   },
                   onWatchNextEpisode: () {
                     if (tvShowController.currentEpisodeIndex.value <

@@ -50,15 +50,21 @@ class PosterCardComponent extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: onTap ??
+      onTap:
+          onTap ??
           () {
             if (isLoading) return;
-            if (posterDetail.releaseDate.isNotEmpty && isComingSoon(posterDetail.releaseDate)) {
-              ComingSoonController comingSoonCont = Get.put(ComingSoonController());
+            if (posterDetail.releaseDate.isNotEmpty &&
+                isComingSoon(posterDetail.releaseDate)) {
+              ComingSoonController comingSoonCont = Get.put(
+                ComingSoonController(),
+              );
               Get.to(
                 () => ComingSoonDetailScreen(
                   comingSoonCont: comingSoonCont,
-                  comingSoonData: ComingSoonModel.fromJson(posterDetail.toJson()),
+                  comingSoonData: ComingSoonModel.fromJson(
+                    posterDetail.toJson(),
+                  ),
                 ),
               );
             } else {
@@ -77,7 +83,8 @@ class PosterCardComponent extends StatelessWidget {
               } else {
                 if (posterDetail.type == VideoType.movie) {
                   Get.to(() => MovieDetailsScreen(), arguments: posterDetail);
-                } else if (posterDetail.type == VideoType.tvshow || posterDetail.type == VideoType.episode) {
+                } else if (posterDetail.type == VideoType.tvshow ||
+                    posterDetail.type == VideoType.episode) {
                   Get.to(() => TvShowScreen(), arguments: posterDetail);
                 } else if (posterDetail.type == VideoType.video) {
                   Get.to(() => VideoDetailsScreen(), arguments: posterDetail);
@@ -103,7 +110,9 @@ class PosterCardComponent extends StatelessWidget {
               if (isLoading)
                 ShimmerWidget(
                   height: isTop10 ? 150 : height ?? double.infinity,
-                  width: width ?? (isSearch ? Get.width * 0.28 : Get.width / 3 - 24),
+                  width:
+                      width ??
+                      (isSearch ? Get.width * 0.28 : Get.width / 3 - 24),
                   radius: 12,
                 )
               else
@@ -115,7 +124,11 @@ class PosterCardComponent extends StatelessWidget {
                   alignment: Alignment.topCenter,
                 ),
               if (posterDetail.planId != 0)
-                if ((posterDetail.movieAccess == MovieAccess.paidAccess || posterDetail.access == MovieAccess.paidAccess) && isMoviePaid(requiredPlanLevel: posterDetail.requiredPlanLevel))
+                if ((posterDetail.movieAccess == MovieAccess.paidAccess ||
+                        posterDetail.access == MovieAccess.paidAccess) &&
+                    isMoviePaid(
+                      requiredPlanLevel: posterDetail.requiredPlanLevel,
+                    ))
                   Positioned(
                     top: 4,
                     left: 5,
@@ -133,9 +146,7 @@ class PosterCardComponent extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: const CachedImageWidget(
-                        url: Assets.iconsIcVector,
-                      ),
+                      child: const CachedImageWidget(url: Assets.iconsIcVector),
                     ),
                   ),
               if (posterDetail.movieAccess == MovieAccess.payPerView)
@@ -143,7 +154,10 @@ class PosterCardComponent extends StatelessWidget {
                   top: 4,
                   left: 5,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       color: rentedColor,
@@ -164,13 +178,15 @@ class PosterCardComponent extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          posterDetail.isPurchased == true ? locale.value.rented : locale.value.rent,
+                          posterDetail.isPurchased == true
+                              ? locale.value.rented
+                              : locale.value.rent,
                           style: secondaryTextStyle(color: white, size: 10),
                         ),
                       ],
                     ),
                   ),
-                )
+                ),
             ],
           ),
         ),
