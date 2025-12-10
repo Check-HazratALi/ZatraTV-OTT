@@ -35,7 +35,9 @@ class VideoDetailsScreen extends StatelessWidget {
         child: Obx(
           () => AnimatedScrollView(
             refreshIndicatorColor: appColorPrimary,
-            physics: isPipModeOn.value ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+            physics: isPipModeOn.value
+                ? NeverScrollableScrollPhysics()
+                : AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.only(bottom: 30),
             children: [
               AnimatedContainer(
@@ -45,20 +47,25 @@ class VideoDetailsScreen extends StatelessWidget {
                   isPipMode: isPipModeOn.value,
                   onWatchNow: () {
                     playMovie(
-                      continueWatchDuration: movieDetCont.movieData.value.watchedTime,
+                      continueWatchDuration:
+                          movieDetCont.movieData.value.watchedTime,
                       newURL: movieDetCont.movieData.value.videoUrlInput,
                       urlType: movieDetCont.movieData.value.videoUploadType,
                       videoType: movieDetCont.movieData.value.type,
                       isWatchVideo: true,
                     );
                   },
-                  videoModel: getVideoPlayerResp(movieDetCont.movieData.value.toJson()),
+                  videoModel: getVideoPlayerResp(
+                    movieDetCont.movieData.value.toJson(),
+                  ),
                 ),
               ),
               if (!isPipModeOn.value)
                 SnapHelperWidget(
                   future: movieDetCont.getMovieDetailsFuture.value,
-                  loadingWidget: movieDetCont.isLoading.isFalse ? const VideoDetailsShimmerScreen() : Offstage(),
+                  loadingWidget: movieDetCont.isLoading.isFalse
+                      ? const VideoDetailsShimmerScreen()
+                      : Offstage(),
                   errorBuilder: (error) {
                     return NoDataWidget(
                       titleTextStyle: secondaryTextStyle(color: white),

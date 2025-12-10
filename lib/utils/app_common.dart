@@ -157,7 +157,9 @@ Widget viewAllWidget({
       Text(
         label,
         style: commonPrimaryTextStyle(
-            size: labelSize ?? 18, color: labelColor ?? primaryTextColor),
+          size: labelSize ?? 18,
+          color: labelColor ?? primaryTextColor,
+        ),
       ).expand(),
       if (showViewAll)
         iconButton ??
@@ -173,15 +175,17 @@ Widget viewAllWidget({
             ),
     ],
   ).paddingSymmetric(
-      horizontal: isSymmetricPaddingEnable ? 16 : 0,
-      vertical: isSymmetricPaddingEnable ? 16 : 0);
+    horizontal: isSymmetricPaddingEnable ? 16 : 0,
+    vertical: isSymmetricPaddingEnable ? 16 : 0,
+  );
 }
 
-String getEndPoint(
-    {required String endPoint,
-    int? perPages,
-    int? page,
-    List<String>? params}) {
+String getEndPoint({
+  required String endPoint,
+  int? perPages,
+  int? page,
+  List<String>? params,
+}) {
   String perPage = "?per_page=$perPages";
   String pages = "&page=$page";
 
@@ -212,10 +216,12 @@ void checkCastSupported({required VoidCallback onCastSupported}) {
   } else {
     LiveStream().emit(podPlayerPauseKey);
     toast(
-        '${locale.value.castingNotSupported} ${locale.value.pleaseUpgradeToContinue}');
-    Get.to(() => SubscriptionScreen(launchDashboard: false),
-            preventDuplicates: false)
-        ?.then((v) {
+      '${locale.value.castingNotSupported} ${locale.value.pleaseUpgradeToContinue}',
+    );
+    Get.to(
+      () => SubscriptionScreen(launchDashboard: false),
+      preventDuplicates: false,
+    )?.then((v) {
       if (isCastingSupported.value) {
         onCastSupported.call();
       }
@@ -243,17 +249,10 @@ Widget watchNowButton({
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const CachedImageWidget(
-          url: Assets.iconsIcPlay,
-          height: 10,
-          width: 10,
-        ),
+        const CachedImageWidget(url: Assets.iconsIcPlay, height: 10, width: 10),
         12.width,
         Marquee(
-          child: Text(
-            locale.value.watchNow,
-            style: boldTextStyle(size: 14),
-          ),
+          child: Text(locale.value.watchNow, style: boldTextStyle(size: 14)),
         ).flexible(),
       ],
     ),
@@ -299,18 +298,16 @@ Widget rentAndPaidButton({
           color: Colors.white,
         ),
         12.width,
-        Text(
-          'Rent For',
-          style: boldTextStyle(size: 14),
-        ),
+        Text('Rent For', style: boldTextStyle(size: 14)),
         8.width,
         PriceWidget(
-            price: btnText,
-            discountedPrice: discountPrice,
-            discount: discount,
-            isDiscountedPrice: true,
-            color: white,
-            formatedPrice: btnText.toString()),
+          price: btnText,
+          discountedPrice: discountPrice,
+          discount: discount,
+          isDiscountedPrice: true,
+          color: white,
+          formatedPrice: btnText.toString(),
+        ),
       ],
     ),
     onTap: () async {
@@ -336,20 +333,19 @@ void onSubscriptionLoginCheck({
   if (isLoggedIn.value) {
     if (planId == 0 && planLevel == 0 && isFromSubscribeCard) {
       //This is to launch subscription screen when not to navigate from origin
-      Get.to(() => SubscriptionScreen(launchDashboard: false),
-          preventDuplicates: false);
+      print('Launching Subscription Screen');
     } else {
       if (videoAccess == MovieAccess.freeAccess && isSupportedDevice.value) {
         callBack.call();
       } else {
-         if(currentSubscription.value.name.isNotEmpty == true){
-           callBack.call();
+        if (currentSubscription.value.name.isNotEmpty == true) {
+          callBack.call();
+        } else {
+          Get.to(
+            () => SubscriptionScreen(launchDashboard: false),
+            preventDuplicates: false,
+          );
         }
-         else {
-           Get.to(() => SubscriptionScreen(launchDashboard: false),
-               preventDuplicates: false);
-        }
-
       }
     }
   } else {
@@ -357,8 +353,10 @@ void onSubscriptionLoginCheck({
   }
 }
 
-Future<void> handlePip(
-    {required dynamic controller, required BuildContext context}) async {
+Future<void> handlePip({
+  required dynamic controller,
+  required BuildContext context,
+}) async {
   if (isIOS) {
     if (controller.videoUrlInput.contains("youtube.com") ||
         controller.videoUrlInput.contains("youtu.be")) {
@@ -429,7 +427,8 @@ Future<void> handlePip(
             },
             onNavigationRequest: (NavigationRequest request) {
               if (request.url.startsWith(
-                  'https://youtu.be/smTK_AeAPHs?si=UQAlhFHgP-j1YSjG')) {
+                'https://youtu.be/smTK_AeAPHs?si=UQAlhFHgP-j1YSjG',
+              )) {
                 return NavigationDecision.prevent;
               }
               return NavigationDecision.navigate;
@@ -438,14 +437,15 @@ Future<void> handlePip(
         )
         ..loadRequest(
           Uri.parse(
-              'https://www.youtube.com/embed/smTK_AeAPHs?si=fmjqoFkRZb9eYbEm&controls=0&rel=0&modestbranding=1&showinfo=0'),
+            'https://www.youtube.com/embed/smTK_AeAPHs?si=fmjqoFkRZb9eYbEm&controls=0&rel=0&modestbranding=1&showinfo=0',
+          ),
         );
 
       WebViewWidget(controller: controller.webController).launch(context);
     } else {
       try {
         await MethodChannel("videoPlatform").invokeMethod('play', {
-          "data": controller.videoUrlInput
+          "data": controller.videoUrlInput,
           // "data": "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
           // "data": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4"
         });
@@ -485,31 +485,28 @@ Future<void> handlePip(
   }
 }
 
-List<(String, IconData, Color)> getSupportedDeviceText(
-    {bool isMobileSupported = false,
-    bool isDesktopSupported = false,
-    bool isTabletSupported = false}) {
+List<(String, IconData, Color)> getSupportedDeviceText({
+  bool isMobileSupported = false,
+  bool isDesktopSupported = false,
+  bool isTabletSupported = false,
+}) {
   List<(String, IconData, Color)> supportedDeviceText = [];
 
-  supportedDeviceText.add(
-    (
-      '${locale.value.mobile}${isMobileSupported ? locale.value.supported : locale.value.notSupported}',
-      isMobileSupported ? Icons.check_circle_outline_rounded : Icons.clear,
-      isMobileSupported ? discountColor : redColor,
-    ),
-  );
+  supportedDeviceText.add((
+    '${locale.value.mobile}${isMobileSupported ? locale.value.supported : locale.value.notSupported}',
+    isMobileSupported ? Icons.check_circle_outline_rounded : Icons.clear,
+    isMobileSupported ? discountColor : redColor,
+  ));
   supportedDeviceText.add((
     '${locale.value.laptop}${isDesktopSupported ? locale.value.supported : locale.value.notSupported}',
     isDesktopSupported ? Icons.check_circle_outline_rounded : Icons.clear,
     isDesktopSupported ? discountColor : redColor,
   ));
-  supportedDeviceText.add(
-    (
-      '${locale.value.tablet.suffixText(value: ' ')}${isTabletSupported ? locale.value.supported : locale.value.notSupported}',
-      isTabletSupported ? Icons.check_circle_outline_rounded : Icons.clear,
-      isTabletSupported ? discountColor : redColor,
-    ),
-  );
+  supportedDeviceText.add((
+    '${locale.value.tablet.suffixText(value: ' ')}${isTabletSupported ? locale.value.supported : locale.value.notSupported}',
+    isTabletSupported ? Icons.check_circle_outline_rounded : Icons.clear,
+    isTabletSupported ? discountColor : redColor,
+  ));
 
   return supportedDeviceText;
 }
@@ -603,15 +600,13 @@ Future<void> launchUrlCustomURL(String? url) async {
       Uri.parse(url.validate()),
       customTabsOptions: custom_tabs.CustomTabsOptions(
         colorSchemes: custom_tabs.CustomTabsColorSchemes.defaults(
-            toolbarColor: appColorPrimary),
+          toolbarColor: appColorPrimary,
+        ),
         animations: custom_tabs.CustomTabsSystemAnimations.slideIn(),
         urlBarHidingEnabled: true,
         shareState: custom_tabs.CustomTabsShareState.on,
         browser: custom_tabs.CustomTabsBrowserConfiguration(
-          fallbackCustomTabs: [
-            'org.mozilla.firefox',
-            'com.microsoft.emmx',
-          ],
+          fallbackCustomTabs: ['org.mozilla.firefox', 'com.microsoft.emmx'],
           headers: {'key': 'value'},
         ),
       ),
@@ -627,16 +622,19 @@ Future<void> launchUrlCustomURL(String? url) async {
   }
 }
 
-Future<void> checkApiCallIsWithinTimeSpan(
-    {bool forceSync = false,
-    required VoidCallback callback,
-    required String sharePreferencesKey,
-    Duration? duration}) async {
+Future<void> checkApiCallIsWithinTimeSpan({
+  bool forceSync = false,
+  required VoidCallback callback,
+  required String sharePreferencesKey,
+  Duration? duration,
+}) async {
   DateTime currentTimeStamp = DateTime.timestamp();
   DateTime lastSyncedTimeStamp = DateTime.fromMillisecondsSinceEpoch(
-      getIntAsync(sharePreferencesKey, defaultValue: 0));
-  DateTime fiveMinutesLater =
-      lastSyncedTimeStamp.add(duration ?? const Duration(minutes: 5));
+    getIntAsync(sharePreferencesKey, defaultValue: 0),
+  );
+  DateTime fiveMinutesLater = lastSyncedTimeStamp.add(
+    duration ?? const Duration(minutes: 5),
+  );
 
   if (forceSync || currentTimeStamp.isAfter(fiveMinutesLater)) {
     callback.call();
@@ -655,7 +653,8 @@ DashboardController getDashboardController() {
 
 bool isComingSoon(String releaseDate) {
   DateTime now = DateTime.now();
-  DateTime releaseDateParsed =
-      DateFormat(DateFormatConst.yyyy_MM_dd).parse(releaseDate);
+  DateTime releaseDateParsed = DateFormat(
+    DateFormatConst.yyyy_MM_dd,
+  ).parse(releaseDate);
   return releaseDateParsed.isAfter(now);
 }

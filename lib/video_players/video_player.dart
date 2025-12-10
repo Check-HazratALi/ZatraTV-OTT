@@ -466,34 +466,6 @@ class VideoPlayersComponent extends StatelessWidget {
                           return const Offstage();
                         }
                       }),
-                      if (videoModel.movieAccess == MovieAccess.payPerView)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          decoration: boxDecorationDefault(
-                            borderRadius: BorderRadius.circular(4),
-                            color: rentedColor,
-                          ),
-                          child: Row(
-                            spacing: 4,
-                            children: [
-                              const CachedImageWidget(
-                                url: Assets.iconsIcRent,
-                                height: 14,
-                                width: 14,
-                                color: Colors.white,
-                              ),
-                              Text(
-                                videoModel.isPurchased
-                                    ? locale.value.rented
-                                    : locale.value.rent,
-                                style: secondaryTextStyle(color: white),
-                              ),
-                            ],
-                          ),
-                        ),
                     ],
                   ),
                 ),
