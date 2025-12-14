@@ -257,14 +257,7 @@ Widget watchNowButton({
       ],
     ),
     onTap: () async {
-      onSubscriptionLoginCheck(
-        callBack: callBack,
-        planId: planId,
-        videoAccess: planId <= 0 && requiredPlanLevel <= 0
-            ? MovieAccess.freeAccess
-            : MovieAccess.paidAccess,
-        planLevel: requiredPlanLevel,
-      );
+      onSubscriptionLoginCheck(callBack: callBack, planId: planId);
     },
   );
 }
@@ -325,7 +318,7 @@ void onSubscriptionLoginCheck({
   required VoidCallback callBack,
   int planId = 0,
   int planLevel = 0,
-  required String videoAccess,
+  String videoAccess = "free",
   bool isFromSubscribeCard = false,
   bool isPurchased = false,
 }) {
