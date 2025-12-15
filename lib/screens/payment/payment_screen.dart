@@ -445,13 +445,6 @@ class PaymentScreen extends StatelessWidget {
                         onPaymentComplete:
                             (bool success, String message) async {
                               if (success) {
-                                await postPaymentSuccess(
-                                  planId: planId,
-                                  userId: userId,
-                                  amount: totalAmount,
-                                  tranId: generateTranId(),
-                                  type: type,
-                                );
                                 toast("Rent Payment Successful");
                               } else {
                                 toast("Rent Payment Failed: $message");
@@ -474,13 +467,6 @@ class PaymentScreen extends StatelessWidget {
                         onPaymentComplete:
                             (bool success, String message) async {
                               if (success) {
-                                await PaymentSuccess(
-                                  planId: planId,
-                                  userId: userId,
-                                  amount: finalAmount,
-                                  tranId: generateTranId(),
-                                  type: "",
-                                );
                                 toast("Subscription Payment Successful");
                               } else {
                                 toast("Subscription Payment Failed: $message");
