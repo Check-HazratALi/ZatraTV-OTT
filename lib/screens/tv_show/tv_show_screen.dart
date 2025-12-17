@@ -52,24 +52,26 @@ class TvShowScreen extends StatelessWidget {
                   ),
                   showWatchNow: tvShowController.isTrailer.isTrue
                       ? true
-                      : isMoviePaid(
+                      : (isMoviePaid(
                               requiredPlanLevel: tvShowController
                                   .selectedEpisode
                                   .value
                                   .requiredPlanLevel,
                             ) ||
-                            tvShowController.showData.value.isPurchased ==
-                                false,
+                            tvShowController.showData.value.isPurchased == false),
                   hasNextEpisode:
                       tvShowController.currentEpisodeIndex.value <
-                      tvShowController.episodeList.length,
+                      (tvShowController.episodeList.length - 1),
                   onWatchNow: () {
-                    tvShowController.currentEpisodeIndex.value++;
-                    tvShowController.playNextEpisode(
-                      tvShowController.episodeList[tvShowController
-                          .currentEpisodeIndex
-                          .value],
-                    );
+                    tvShowController.isTrailer(false);
+                    if (tvShowController.currentEpisodeIndex.value <
+                        tvShowController.episodeList.length) {
+                      tvShowController.playNextEpisode(
+                        tvShowController.episodeList[tvShowController
+                            .currentEpisodeIndex
+                            .value],
+                      );
+                    }
                   },
                   onWatchNextEpisode: () {
                     if (tvShowController.currentEpisodeIndex.value <

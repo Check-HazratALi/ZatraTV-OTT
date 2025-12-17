@@ -292,6 +292,8 @@ class VideoPlayersComponent extends StatelessWidget {
                               controller.isBuffering(false);
                               onSubscriptionLoginCheck(
                                 callBack: () {
+                                  // Set isTrailer to false before calling onWatchNow
+                                  controller.isTrailer(false);
                                   onWatchNow?.call();
                                 },
                                 planId: videoModel.planId,
