@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/components/app_toggle_widget.dart';
+// import 'package:zatra_tv/components/app_toggle_widget.dart';
 import 'package:zatra_tv/generated/assets.dart';
 import 'package:zatra_tv/network/core_api.dart';
-import 'package:zatra_tv/screens/download_videos/download_video.dart';
+// import 'package:zatra_tv/screens/download_videos/download_video.dart';
 import 'package:zatra_tv/screens/setting/faq/f_a_q_screen.dart';
 import 'package:zatra_tv/screens/setting/language/language_screen.dart';
 import 'package:zatra_tv/screens/setting/otp_verification_bottom_sheet.dart';
@@ -167,26 +167,27 @@ class SettingScreen extends StatelessWidget {
                                           size: 18,
                                           color: iconColor,
                                         ),
-                                      if (settingData.showSwitch &&
-                                          !selectedAccountProfile
-                                              .value
-                                              .isChildProfile
-                                              .getBoolInt())
-                                        Obx(() {
-                                          return ToggleWidget(
-                                            isSwitched: settingCont
-                                                .isChildrenProfileEnabled
-                                                .value,
+                                      // if (settingData.showSwitch &&
+                                      //     !selectedAccountProfile
+                                      //         .value
+                                      //         .isChildProfile
+                                      //         .getBoolInt())
+                                      //   Obx(() {
+                                      //     return ToggleWidget(
+                                      //       isSwitched: settingCont
+                                      //           .isChildrenProfileEnabled
+                                      //           .value,
 
-                                            onSwitch: (isEnable) {
-                                              settingCont.handleParentalLock(
-                                                isEnable,
-                                              );
-                                            },
-                                          );
-                                        }),
+                                      //       onSwitch: (isEnable) {
+                                      //         settingCont.handleParentalLock(
+                                      //           isEnable,
+                                      //         );
+                                      //       },
+                                      //     );
+                                      //   }),
                                     ],
                                   ),
+
                                   //  10.height,
                                   Obx(() {
                                     return Column(
@@ -349,10 +350,10 @@ class SettingScreen extends StatelessWidget {
       Get.to(() => SubscriptionHistoryScreen());
     } else if (aboutDataModel.title == "Rental History") {
       Get.to(() => RentalHistoryScreen());
-    } 
+    }
     // else if (aboutDataModel.title == locale.value.yourDownloads) {
     //   Get.to(() => DownloadVideosScreen());
-    // } 
+    // }
     else if (aboutDataModel.title == locale.value.watchlist) {
       Get.to(() => WatchListScreen());
     } else if ((aboutDataModel.slug == AppPages.aboutUs ||

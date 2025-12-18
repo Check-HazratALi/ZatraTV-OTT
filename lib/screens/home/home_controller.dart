@@ -580,7 +580,7 @@ class HomeController extends GetxController {
           CategoryListModel(
             name: locale.value.mostViewed,
             sectionType: DashboardCategoryType.personalised,
-            data: dashboard.viewedMovieList ?? [],
+            data: dashboard.viewedMovieList,
             showViewAll: false,
           ),
         );
@@ -679,12 +679,13 @@ class HomeController extends GetxController {
           } else {
             _currentPage.value = 0;
           }
-          if (sliderPageController.value.hasClients)
+          if (sliderPageController.value.hasClients) {
             sliderPageController.value.animateToPage(
               _currentPage.value,
               duration: const Duration(milliseconds: 950),
               curve: Curves.easeOutQuart,
             );
+          }
         },
       );
       sliderPageController.value.addListener(() {

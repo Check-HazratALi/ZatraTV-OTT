@@ -10,9 +10,7 @@ import 'package:zatra_tv/utils/common_base.dart';
 import '../../main.dart';
 
 class PinGenerationBottomSheet extends StatelessWidget {
-  PinGenerationBottomSheet({
-    super.key,
-  });
+  PinGenerationBottomSheet({super.key});
 
   final SettingController settingCont = Get.put(SettingController());
 
@@ -28,7 +26,9 @@ class PinGenerationBottomSheet extends StatelessWidget {
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32),
           ),
-          border: Border(top: BorderSide(color: borderColor.withValues(alpha: 0.8))),
+          border: Border(
+            top: BorderSide(color: borderColor.withValues(alpha: 0.8)),
+          ),
           color: appScreenBackgroundDark,
         ),
         child: SingleChildScrollView(
@@ -61,15 +61,24 @@ class PinGenerationBottomSheet extends StatelessWidget {
                     fillColor: cardDarkColor,
                     focusColor: primaryTextColor,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: borderColor, width: 0.0),
+                      borderSide: const BorderSide(
+                        color: borderColor,
+                        width: 0.0,
+                      ),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: transparentColor, width: 0.0),
+                      borderSide: const BorderSide(
+                        color: transparentColor,
+                        width: 0.0,
+                      ),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: transparentColor, width: 0.0),
+                      borderSide: const BorderSide(
+                        color: transparentColor,
+                        width: 0.0,
+                      ),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                   ),
@@ -101,15 +110,24 @@ class PinGenerationBottomSheet extends StatelessWidget {
                     fillColor: cardDarkColor,
                     focusColor: primaryTextColor,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: borderColor, width: 0.0),
+                      borderSide: const BorderSide(
+                        color: borderColor,
+                        width: 0.0,
+                      ),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: transparentColor, width: 0.0),
+                      borderSide: const BorderSide(
+                        color: transparentColor,
+                        width: 0.0,
+                      ),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: transparentColor, width: 0.0),
+                      borderSide: const BorderSide(
+                        color: transparentColor,
+                        width: 0.0,
+                      ),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                   ),
@@ -122,20 +140,20 @@ class PinGenerationBottomSheet extends StatelessWidget {
                   },
                 ),
               ),
-              20.height,
-              Obx(
-                () => AppButton(
-                  text: locale.value.save,
-                  color: appColorPrimary,
-                  textStyle: appButtonTextStyleWhite,
-                  shapeBorder: RoundedRectangleBorder(
-                    borderRadius: radius(defaultAppButtonRadius / 2),
-                  ),
-                  onTap: () {
-                    settingCont.setPin();
-                  },
-                ),
-              ),
+              // 20.height,
+              // Obx(
+              //   () => AppButton(
+              //     text: locale.value.save,
+              //     color: appColorPrimary,
+              //     textStyle: appButtonTextStyleWhite,
+              //     shapeBorder: RoundedRectangleBorder(
+              //       borderRadius: radius(defaultAppButtonRadius / 2),
+              //     ),
+              //     onTap: () {
+              //       settingCont.setPin();
+              //     },
+              //   ),
+              // ),
               20.height,
             ],
           ),

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+// import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -17,13 +17,15 @@ import '../../utils/cast/controller/fc_cast_controller.dart';
 import '../../utils/cast/flutter_chrome_cast_widget.dart';
 import '../../utils/constants.dart';
 import '../../utils/video_download.dart';
-import '../download_videos/components/download_component.dart';
-import '../download_videos/download_video.dart';
+// import '../download_videos/components/download_component.dart';
+// import '../download_videos/download_video.dart';
 import '../profile/profile_controller.dart';
 import '../watch_list/watch_list_controller.dart';
 
 class VideoDetailsController extends GetxController {
-  Rx<Future<VideoDetailResponse>> getMovieDetailsFuture = Future(() => VideoDetailResponse(data: VideoDetailsModel())).obs;
+  Rx<Future<VideoDetailResponse>> getMovieDetailsFuture = Future(
+    () => VideoDetailResponse(data: VideoDetailsModel()),
+  ).obs;
   Rx<VideoDetailsModel> movieDetailsResp = VideoDetailsModel().obs;
   Rx<VideoPlayerModel> movieData = VideoPlayerModel().obs;
 
@@ -53,29 +55,42 @@ class VideoDetailsController extends GetxController {
   ///Get Movie List
   Future<void> getMovieDetail({bool showLoader = true}) async {
     isLoading(showLoader);
-    await getMovieDetailsFuture(CoreServiceApis.getVideoDetails(movieId: movieData.value.id, userId: loginUserData.value.id)).then((value) {
-      isSupportedDevice(value.data.isDeviceSupported);
-      setValue(SharedPreferenceConst.IS_SUPPORTED_DEVICE, value.data.isDeviceSupported);
-      movieDetailsResp(value.data);
-      if (value.data.availableSubTitle.isNotEmpty) {
-        LiveStream().emit(REFRESH_SUBTITLE, value.data.availableSubTitle);
-        movieDetailsResp.value.availableSubTitle = value.data.availableSubTitle;
-      }
+    await getMovieDetailsFuture(
+          CoreServiceApis.getVideoDetails(
+            movieId: movieData.value.id,
+            userId: loginUserData.value.id,
+          ),
+        )
+        .then((value) {
+          isSupportedDevice(value.data.isDeviceSupported);
+          setValue(
+            SharedPreferenceConst.IS_SUPPORTED_DEVICE,
+            value.data.isDeviceSupported,
+          );
+          movieDetailsResp(value.data);
+          if (value.data.availableSubTitle.isNotEmpty) {
+            LiveStream().emit(REFRESH_SUBTITLE, value.data.availableSubTitle);
+            movieDetailsResp.value.availableSubTitle =
+                value.data.availableSubTitle;
+          }
 
-      if (value.data.videoLinks.isNotEmpty) {
-        LiveStream().emit(onAddVideoQuality, value.data.videoLinks);
-        movieDetailsResp.value.videoLinks = value.data.videoLinks;
-      }
-      if (movieDetailsResp.value.downloadQuality.isNotEmpty) {
-        movieDetailsResp.value.downloadQuality.removeWhere((element) =>
-            element.type.toLowerCase() == URLType.youtube.toLowerCase() ||
-            element.type.toLowerCase() == URLType.vimeo.toLowerCase() ||
-            element.type.toLowerCase() == URLType.hls.toLowerCase() ||
-            element.type.toLowerCase() == URLType.file.toLowerCase());
-      }
-      checkIfAlreadyDownloaded();
-      movieData.value.isPurchased = value.data.isPurchased;
-    }).whenComplete(() => isLoading(false));
+          if (value.data.videoLinks.isNotEmpty) {
+            LiveStream().emit(onAddVideoQuality, value.data.videoLinks);
+            movieDetailsResp.value.videoLinks = value.data.videoLinks;
+          }
+          if (movieDetailsResp.value.downloadQuality.isNotEmpty) {
+            movieDetailsResp.value.downloadQuality.removeWhere(
+              (element) =>
+                  element.type.toLowerCase() == URLType.youtube.toLowerCase() ||
+                  element.type.toLowerCase() == URLType.vimeo.toLowerCase() ||
+                  element.type.toLowerCase() == URLType.hls.toLowerCase() ||
+                  element.type.toLowerCase() == URLType.file.toLowerCase(),
+            );
+          }
+          checkIfAlreadyDownloaded();
+          movieData.value.isPurchased = value.data.isPurchased;
+        })
+        .whenComplete(() => isLoading(false));
   }
 
   void setupLiveStreamVideoListeners() {
@@ -99,17 +114,19 @@ class VideoDetailsController extends GetxController {
     movieDetailsResp.refresh();
     hideKeyBoardWithoutContext();
     CoreServiceApis.likeMovie(
-      request: {
-        "entertainment_id": movieDetailsResp.value.id,
-        "is_like": isLike,
-        "type": "video",
-        if (profileId.value != 0) "profile_id": profileId.value,
-      },
-    ).then((value) async {
-      await getMovieDetail(showLoader: false);
-    }).catchError((e) {
-      movieDetailsResp.value.isLiked = isLike.getBoolInt() ? false : true;
-    });
+          request: {
+            "entertainment_id": movieDetailsResp.value.id,
+            "is_like": isLike,
+            "type": "video",
+            if (profileId.value != 0) "profile_id": profileId.value,
+          },
+        )
+        .then((value) async {
+          await getMovieDetail(showLoader: false);
+        })
+        .catchError((e) {
+          movieDetailsResp.value.isLiked = isLike.getBoolInt() ? false : true;
+        });
   }
 
   Future<void> saveWatchList({bool addToWatchList = true}) async {
@@ -120,112 +137,132 @@ class VideoDetailsController extends GetxController {
     if (addToWatchList) {
       movieDetailsResp.value.isWatchList = true;
       CoreServiceApis.saveWatchList(
-        request: {
-          "entertainment_id": movieDetailsResp.value.id,
-          if (profileId.value != 0) "profile_id": profileId.value,
-          "type": "video",
-        },
-      ).then((value) async {
-        await getMovieDetail(showLoader: false);
-        successSnackBar(locale.value.addedToWatchList);
-        ProfileController profileCont = Get.put(ProfileController());
-        profileCont.getProfileDetail(showLoader: false);
-        WatchListController watchListCont = Get.put(WatchListController());
-        watchListCont.getWatchList(showLoader: false);
-      }).catchError((e) {
-        movieDetailsResp.value.isWatchList = false;
-        errorSnackBar(error: e);
-      });
+            request: {
+              "entertainment_id": movieDetailsResp.value.id,
+              if (profileId.value != 0) "profile_id": profileId.value,
+              "type": "video",
+            },
+          )
+          .then((value) async {
+            await getMovieDetail(showLoader: false);
+            successSnackBar(locale.value.addedToWatchList);
+            ProfileController profileCont = Get.put(ProfileController());
+            profileCont.getProfileDetail(showLoader: false);
+            WatchListController watchListCont = Get.put(WatchListController());
+            watchListCont.getWatchList(showLoader: false);
+          })
+          .catchError((e) {
+            movieDetailsResp.value.isWatchList = false;
+            errorSnackBar(error: e);
+          });
     } else {
       movieDetailsResp.value.isWatchList = false;
-      CoreServiceApis.deleteFromWatchlist(idList: [movieDetailsResp.value.id]).then((value) async {
-        await getMovieDetail(showLoader: false);
-        successSnackBar(locale.value.removedFromWatchList);
-        ProfileController profileCont = Get.put(ProfileController());
-        profileCont.getProfileDetail(showLoader: false);
-        WatchListController watchListCont = Get.put(WatchListController());
-        watchListCont.getWatchList(showLoader: false);
-      }).catchError((e) {
-        movieDetailsResp.value.isWatchList = true;
-        errorSnackBar(error: e);
-      });
+      CoreServiceApis.deleteFromWatchlist(idList: [movieDetailsResp.value.id])
+          .then((value) async {
+            await getMovieDetail(showLoader: false);
+            successSnackBar(locale.value.removedFromWatchList);
+            ProfileController profileCont = Get.put(ProfileController());
+            profileCont.getProfileDetail(showLoader: false);
+            WatchListController watchListCont = Get.put(WatchListController());
+            watchListCont.getWatchList(showLoader: false);
+          })
+          .catchError((e) {
+            movieDetailsResp.value.isWatchList = true;
+            errorSnackBar(error: e);
+          });
     }
   }
 
-  Future<void> handleDownload(BuildContext ctx) async {
-    if (isDownloaded.value) {
-      Get.off(() => DownloadVideosScreen())?.then(
-        (value) {
-          if (value ?? false) checkIfAlreadyDownloaded();
-        },
-      );
-    } else {
-      download();
-    }
-  }
+  // Future<void> handleDownload(BuildContext ctx) async {
+  //   if (isDownloaded.value) {
+  //     Get.off(() => DownloadVideosScreen())?.then(
+  //       (value) {
+  //         if (value ?? false) checkIfAlreadyDownloaded();
+  //       },
+  //     );
+  //   } else {
+  //     download();
+  //   }
+  // }
 
-  void download() {
-    Get.bottomSheet(
-      isDismissible: true,
-      isScrollControlled: false,
-      enableDrag: false,
-      BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-        child: DownloadComponent(
-          loaderOnOff: (p0) {
-            isDownloading(p0);
-          },
-          downloadDet: movieDetailsResp.value.downloadQuality,
-          isFromVideo: true,
-          videoModel: VideoPlayerModel(
-            id: movieData.value.id,
-            name: movieData.value.name,
-            description: movieData.value.description,
-            imdbRating: movieData.value.imdbRating,
-            entertainmentId: movieData.value.entertainmentId,
-            genres: movieData.value.genres,
-            contentRating: movieData.value.contentRating,
-            videoLinks: movieDetailsResp.value.videoLinks,
-            posterImage: movieData.value.posterImage,
-            downloadQuality: movieDetailsResp.value.downloadQuality,
-            downloadUrl: movieDetailsResp.value.downloadUrl,
-            videoUploadType: movieData.value.videoUploadType,
-            videoUrlInput: movieData.value.videoUrlInput,
-            type: VideoType.video,
-            releaseYear: movieData.value.releaseYear,
-            releaseDate: movieData.value.releaseDate,
-            language: movieData.value.language,
-            thumbnailImage: movieData.value.thumbnailImage,
-            requiredPlanLevel: movieData.value.requiredPlanLevel,
-            planId: movieData.value.planId,
-          ),
-          refreshCallback: () {
-            checkIfAlreadyDownloaded();
-          },
-          downloadProgress: (p0) {
-            downloadPercentage(p0);
-          },
-        ),
-      ),
-    );
-  }
+  // void download() {
+  //   Get.bottomSheet(
+  //     isDismissible: true,
+  //     isScrollControlled: false,
+  //     enableDrag: false,
+  //     BackdropFilter(
+  //       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+  //       child: DownloadComponent(
+  //         loaderOnOff: (p0) {
+  //           isDownloading(p0);
+  //         },
+  //         downloadDet: movieDetailsResp.value.downloadQuality,
+  //         isFromVideo: true,
+  //         videoModel: VideoPlayerModel(
+  //           id: movieData.value.id,
+  //           name: movieData.value.name,
+  //           description: movieData.value.description,
+  //           imdbRating: movieData.value.imdbRating,
+  //           entertainmentId: movieData.value.entertainmentId,
+  //           genres: movieData.value.genres,
+  //           contentRating: movieData.value.contentRating,
+  //           videoLinks: movieDetailsResp.value.videoLinks,
+  //           posterImage: movieData.value.posterImage,
+  //           downloadQuality: movieDetailsResp.value.downloadQuality,
+  //           downloadUrl: movieDetailsResp.value.downloadUrl,
+  //           videoUploadType: movieData.value.videoUploadType,
+  //           videoUrlInput: movieData.value.videoUrlInput,
+  //           type: VideoType.video,
+  //           releaseYear: movieData.value.releaseYear,
+  //           releaseDate: movieData.value.releaseDate,
+  //           language: movieData.value.language,
+  //           thumbnailImage: movieData.value.thumbnailImage,
+  //           requiredPlanLevel: movieData.value.requiredPlanLevel,
+  //           planId: movieData.value.planId,
+  //         ),
+  //         refreshCallback: () {
+  //           checkIfAlreadyDownloaded();
+  //         },
+  //         downloadProgress: (p0) {
+  //           downloadPercentage(p0);
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> checkIfAlreadyDownloaded() async {
-    showDownload(movieDetailsResp.value.downloadStatus && movieDetailsResp.value.downloadQuality.isNotEmpty);
-    if (currentSubscription.value.level > -1 && (currentSubscription.value.planType.isNotEmpty)) {
+    showDownload(
+      movieDetailsResp.value.downloadStatus &&
+          movieDetailsResp.value.downloadQuality.isNotEmpty,
+    );
+    if (currentSubscription.value.level > -1 &&
+        (currentSubscription.value.planType.isNotEmpty)) {
       int index;
-      index = currentSubscription.value.planType.indexWhere((element) => (element.limitationSlug == SubscriptionTitle.downloadStatus || element.slug == SubscriptionTitle.downloadStatus));
+      index = currentSubscription.value.planType.indexWhere(
+        (element) =>
+            (element.limitationSlug == SubscriptionTitle.downloadStatus ||
+            element.slug == SubscriptionTitle.downloadStatus),
+      );
       if (index > -1) {
-        showDownload(showDownload.value && currentSubscription.value.planType[index].limitationValue.getBoolInt());
+        showDownload(
+          showDownload.value &&
+              currentSubscription.value.planType[index].limitationValue
+                  .getBoolInt(),
+        );
       }
     }
 
     if (movieDetailsResp.value.downloadQuality.length == 1 &&
-        movieDetailsResp.value.downloadQuality.first.quality == QualityConstants.defaultQuality &&
-        (movieDetailsResp.value.downloadType != URLType.url && movieDetailsResp.value.downloadType != URLType.local)) {
+        movieDetailsResp.value.downloadQuality.first.quality ==
+            QualityConstants.defaultQuality &&
+        (movieDetailsResp.value.downloadType != URLType.url &&
+            movieDetailsResp.value.downloadType != URLType.local)) {
       showDownload(false);
     }
-    bool downloaded = await checkIfDownloaded(videoId: movieDetailsResp.value.id);
+    bool downloaded = await checkIfDownloaded(
+      videoId: movieDetailsResp.value.id,
+    );
     isDownloaded(downloaded);
   }
 

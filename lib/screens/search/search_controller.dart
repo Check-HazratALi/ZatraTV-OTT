@@ -176,7 +176,7 @@ class SearchScreenController extends GetxController {
               data: [],
             );
           } else {
-            List<VideoPlayerModel> list = (decoded as List)
+            List<VideoPlayerModel> list = (decoded)
                 .map((item) => VideoPlayerModel.fromJson(item))
                 .toList();
             defaultPopularList = CategoryListModel(

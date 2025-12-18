@@ -8,7 +8,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:zatra_tv/ads/model/custom_ad_response.dart';
 import 'package:zatra_tv/components/cached_image_widget.dart';
 import 'package:zatra_tv/components/device_not_supported_widget.dart';
-import 'package:zatra_tv/generated/assets.dart';
+// import 'package:zatra_tv/generated/assets.dart';
 import 'package:zatra_tv/utils/app_common.dart';
 import 'package:zatra_tv/video_players/component/ad_widgets.dart';
 import 'package:zatra_tv/video_players/component/custom_ad_widget.dart';

@@ -38,7 +38,9 @@ class VideoPlayersController extends GetxController {
   Rx<VideoPlayerModel> videoModel = VideoPlayerModel().obs;
   final LiveShowModel liveShowModel;
 
-  Rx<PodPlayerController> podPlayerController = PodPlayerController(playVideoFrom: PlayVideoFrom.youtube("")).obs;
+  Rx<PodPlayerController> podPlayerController = PodPlayerController(
+    playVideoFrom: PlayVideoFrom.youtube(""),
+  ).obs;
   Rx<YPlayerController> youtubePlayerController = YPlayerController().obs;
 
   RxBool isAutoPlay = true.obs;
@@ -117,7 +119,9 @@ class VideoPlayersController extends GetxController {
 
     // Add midroll ad breaks
     if (midRollAdSeconds.isNotEmpty) {
-      allBreaks.addAll(midRollAdSeconds.map((seconds) => Duration(seconds: seconds)));
+      allBreaks.addAll(
+        midRollAdSeconds.map((seconds) => Duration(seconds: seconds)),
+      );
     }
 
     // Add overlay ad breaks
@@ -127,7 +131,8 @@ class VideoPlayersController extends GetxController {
 
     // Add postroll ad break (at 90% of video duration)
     if (postRollAds.isNotEmpty && !isPostRollAdShown.value) {
-      final videoDuration = podPlayerController.value.videoPlayerValue?.duration ?? Duration.zero;
+      final videoDuration =
+          podPlayerController.value.videoPlayerValue?.duration ?? Duration.zero;
       if (videoDuration.inSeconds > 0) {
         final postRollPosition = (videoDuration.inSeconds * 0.9).round();
         allBreaks.add(Duration(seconds: postRollPosition));
@@ -138,7 +143,11 @@ class VideoPlayersController extends GetxController {
     final uniqueBreaks = allBreaks.toSet().toList();
     uniqueBreaks.sort((a, b) => a.inSeconds.compareTo(b.inSeconds));
 
-    return (videoModel.value.isPurchased || isFromDownloads?.value == true || isTrailer.value == true) ? [] : uniqueBreaks;
+    return (videoModel.value.isPurchased ||
+            isFromDownloads?.value == true ||
+            isTrailer.value == true)
+        ? []
+        : uniqueBreaks;
   }
 
   /// Check if a specific position is an ad break point
@@ -156,11 +165,14 @@ class VideoPlayersController extends GetxController {
   /// Returns the next ad break point or null if no more breaks
   Duration? getNextAdBreak(int position) {
     final adBreaks = getAllAdBreaks();
-    final nextBreaks = adBreaks.where((breakPoint) => breakPoint.inSeconds > position).toList();
+    final nextBreaks = adBreaks
+        .where((breakPoint) => breakPoint.inSeconds > position)
+        .toList();
     return nextBreaks.isNotEmpty ? nextBreaks.first : null;
   }
 
-  GlobalKey<YPlayerWidgetState> yPlayerWidgetKey = GlobalKey<YPlayerWidgetState>();
+  GlobalKey<YPlayerWidgetState> yPlayerWidgetKey =
+      GlobalKey<YPlayerWidgetState>();
 
   Rx<Duration?> lastYoutubePositionBeforeAd = Rx<Duration?>(null);
 
@@ -181,18 +193,17 @@ class VideoPlayersController extends GetxController {
     // Initialize adPlayer and adVideoController
     adPlayer = Player();
     adVideoController = VideoController(adPlayer);
-    _setupDynamicAds().then(
-      (value) {
-        isBuffering(false);
-        initializePlayer(videoModel.value.videoUrlInput, videoModel.value.videoUrlInput).whenComplete(
-          () => hasShownCustomAd(videoModel.value.isPurchased),
-        );
-      },
-    ).onError(
-      (error, stackTrace) {
-        isBuffering(false);
-      },
-    );
+    _setupDynamicAds()
+        .then((value) {
+          isBuffering(false);
+          initializePlayer(
+            videoModel.value.videoUrlInput,
+            videoModel.value.videoUrlInput,
+          ).whenComplete(() => hasShownCustomAd(videoModel.value.isPurchased));
+        })
+        .onError((error, stackTrace) {
+          isBuffering(false);
+        });
 
     WakelockPlus.enable();
     onChangePodVideo();
@@ -213,17 +224,27 @@ class VideoPlayersController extends GetxController {
       contentId: videoModel.value.id,
       allAds: allVastAds,
     );
-    log('+-+-+-+-+-+-+-+-+-check is _setupDynamicAds: ${applicableAds.length} -- ${applicableAds.map((e) => e.toJson())}');
+    log(
+      '+-+-+-+-+-+-+-+-+-check is _setupDynamicAds: ${applicableAds.length} -- ${applicableAds.map((e) => e.toJson())}',
+    );
     final grouped = _groupVastAdsByType(applicableAds);
 
     preRollAds = await _mapVastAdsToAdConfigs(grouped['pre-roll'] ?? []);
-    log('+-+-+-+-+-+-+-+-+-check is pre-roll: ${preRollAds.length} -- ${preRollAds.map((e) => e.url)}');
+    log(
+      '+-+-+-+-+-+-+-+-+-check is pre-roll: ${preRollAds.length} -- ${preRollAds.map((e) => e.url)}',
+    );
     midRollAds = await _mapVastAdsToAdConfigs(grouped['mid-roll'] ?? []);
-    log('+-+-+-+-+-+-+-+-+-check is mid-roll: ${midRollAds.length} -- ${midRollAds.map((e) => e.url)}');
+    log(
+      '+-+-+-+-+-+-+-+-+-check is mid-roll: ${midRollAds.length} -- ${midRollAds.map((e) => e.url)}',
+    );
     postRollAds = await _mapVastAdsToAdConfigs(grouped['post-roll'] ?? []);
-    log('+-+-+-+-+-+-+-+-+-check is post-roll: ${postRollAds.length} -- ${postRollAds.map((e) => e.url)}');
+    log(
+      '+-+-+-+-+-+-+-+-+-check is post-roll: ${postRollAds.length} -- ${postRollAds.map((e) => e.url)}',
+    );
     overlayAds.value = await _mapVastAdsToOverlayAds(grouped['overlay'] ?? []);
-    log('+-+-+-+-+-+-+-+-+-check is overlay: ${overlayAds.length} -- ${overlayAds.map((e) => e.imageUrl)}');
+    log(
+      '+-+-+-+-+-+-+-+-+-check is overlay: ${overlayAds.length} -- ${overlayAds.map((e) => e.imageUrl)}',
+    );
     if ((grouped['mid-roll'] ?? []).isNotEmpty) {
       // final ad = grouped['mid-roll']!.first;
       // if (ad.frequency != null && ad.frequency! > 0) {
@@ -239,16 +260,24 @@ class VideoPlayersController extends GetxController {
       if ((ad.url ?? '').toLowerCase().endsWith('.xml')) {
         final vastMedia = await fetchVastMedia(ad.url!);
         if (vastMedia != null && vastMedia.mediaUrls.isNotEmpty) {
-          final skipSeconds = vastMedia.skipDuration ?? (parseDurationToSeconds(ad.skipAfter) == 0 ? 5 : parseDurationToSeconds(ad.skipAfter));
+          final skipSeconds =
+              vastMedia.skipDuration ??
+              (parseDurationToSeconds(ad.skipAfter) == 0
+                  ? 5
+                  : parseDurationToSeconds(ad.skipAfter));
           final lastIndex = vastMedia.mediaUrls.length - 1;
           for (int i = 0; i < vastMedia.mediaUrls.length; i++) {
-            result.add(AdConfig(
-              url: vastMedia.mediaUrls[i],
-              isSkippable: i == lastIndex && skipSeconds > 0,
-              skipAfterSeconds: skipSeconds,
-              type: 'video',
-              clickThroughUrl: (i < vastMedia.clickThroughUrls.length) ? vastMedia.clickThroughUrls[i] : null,
-            ));
+            result.add(
+              AdConfig(
+                url: vastMedia.mediaUrls[i],
+                isSkippable: i == lastIndex && skipSeconds > 0,
+                skipAfterSeconds: skipSeconds,
+                type: 'video',
+                clickThroughUrl: (i < vastMedia.clickThroughUrls.length)
+                    ? vastMedia.clickThroughUrls[i]
+                    : null,
+              ),
+            );
           }
         }
       } else {
@@ -278,31 +307,47 @@ class VideoPlayersController extends GetxController {
     required int contentId,
     required List<VastAd> allAds,
   }) {
-    log('+-+-+-+-+-+-+-+-+-check is _getApplicableVastAdsForContent: $contentType, $contentId, $allAds');
+    log(
+      '+-+-+-+-+-+-+-+-+-check is _getApplicableVastAdsForContent: $contentType, $contentId, $allAds',
+    );
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     return allAds.where((ad) {
-      log('+-+-+-+-+-+-+-+-+-check is _getApplicableVastAdsForContent: \\${ad.toJson()}');
+      log(
+        '+-+-+-+-+-+-+-+-+-check is _getApplicableVastAdsForContent: \\${ad.toJson()}',
+      );
       String normalizedContentType = contentType.toLowerCase();
       if (normalizedContentType == 'episode') {
         normalizedContentType = 'tvshow';
       }
-      if ((ad.targetType ?? '').toLowerCase() != normalizedContentType) return false;
+      if ((ad.targetType ?? '').toLowerCase() != normalizedContentType)
+        return false;
       if (ad.targetSelection == null) return false;
-      final cleaned = ad.targetSelection!.replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '');
+      final cleaned = ad.targetSelection!
+          .replaceAll('[', '')
+          .replaceAll(']', '')
+          .replaceAll(' ', '');
       final ids = cleaned.split(',').toSet();
       if (!ids.contains(contentId.toString())) return false;
       // Handle startDate
       if (ad.startDate != null) {
         final adStartDate = ad.startDate!;
-        final adStartDay = DateTime(adStartDate.year, adStartDate.month, adStartDate.day);
+        final adStartDay = DateTime(
+          adStartDate.year,
+          adStartDate.month,
+          adStartDate.day,
+        );
         if (adStartDay.isAfter(today)) return false;
       }
 
       // Handle endDate
       if (ad.endDate != null) {
         final adEndDate = ad.endDate!;
-        final adEndDay = DateTime(adEndDate.year, adEndDate.month, adEndDate.day);
+        final adEndDay = DateTime(
+          adEndDate.year,
+          adEndDate.month,
+          adEndDate.day,
+        );
         if (adEndDay.isBefore(today)) return false;
       }
 
@@ -323,7 +368,9 @@ class VideoPlayersController extends GetxController {
     return AdConfig(
       url: ad.url ?? '',
       isSkippable: ad.enableSkip ?? false,
-      skipAfterSeconds: (parseDurationToSeconds(ad.skipAfter) == 0 ? 5 : parseDurationToSeconds(ad.skipAfter)),
+      skipAfterSeconds: (parseDurationToSeconds(ad.skipAfter) == 0
+          ? 5
+          : parseDurationToSeconds(ad.skipAfter)),
       type: 'video',
     );
   }
@@ -342,10 +389,14 @@ class VideoPlayersController extends GetxController {
     int totalDurationInSeconds = duration.inSeconds;
 
     for (int i = 1; i <= adFrequency; i++) {
-      midRollAdSeconds.add((totalDurationInSeconds * i / (adFrequency + 1)).round());
+      midRollAdSeconds.add(
+        (totalDurationInSeconds * i / (adFrequency + 1)).round(),
+      );
     }
     for (final seconds in midRollAdSeconds) {
-      log('+-+-+-+-+-+-+-+-+-check is MIDROLLADSECONDS: ${formatSecondsToHMS(seconds)}');
+      log(
+        '+-+-+-+-+-+-+-+-+-check is MIDROLLADSECONDS: ${formatSecondsToHMS(seconds)}',
+      );
     }
   }
 
@@ -364,7 +415,9 @@ class VideoPlayersController extends GetxController {
         podPlayerController.value.pause();
       }
       if (youtubePlayerController.value.isInitialized) {
-        lastYoutubePositionBeforeAd(youtubePlayerController.value.player.state.position);
+        lastYoutubePositionBeforeAd(
+          youtubePlayerController.value.player.state.position,
+        );
         youtubePlayerController.value.player.pause();
       }
 
@@ -428,7 +481,9 @@ class VideoPlayersController extends GetxController {
       }
       if (youtubePlayerController.value.isInitialized) {
         if (lastYoutubePositionBeforeAd.value != null) {
-          youtubePlayerController.value.player.seek(lastYoutubePositionBeforeAd.value ?? Duration.zero);
+          youtubePlayerController.value.player.seek(
+            lastYoutubePositionBeforeAd.value ?? Duration.zero,
+          );
         }
         youtubePlayerController.value.player.play();
         lastYoutubePositionBeforeAd.value = null;
@@ -444,12 +499,16 @@ class VideoPlayersController extends GetxController {
     if (vastMedia != null) {
       for (int i = 0; i < vastMedia.mediaUrls.length; i++) {
         final isLastVideo = i == vastMedia.mediaUrls.length - 1;
-        preRollAds.add(AdConfig(
-          url: vastMedia.mediaUrls[i],
-          isSkippable: isLastVideo,
-          skipAfterSeconds: isLastVideo ? 5 : 0,
-          clickThroughUrl: (i < vastMedia.clickThroughUrls.length) ? vastMedia.clickThroughUrls[i] : null,
-        ));
+        preRollAds.add(
+          AdConfig(
+            url: vastMedia.mediaUrls[i],
+            isSkippable: isLastVideo,
+            skipAfterSeconds: isLastVideo ? 5 : 0,
+            clickThroughUrl: (i < vastMedia.clickThroughUrls.length)
+                ? vastMedia.clickThroughUrls[i]
+                : null,
+          ),
+        );
       }
     } else {
       log('No valid media file found in VAST');
@@ -463,22 +522,36 @@ class VideoPlayersController extends GetxController {
       if (response.statusCode != 200) return null;
 
       // Clean up malformed XML
-      String xmlString = response.body.replaceAll('<IconClicks>', '<Iconclicks>').replaceAll('</IconClicks>', '</Iconclicks>');
+      String xmlString = response.body
+          .replaceAll('<IconClicks>', '<Iconclicks>')
+          .replaceAll('</IconClicks>', '</Iconclicks>');
 
       final document = xml.XmlDocument.parse(xmlString);
 
-      final mediaUrls = document.findAllElements('MediaFile').where((e) => e.getAttribute('type') == 'video/mp4').map((e) => e.innerText.trim()).toList();
+      final mediaUrls = document
+          .findAllElements('MediaFile')
+          .where((e) => e.getAttribute('type') == 'video/mp4')
+          .map((e) => e.innerText.trim())
+          .toList();
 
-      final clickThroughUrls = document.findAllElements('ClickThrough').map((e) => e.innerText.trim()).toList();
+      final clickThroughUrls = document
+          .findAllElements('ClickThrough')
+          .map((e) => e.innerText.trim())
+          .toList();
 
-      final clickTrackingUrls = document.findAllElements('ClickTracking').map((e) => e.innerText.trim()).toList();
+      final clickTrackingUrls = document
+          .findAllElements('ClickTracking')
+          .map((e) => e.innerText.trim())
+          .toList();
 
       // Parse skip duration from <Linear skipoffset="..."> if available
       int? vastSkipDuration;
-      final Iterable<XmlElement> linearElements = document.findAllElements('Linear').where(
-            (e) => e.getAttribute('skipoffset') != null,
-          );
-      final XmlElement? linear = linearElements.isNotEmpty ? linearElements.first : null;
+      final Iterable<XmlElement> linearElements = document
+          .findAllElements('Linear')
+          .where((e) => e.getAttribute('skipoffset') != null);
+      final XmlElement? linear = linearElements.isNotEmpty
+          ? linearElements.first
+          : null;
       final skipOffset = linear?.getAttribute('skipoffset');
       if (skipOffset != null) {
         // Format can be HH:MM:SS or seconds
@@ -498,13 +571,20 @@ class VideoPlayersController extends GetxController {
 
       for (final creative in document.findAllElements('Creative')) {
         for (final nonLinear in creative.findAllElements('NonLinear')) {
-          final staticResource = nonLinear.findElements('StaticResource').map((e) => e.innerText.trim()).firstWhere((e) => e.isNotEmpty, orElse: () => '');
+          final staticResource = nonLinear
+              .findElements('StaticResource')
+              .map((e) => e.innerText.trim())
+              .firstWhere((e) => e.isNotEmpty, orElse: () => '');
 
           if (staticResource.isEmpty) continue;
 
-          final clickThrough = nonLinear.findElements('NonLinearClickThrough').map((e) => e.innerText.trim()).firstWhere((e) => e.isNotEmpty, orElse: () => '');
+          final clickThrough = nonLinear
+              .findElements('NonLinearClickThrough')
+              .map((e) => e.innerText.trim())
+              .firstWhere((e) => e.isNotEmpty, orElse: () => '');
 
-          final minSuggestedDuration = nonLinear.getAttribute('minSuggestedDuration') ?? '00:00:05';
+          final minSuggestedDuration =
+              nonLinear.getAttribute('minSuggestedDuration') ?? '00:00:05';
 
           int duration = 10;
           final parts = minSuggestedDuration.split(':');
@@ -515,12 +595,14 @@ class VideoPlayersController extends GetxController {
             duration = h * 3600 + m * 60 + s;
           }
 
-          overlayAds.add(OverlayAd(
-            imageUrl: staticResource,
-            clickThroughUrl: clickThrough,
-            startTime: 10,
-            duration: duration,
-          ));
+          overlayAds.add(
+            OverlayAd(
+              imageUrl: staticResource,
+              clickThroughUrl: clickThrough,
+              startTime: 10,
+              duration: duration,
+            ),
+          );
         }
       }
 
@@ -544,7 +626,9 @@ class VideoPlayersController extends GetxController {
     log("Watched Duration ==> ${videoModel.value.watchedTime}");
     log('Live Show data =>> ${liveShowModel.toJson()}');
 
-    if ((videoModel.value.type == VideoType.video || videoModel.value.type == VideoType.liveTv) || isAlreadyStartedWatching(videoModel.value.watchedTime)) {
+    if ((videoModel.value.type == VideoType.video ||
+            videoModel.value.type == VideoType.liveTv) ||
+        isAlreadyStartedWatching(videoModel.value.watchedTime)) {
       isTrailer(false);
     }
 
@@ -575,15 +659,21 @@ class VideoPlayersController extends GetxController {
           log("Error parsing continueWatchDuration: ${e.toString()}");
         }
       }
-    } else if (videoLinkType.$1.toLowerCase() == PlayerTypes.embedded.toLowerCase() || videoLinkType.$1.toLowerCase() == PlayerTypes.vimeo) {
+    } else if (videoLinkType.$1.toLowerCase() ==
+            PlayerTypes.embedded.toLowerCase() ||
+        videoLinkType.$1.toLowerCase() == PlayerTypes.vimeo) {
       String url = videoLinkType.$2;
       if (videoLinkType.$1.toLowerCase() == PlayerTypes.vimeo.toLowerCase()) {
         url = "https://player.vimeo.com/video/${url.split("/").last}";
         _initializeWebViewPlayer(url);
-      } else if (videoLinkType.$1.toLowerCase() == PlayerTypes.embedded.toLowerCase()) {
+      } else if (videoLinkType.$1.toLowerCase() ==
+          PlayerTypes.embedded.toLowerCase()) {
         _initializeWebViewPlayer(movieEmbedCode(videoLinkType.$2));
       }
-    } else if (videoLinkType.$1.toLowerCase() == PlayerTypes.url || videoLinkType.$1.toLowerCase() == PlayerTypes.hls || videoLinkType.$1.toLowerCase() == PlayerTypes.local || videoLinkType.$1.toLowerCase() == PlayerTypes.file) {
+    } else if (videoLinkType.$1.toLowerCase() == PlayerTypes.url ||
+        videoLinkType.$1.toLowerCase() == PlayerTypes.hls ||
+        videoLinkType.$1.toLowerCase() == PlayerTypes.local ||
+        videoLinkType.$1.toLowerCase() == PlayerTypes.file) {
       // _initializePodPlayer(videoLinkType.$2);
       if (!podPlayerController.value.isInitialised) {
         uniqueKey = UniqueKey();
@@ -633,11 +723,20 @@ class VideoPlayersController extends GetxController {
           try {
             final decoded = jsonDecode(message.message);
             if (decoded['event'] == 'timeUpdate') {
-              final int current = decoded['currentTime'].toString().toDouble().toInt();
-              final int total = decoded['duration'].toString().toDouble().toInt();
+              final int current = decoded['currentTime']
+                  .toString()
+                  .toDouble()
+                  .toInt();
+              final int total = decoded['duration']
+                  .toString()
+                  .toDouble()
+                  .toInt();
               playNextVideo(((total - current) < 30 && total > 30));
 
-              final subtitle = availableSubtitleList.firstWhereOrNull((s) => s.start.inSeconds <= current && s.end.inSeconds >= current);
+              final subtitle = availableSubtitleList.firstWhereOrNull(
+                (s) =>
+                    s.start.inSeconds <= current && s.end.inSeconds >= current,
+              );
               if (subtitle != null && subtitle.data != currentSubtitle.value) {
                 currentSubtitle(subtitle.data);
               } else if (subtitle == null && currentSubtitle.value.isNotEmpty) {
@@ -686,7 +785,9 @@ class VideoPlayersController extends GetxController {
                 break;
               case 'ended':
                 isVideoCompleted(true);
-                if (!isTrailer.value && !isPostRollAdShown.value && postRollAds.isNotEmpty) {
+                if (!isTrailer.value &&
+                    !isPostRollAdShown.value &&
+                    postRollAds.isNotEmpty) {
                   isPostRollAdShown.value = true;
                   playAd(postRollAds[postRollAds.length - 1]);
                 }
@@ -705,12 +806,11 @@ class VideoPlayersController extends GetxController {
           }
         },
       );
-    if (videoUploadType.value.toLowerCase() == PlayerTypes.vimeo.toLowerCase()) {
+    if (videoUploadType.value.toLowerCase() ==
+        PlayerTypes.vimeo.toLowerCase()) {
       webViewController.value.loadRequest(
         Uri.parse(url),
-        headers: {
-          'referer': DOMAIN_URL,
-        },
+        headers: {'referer': DOMAIN_URL},
       );
     } else {
       webViewController.value.loadHtmlString(embedHtml, baseUrl: DOMAIN_URL);
@@ -724,7 +824,10 @@ class VideoPlayersController extends GetxController {
   }
 
   String movieEmbedCode(String iframeHtml, {bool autoplay = false}) {
-    final cleanedHtml = iframeHtml.replaceAll('”', '"').replaceAll('“', '"').replaceAll("’", "'");
+    final cleanedHtml = iframeHtml
+        .replaceAll('”', '"')
+        .replaceAll('“', '"')
+        .replaceAll("’", "'");
     final uriRegex = RegExp(r'src="([^"]+)"');
     final match = uriRegex.firstMatch(cleanedHtml);
     if (match == null) {
@@ -831,7 +934,8 @@ class VideoPlayersController extends GetxController {
     ''';
   }
 
-  String buildHtmlCodeForWebViewPlay(String url) => '''
+  String buildHtmlCodeForWebViewPlay(String url) =>
+      '''
 <!DOCTYPE html>
 <html>
 <head>
@@ -921,7 +1025,9 @@ class VideoPlayersController extends GetxController {
 
     // If we have a stored resume position, seek to it and play
     if (lastYoutubePositionBeforeAd.value != null) {
-      youtubePlayerController.value.player.seek(lastYoutubePositionBeforeAd.value!);
+      youtubePlayerController.value.player.seek(
+        lastYoutubePositionBeforeAd.value!,
+      );
       youtubePlayerController.value.player.play();
       lastYoutubePositionBeforeAd.value = null;
     }
@@ -938,28 +1044,38 @@ class VideoPlayersController extends GetxController {
           wakelockEnabled: false,
           videoQualityPriority: availableQualities,
         ),
-        playVideoFrom: getVideoPlatform(type: videoUploadType.value, videoURL: url),
+        playVideoFrom: getVideoPlatform(
+          type: videoUploadType.value,
+          videoURL: url,
+        ),
       );
-      await controller.initialise().then((_) {
-        isBuffering(false);
-        isPostRollAdShown.value = false;
-        shownMidRollAds.clear();
-        shownOverlayAds.clear();
-        if (videoModel.value.watchedTime.isNotEmpty) {
-          try {
-            final seekPosition = _parseWatchedTime(videoModel.value.watchedTime);
-            controller.videoSeekForward(seekPosition);
-          } catch (e) {
-            log("Error parsing continueWatchDuration: ${e.toString()}");
-          }
-        }
-      }).catchError((error, stackTrace) {
-        isBuffering(false);
-        log("Error during initialization: ${error.toString()}");
-        log("Stack trace: ${stackTrace.toString()}");
-      });
+      await controller
+          .initialise()
+          .then((_) {
+            isBuffering(false);
+            isPostRollAdShown.value = false;
+            shownMidRollAds.clear();
+            shownOverlayAds.clear();
+            if (videoModel.value.watchedTime.isNotEmpty) {
+              try {
+                final seekPosition = _parseWatchedTime(
+                  videoModel.value.watchedTime,
+                );
+                controller.videoSeekForward(seekPosition);
+              } catch (e) {
+                log("Error parsing continueWatchDuration: ${e.toString()}");
+              }
+            }
+          })
+          .catchError((error, stackTrace) {
+            isBuffering(false);
+            log("Error during initialization: ${error.toString()}");
+            log("Stack trace: ${stackTrace.toString()}");
+          });
       if (midRollAds.isNotEmpty) {
-        calculateMidRollTimes(controller.videoPlayerValue?.duration ?? Duration.zero);
+        calculateMidRollTimes(
+          controller.videoPlayerValue?.duration ?? Duration.zero,
+        );
       }
 
       podPlayerController(controller);
@@ -990,7 +1106,9 @@ class VideoPlayersController extends GetxController {
           try {
             content = utf8.decode(response.bodyBytes);
           } catch (e) {
-            final filtered = response.bodyBytes.where((b) => b != 0x00).toList();
+            final filtered = response.bodyBytes
+                .where((b) => b != 0x00)
+                .toList();
 
             try {
               content = utf8.decode(filtered);
@@ -1000,35 +1118,36 @@ class VideoPlayersController extends GetxController {
           }
 
           // Run subtitle parsing in a background isolate
-          final controller = await compute(
-            (Map<String, dynamic> params) async {
-              final provider = StringSubtitle(
-                data: params['content'] as String,
-                type: params['type'] as SubtitleType,
-              );
-              final controller = SubtitleController(provider: provider);
-              await controller.initial();
-              return controller;
-            },
-            {
-              'content': content,
-              'type': getSubtitleFormat(rawUrl),
-            },
-          );
+          final controller = await compute((Map<String, dynamic> params) async {
+            final provider = StringSubtitle(
+              data: params['content'] as String,
+              type: params['type'] as SubtitleType,
+            );
+            final controller = SubtitleController(provider: provider);
+            await controller.initial();
+            return controller;
+          }, {'content': content, 'type': getSubtitleFormat(rawUrl)});
 
           availableSubtitleList.clear();
           availableSubtitleList(controller.subtitles);
           selectedSubtitleModel(subtitle);
 
           if (youtubePlayerController.value.isInitialized) {
-            await updateCurrentSubtitle(youtubePlayerController.value.position + Duration(seconds: 1));
+            await updateCurrentSubtitle(
+              youtubePlayerController.value.position + Duration(seconds: 1),
+            );
             youtubePlayerController.value.play();
           } else if (podPlayerController.value.isInitialised) {
-            await updateCurrentSubtitle(podPlayerController.value.currentVideoPosition + Duration(seconds: 1));
+            await updateCurrentSubtitle(
+              podPlayerController.value.currentVideoPosition +
+                  Duration(seconds: 1),
+            );
             podPlayerController.value.play();
           }
         } else {
-          throw Exception('Subtitle file not found: HTTP ${response.statusCode}');
+          throw Exception(
+            'Subtitle file not found: HTTP ${response.statusCode}',
+          );
         }
       } else {
         throw Exception('Invalid subtitle URL or unsupported format');
@@ -1049,7 +1168,9 @@ class VideoPlayersController extends GetxController {
 
   Future<void> updateCurrentSubtitle(Duration position) async {
     if (availableSubtitleList.isNotEmpty) {
-      final subtitle = availableSubtitleList.firstWhereOrNull((s) => s.start <= position && s.end >= position);
+      final subtitle = availableSubtitleList.firstWhereOrNull(
+        (s) => s.start <= position && s.end >= position,
+      );
       if (subtitle != null && subtitle.data != currentSubtitle.value) {
         currentSubtitle(subtitle.data);
       } else if (subtitle == null && currentSubtitle.value.isNotEmpty) {
@@ -1082,7 +1203,13 @@ class VideoPlayersController extends GetxController {
 
   void _setVideoQualities() {
     if (videoModel.value.videoLinks.isNotEmpty) {
-      availableQualities(videoModel.value.videoLinks.map((link) => link.quality.replaceAll(RegExp(r'[pPkK]'), '').toInt()).toList());
+      availableQualities(
+        videoModel.value.videoLinks
+            .map(
+              (link) => link.quality.replaceAll(RegExp(r'[pPkK]'), '').toInt(),
+            )
+            .toList(),
+      );
       videoQualities(videoModel.value.videoLinks);
     }
   }
@@ -1095,10 +1222,14 @@ class VideoPlayersController extends GetxController {
         return (liveShowModel.streamType, liveShowModel.embedUrl);
       }
       return (liveShowModel.streamType, liveShowModel.serverUrl);
-    } else if (videoModel.value.videoUploadType.toLowerCase() == PlayerTypes.embedded.toLowerCase()) {
+    } else if (videoModel.value.videoUploadType.toLowerCase() ==
+        PlayerTypes.embedded.toLowerCase()) {
       return (videoModel.value.videoUploadType, videoModel.value.videoUrlInput);
     } else {
-      return (videoModel.value.videoUploadType.trim().isEmpty && videoModel.value.videoUrlInput.trim().isEmpty ? (videoUploadType.value, videoUrlInput.value) : (videoModel.value.videoUploadType, videoModel.value.videoUrlInput));
+      return (videoModel.value.videoUploadType.trim().isEmpty &&
+              videoModel.value.videoUrlInput.trim().isEmpty
+          ? (videoUploadType.value, videoUrlInput.value)
+          : (videoModel.value.videoUploadType, videoModel.value.videoUrlInput));
     }
   }
 
@@ -1107,7 +1238,9 @@ class VideoPlayersController extends GetxController {
       final position = podPlayerController.value.videoPlayerValue!.position;
       final duration = podPlayerController.value.videoPlayerValue!.duration;
       if (podPlayerController.value.isInitialised) {
-        final subtitle = availableSubtitleList.firstWhereOrNull((s) => s.start <= position && s.end >= position);
+        final subtitle = availableSubtitleList.firstWhereOrNull(
+          (s) => s.start <= position && s.end >= position,
+        );
         if (subtitle != null && subtitle.data != currentSubtitle.value) {
           currentSubtitle(subtitle.data);
         } else if (subtitle == null && currentSubtitle.isNotEmpty) {
@@ -1141,18 +1274,18 @@ class VideoPlayersController extends GetxController {
 
   void listenVideoEvent() {
     if (youtubePlayerController.value.isInitialized) {
-      isVideoPlaying(youtubePlayerController.value.status == YPlayerStatus.playing);
-      bool midRollCalculated = false;
-      youtubePlayerController.value.statusNotifier.addListener(
-        () {
-          if (youtubePlayerController.value.status == YPlayerStatus.stopped) {
-            storeViewCompleted();
-            // isPostRollAdShown.value = false;
-            shownMidRollAds.clear();
-            shownOverlayAds.clear();
-          }
-        },
+      isVideoPlaying(
+        youtubePlayerController.value.status == YPlayerStatus.playing,
       );
+      bool midRollCalculated = false;
+      youtubePlayerController.value.statusNotifier.addListener(() {
+        if (youtubePlayerController.value.status == YPlayerStatus.stopped) {
+          storeViewCompleted();
+          // isPostRollAdShown.value = false;
+          shownMidRollAds.clear();
+          shownOverlayAds.clear();
+        }
+      });
       youtubePlayerController.value.player.stream.position.listen((event) {
         final position = event.inSeconds;
         final duration = youtubePlayerController.value.duration.inSeconds;
@@ -1168,7 +1301,9 @@ class VideoPlayersController extends GetxController {
           // Overlay ad logic
           if (overlayAds.isNotEmpty && !isAdPlaying.value) {
             for (final ad in overlayAds) {
-              if (position == ad.startTime && currentOverlayAd.value == null && !shownOverlayAds.contains(ad.startTime)) {
+              if (position == ad.startTime &&
+                  currentOverlayAd.value == null &&
+                  !shownOverlayAds.contains(ad.startTime)) {
                 currentOverlayAd.value = ad;
                 shownOverlayAds.add(ad.startTime);
                 overlayAdTimer?.cancel();
@@ -1182,8 +1317,17 @@ class VideoPlayersController extends GetxController {
           // Detect seek forward
           if (position > lastPlaybackPosition.value + 1) {
             // if (overlayAds.isEmpty) {
-            final skippedAds = midRollAdSeconds.where((adPos) => adPos > lastPlaybackPosition.value && adPos <= position && !shownMidRollAds.contains(adPos)).toList();
-            if (skippedAds.isNotEmpty && !isAdPlaying.value && midRollAds.isNotEmpty) {
+            final skippedAds = midRollAdSeconds
+                .where(
+                  (adPos) =>
+                      adPos > lastPlaybackPosition.value &&
+                      adPos <= position &&
+                      !shownMidRollAds.contains(adPos),
+                )
+                .toList();
+            if (skippedAds.isNotEmpty &&
+                !isAdPlaying.value &&
+                midRollAds.isNotEmpty) {
               shownMidRollAds.addAll(skippedAds);
               playAd(midRollAds[midRollAds.length - 1]);
             }
@@ -1191,12 +1335,18 @@ class VideoPlayersController extends GetxController {
           }
           lastPlaybackPosition(position);
           // Mid-roll ads
-          if (position > 0 && midRollAdSeconds.contains(position) && !isAdPlaying.value && !shownMidRollAds.contains(position)) {
+          if (position > 0 &&
+              midRollAdSeconds.contains(position) &&
+              !isAdPlaying.value &&
+              !shownMidRollAds.contains(position)) {
             shownMidRollAds.add(position);
             playAd(midRollAds[midRollAds.length - 1]);
           }
           // Post-roll ad at 90% of video duration
-          if (duration > 0 && position >= (duration * 0.9).round() && !isAdPlaying.value && !isPostRollAdShown.value) {
+          if (duration > 0 &&
+              position >= (duration * 0.9).round() &&
+              !isAdPlaying.value &&
+              !isPostRollAdShown.value) {
             isPostRollAdShown.value = true;
             playAd(postRollAds[postRollAds.length - 1]);
           }
@@ -1206,7 +1356,9 @@ class VideoPlayersController extends GetxController {
       });
     } else {
       if (podPlayerController.value.isInitialised) {
-        isVideoPlaying(podPlayerController.value.videoPlayerValue?.isPlaying ?? false);
+        isVideoPlaying(
+          podPlayerController.value.videoPlayerValue?.isPlaying ?? false,
+        );
       }
       podPlayerController.value.addListener(() {
         isBuffering(podPlayerController.value.isVideoBuffering);
@@ -1219,7 +1371,9 @@ class VideoPlayersController extends GetxController {
           // Overlay ad logic
           if (overlayAds.isNotEmpty && !isAdPlaying.value) {
             for (final ad in overlayAds) {
-              if (position == ad.startTime && currentOverlayAd.value == null && !shownOverlayAds.contains(ad.startTime)) {
+              if (position == ad.startTime &&
+                  currentOverlayAd.value == null &&
+                  !shownOverlayAds.contains(ad.startTime)) {
                 currentOverlayAd.value = ad;
                 shownOverlayAds.add(ad.startTime);
                 overlayAdTimer?.cancel();
@@ -1233,8 +1387,17 @@ class VideoPlayersController extends GetxController {
           // Detect seek forward
           if (position > lastPlaybackPosition.value + 1) {
             // if (overlayAds.isEmpty) {
-            final skippedAds = midRollAdSeconds.where((adPos) => adPos > lastPlaybackPosition.value && adPos <= position && !shownMidRollAds.contains(adPos)).toList();
-            if (skippedAds.isNotEmpty && !isAdPlaying.value && midRollAds.isNotEmpty) {
+            final skippedAds = midRollAdSeconds
+                .where(
+                  (adPos) =>
+                      adPos > lastPlaybackPosition.value &&
+                      adPos <= position &&
+                      !shownMidRollAds.contains(adPos),
+                )
+                .toList();
+            if (skippedAds.isNotEmpty &&
+                !isAdPlaying.value &&
+                midRollAds.isNotEmpty) {
               shownMidRollAds.addAll(skippedAds);
               playAd(midRollAds[midRollAds.length - 1]);
               // }
@@ -1242,12 +1405,17 @@ class VideoPlayersController extends GetxController {
           }
           lastPlaybackPosition(position);
           // Mid-roll ads
-          if (midRollAdSeconds.contains(position) && !isAdPlaying.value && !shownMidRollAds.contains(position)) {
+          if (midRollAdSeconds.contains(position) &&
+              !isAdPlaying.value &&
+              !shownMidRollAds.contains(position)) {
             shownMidRollAds.add(position);
             playAd(midRollAds[midRollAds.length - 1]);
           }
           // Post-roll ad at 90% of video duration
-          if (duration > 0 && position >= (duration * 0.9).round() && !isAdPlaying.value && !isPostRollAdShown.value) {
+          if (duration > 0 &&
+              position >= (duration * 0.9).round() &&
+              !isAdPlaying.value &&
+              !isPostRollAdShown.value) {
             isPostRollAdShown.value = true;
             playAd(postRollAds[postRollAds.length - 1]);
           }
@@ -1277,13 +1445,27 @@ class VideoPlayersController extends GetxController {
     currentQuality.value = quality;
     isBuffering(true);
     try {
-      VideoLinks? selectedLink = isQuality ? videoQualities.firstWhereOrNull((link) => link.quality.toLowerCase() == quality.toLowerCase()) : VideoLinks(quality: QualityConstants.defaultQuality, type: type, url: quality);
+      VideoLinks? selectedLink = isQuality
+          ? videoQualities.firstWhereOrNull(
+              (link) => link.quality.toLowerCase() == quality.toLowerCase(),
+            )
+          : VideoLinks(
+              quality: QualityConstants.defaultQuality,
+              type: type,
+              url: quality,
+            );
       if (newVideoData != null) {
         videoModel = newVideoData.obs;
       }
 
-      if (subtitleList.any((element) => element.isDefaultLanguage.getBoolInt())) {
-        selectedSubtitleModel(subtitleList.firstWhere((element) => element.isDefaultLanguage.getBoolInt()));
+      if (subtitleList.any(
+        (element) => element.isDefaultLanguage.getBoolInt(),
+      )) {
+        selectedSubtitleModel(
+          subtitleList.firstWhere(
+            (element) => element.isDefaultLanguage.getBoolInt(),
+          ),
+        );
         await loadSubtitles(selectedSubtitleModel.value);
       } else {
         currentSubtitle('');
@@ -1294,16 +1476,23 @@ class VideoPlayersController extends GetxController {
       if (selectedLink != null) {
         videoUrlInput(selectedLink.url);
 
-        if (videoUploadType.value.toLowerCase() == PlayerTypes.youtube.toLowerCase()) {
+        if (videoUploadType.value.toLowerCase() ==
+            PlayerTypes.youtube.toLowerCase()) {
           if (youtubePlayerController.value.isInitialized) {
-            youtubePlayerController.value.initialize(selectedLink.url.validate()).then((v) {
-              isBuffering(false);
-            });
+            youtubePlayerController.value
+                .initialize(selectedLink.url.validate())
+                .then((v) {
+                  isBuffering(false);
+                });
 
             if (videoModel.value.watchedTime.isNotEmpty) {
               try {
-                final currentPlaybackPosition = _parseWatchedTime(videoModel.value.watchedTime);
-                youtubePlayerController.value.player.seek(currentPlaybackPosition);
+                final currentPlaybackPosition = _parseWatchedTime(
+                  videoModel.value.watchedTime,
+                );
+                youtubePlayerController.value.player.seek(
+                  currentPlaybackPosition,
+                );
               } catch (e) {
                 log("Error parsing continueWatchDuration: ${e.toString()}");
               }
@@ -1311,23 +1500,44 @@ class VideoPlayersController extends GetxController {
 
             listenVideoEvent();
           } else {
-            initializePlayer(selectedLink.url, videoUploadType.value.toLowerCase());
+            initializePlayer(
+              selectedLink.url,
+              videoUploadType.value.toLowerCase(),
+            );
           }
-        } else if (videoUploadType.value.toLowerCase() == PlayerTypes.embedded.toLowerCase() || videoUploadType.value.toLowerCase() == PlayerTypes.vimeo.toLowerCase()) {
+        } else if (videoUploadType.value.toLowerCase() ==
+                PlayerTypes.embedded.toLowerCase() ||
+            videoUploadType.value.toLowerCase() ==
+                PlayerTypes.vimeo.toLowerCase()) {
           _initializeWebViewPlayer(selectedLink.url);
-        } else if (videoUploadType.value.toLowerCase() == PlayerTypes.url.toLowerCase() ||
-            videoUploadType.value.toLowerCase() == PlayerTypes.hls.toLowerCase() ||
-            videoUploadType.value.toLowerCase() == PlayerTypes.local.toLowerCase() ||
-            videoUploadType.value.toLowerCase() == PlayerTypes.file.toLowerCase()) {
+        } else if (videoUploadType.value.toLowerCase() ==
+                PlayerTypes.url.toLowerCase() ||
+            videoUploadType.value.toLowerCase() ==
+                PlayerTypes.hls.toLowerCase() ||
+            videoUploadType.value.toLowerCase() ==
+                PlayerTypes.local.toLowerCase() ||
+            videoUploadType.value.toLowerCase() ==
+                PlayerTypes.file.toLowerCase()) {
           if (podPlayerController.value.isInitialised) {
-            await podPlayerController.value.changeVideo(playVideoFrom: getVideoPlatform(type: type, videoURL: selectedLink.url)).then((v) {
-              isBuffering(false);
-            });
+            await podPlayerController.value
+                .changeVideo(
+                  playVideoFrom: getVideoPlatform(
+                    type: type,
+                    videoURL: selectedLink.url,
+                  ),
+                )
+                .then((v) {
+                  isBuffering(false);
+                });
 
             if (videoModel.value.watchedTime.isNotEmpty) {
               try {
-                final currentPlaybackPosition = _parseWatchedTime(videoModel.value.watchedTime);
-                podPlayerController.value.videoSeekForward(currentPlaybackPosition);
+                final currentPlaybackPosition = _parseWatchedTime(
+                  videoModel.value.watchedTime,
+                );
+                podPlayerController.value.videoSeekForward(
+                  currentPlaybackPosition,
+                );
               } catch (e) {
                 log("Error parsing continueWatchDuration: ${e.toString()}");
               }
@@ -1379,18 +1589,25 @@ class VideoPlayersController extends GetxController {
         );
 
       case URLType.file:
-        return PlayVideoFrom.file(
-          File(videoURL),
-        );
+        return PlayVideoFrom.file(File(videoURL));
       default:
         throw ArgumentError('Unknown video platform type: $type');
     }
   }
 
-  bool checkQualitySupported({required String quality, required int requirePlanLevel}) {
+  bool checkQualitySupported({
+    required String quality,
+    required int requirePlanLevel,
+  }) {
     if (requirePlanLevel == 0) return true;
 
-    final currentPlanLimit = currentSubscription.value.planType.firstWhere((element) => element.slug == SubscriptionTitle.downloadStatus || element.limitationSlug == SubscriptionTitle.downloadStatus).limit;
+    final currentPlanLimit = currentSubscription.value.planType
+        .firstWhere(
+          (element) =>
+              element.slug == SubscriptionTitle.downloadStatus ||
+              element.limitationSlug == SubscriptionTitle.downloadStatus,
+        )
+        .limit;
 
     return _isQualitySupportedForPlan(currentPlanLimit, quality);
   }
@@ -1447,7 +1664,14 @@ class VideoPlayersController extends GetxController {
     LiveStream().on(onAddVideoQuality, (val) {
       if (val is List<VideoLinks>) {
         if (val.isNotEmpty) {
-          availableQualities(val.map((link) => link.quality.replaceAll(RegExp(r'[pPkK]'), '').toInt()).toList());
+          availableQualities(
+            val
+                .map(
+                  (link) =>
+                      link.quality.replaceAll(RegExp(r'[pPkK]'), '').toInt(),
+                )
+                .toList(),
+          );
           videoQualities(val);
         }
       }
@@ -1468,7 +1692,8 @@ class VideoPlayersController extends GetxController {
 
   @override
   Future<void> onClose() async {
-    if (!isTrailer.value && videoModel.value.type != VideoType.liveTv) await saveToContinueWatchVideo();
+    if (!isTrailer.value && videoModel.value.type != VideoType.liveTv)
+      await saveToContinueWatchVideo();
     if (podPlayerController.value.isInitialised) {
       podPlayerController.value.removeListener(() => podPlayerController.value);
       podPlayerController.value.dispose();
@@ -1513,33 +1738,40 @@ class VideoPlayersController extends GetxController {
   }
 
   String formatDuration(Duration duration) {
-  final hours = duration.inHours;
-  final minutes = duration.inMinutes.remainder(60);
-  final seconds = duration.inSeconds.remainder(60);
-  
-  if (hours > 0) {
-    return '${hours.toString().padLeft(2, '0')}:'
-        '${minutes.toString().padLeft(2, '0')}:'
-        '${seconds.toString().padLeft(2, '0')}';
-  } else {
-    return '${minutes.toString().padLeft(2, '0')}:'
-        '${seconds.toString().padLeft(2, '0')}';
-  }
-}
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
 
-    Future<void> saveToContinueWatchVideo() async {
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:'
+          '${minutes.toString().padLeft(2, '0')}:'
+          '${seconds.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(2, '0')}:'
+          '${seconds.toString().padLeft(2, '0')}';
+    }
+  }
+
+  Future<void> saveToContinueWatchVideo() async {
     if (videoModel.value.id != -1) {
       String watchedTime = '';
       String totalWatchedTime = '';
-      if (videoModel.value.videoUploadType.toLowerCase() == PlayerTypes.youtube) {
+      if (videoModel.value.videoUploadType.toLowerCase() ==
+          PlayerTypes.youtube) {
         if (youtubePlayerController.value.isInitialized) {
           watchedTime = formatDuration(youtubePlayerController.value.position);
-          totalWatchedTime = formatDuration(youtubePlayerController.value.duration);
+          totalWatchedTime = formatDuration(
+            youtubePlayerController.value.duration,
+          );
         }
       } else {
         if (podPlayerController.value.videoPlayerValue != null) {
-          watchedTime = formatDuration(podPlayerController.value.videoPlayerValue!.position);
-          totalWatchedTime = formatDuration(podPlayerController.value.videoPlayerValue!.duration);
+          watchedTime = formatDuration(
+            podPlayerController.value.videoPlayerValue!.position,
+          );
+          totalWatchedTime = formatDuration(
+            podPlayerController.value.videoPlayerValue!.duration,
+          );
         }
       }
 
@@ -1549,23 +1781,38 @@ class VideoPlayersController extends GetxController {
       }
 
       await CoreServiceApis.saveContinueWatch(
-        request: {
-          "entertainment_id": videoModel.value.watchedTime.isNotEmpty ? videoModel.value.entertainmentId : videoModel.value.id,
-          "watched_time": watchedTime,
-          "total_watched_time": totalWatchedTime,
-          "entertainment_type": getTypeForContinueWatch(type: videoModel.value.type.toLowerCase()),
-          if (profileId.value != 0) "profile_id": profileId.value,
-          if (getTypeForContinueWatch(type: videoModel.value.type.toLowerCase()) == VideoType.tvshow) "episode_id": videoModel.value.episodeId > 0 ? videoModel.value.episodeId : videoModel.value.id,
-        },
-      ).then((value) {
-        HomeController homeScreenController = Get.find<HomeController>();
-        homeScreenController.getDashboardDetail(showLoader: false);
-        ProfileController profileController = Get.isRegistered<ProfileController>() ? Get.find<ProfileController>() : Get.put(ProfileController());
+            request: {
+              "entertainment_id": videoModel.value.watchedTime.isNotEmpty
+                  ? videoModel.value.entertainmentId
+                  : videoModel.value.id,
+              "watched_time": watchedTime,
+              "total_watched_time": totalWatchedTime,
+              "entertainment_type": getTypeForContinueWatch(
+                type: videoModel.value.type.toLowerCase(),
+              ),
+              if (profileId.value != 0) "profile_id": profileId.value,
+              if (getTypeForContinueWatch(
+                    type: videoModel.value.type.toLowerCase(),
+                  ) ==
+                  VideoType.tvshow)
+                "episode_id": videoModel.value.episodeId > 0
+                    ? videoModel.value.episodeId
+                    : videoModel.value.id,
+            },
+          )
+          .then((value) {
+            HomeController homeScreenController = Get.find<HomeController>();
+            homeScreenController.getDashboardDetail(showLoader: false);
+            ProfileController profileController =
+                Get.isRegistered<ProfileController>()
+                ? Get.find<ProfileController>()
+                : Get.put(ProfileController());
 
-        profileController.getProfileDetail(showLoader: false);
-      }).catchError((e) {
-        log("Error ==> $e");
-      });
+            profileController.getProfileDetail(showLoader: false);
+          })
+          .catchError((e) {
+            log("Error ==> $e");
+          });
     }
   }
 
@@ -1583,28 +1830,30 @@ class VideoPlayersController extends GetxController {
   }
 
   Future<void> startDate() async {
-    await CoreServiceApis.startDate(request: {
-      "entertainment_id": videoModel.value.id,
-      "entertainment_type": getVideoType(type: videoModel.value.type),
-      "user_id": loginUserData.value.id,
-      if (profileId.value != 0) "profile_id": profileId.value,
-    });
+    await CoreServiceApis.startDate(
+      request: {
+        "entertainment_id": videoModel.value.id,
+        "entertainment_type": getVideoType(type: videoModel.value.type),
+        "user_id": loginUserData.value.id,
+        if (profileId.value != 0) "profile_id": profileId.value,
+      },
+    );
   }
 
   String formatSecondsToHMS(int seconds) {
-  final hours = seconds ~/ 3600;
-  final minutes = (seconds % 3600) ~/ 60;
-  final secs = seconds % 60;
-  
-  if (hours > 0) {
-    return '${hours.toString().padLeft(2, '0')}:'
-        '${minutes.toString().padLeft(2, '0')}:'
-        '${secs.toString().padLeft(2, '0')}';
-  } else {
-    return '${minutes.toString().padLeft(2, '0')}:'
-        '${secs.toString().padLeft(2, '0')}';
+    final hours = seconds ~/ 3600;
+    final minutes = (seconds % 3600) ~/ 60;
+    final secs = seconds % 60;
+
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:'
+          '${minutes.toString().padLeft(2, '0')}:'
+          '${secs.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(2, '0')}:'
+          '${secs.toString().padLeft(2, '0')}';
+    }
   }
-}
 
   int parseDurationToSeconds(String? duration) {
     if (duration == null || duration.isEmpty) return 0;
@@ -1622,7 +1871,8 @@ class VideoPlayersController extends GetxController {
     return 0;
   }
 
-  String buildGenericIframeWrapper(String url) => '''
+  String buildGenericIframeWrapper(String url) =>
+      '''
 <!DOCTYPE html>
 <html>
 <head>

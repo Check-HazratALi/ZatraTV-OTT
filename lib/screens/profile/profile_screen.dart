@@ -6,6 +6,8 @@ import 'package:zatra_tv/screens/profile/components/profile_card_component.dart'
 import 'package:zatra_tv/screens/profile/components/user_profile_component.dart';
 import 'package:zatra_tv/screens/profile/shimmer_profile.dart';
 import 'package:zatra_tv/generated/assets.dart';
+import 'package:zatra_tv/screens/qr_scanner/qr_scanner_screen.dart';
+import 'package:zatra_tv/screens/wallet/wallet_screen.dart';
 import 'package:zatra_tv/utils/constants.dart';
 
 import '../../components/app_scaffold.dart';
@@ -17,7 +19,7 @@ import '../../utils/colors.dart';
 import '../../utils/common_base.dart';
 import '../../utils/empty_error_state_widget.dart';
 import '../home/components/continue_watch_component.dart';
-import '../qr_scanner/qr_scanner_screen.dart';
+// import '../qr_scanner/qr_scanner_screen.dart';
 import '../setting/setting_controller.dart';
 import '../setting/setting_screen.dart';
 import 'components/subscription_component.dart';
@@ -36,6 +38,12 @@ class ProfileScreen extends StatelessWidget {
       appBartitleText: locale.value.profile,
       hasLeadingWidget: false,
       actions: [
+        IconButton(
+          icon: Icon(Icons.wallet_rounded, color: white),
+          onPressed: () {
+            Get.to(() => WalletScreen());
+          },
+        ),
         IconButton(
           onPressed: () {
             SettingController controller = Get.isRegistered<SettingController>()

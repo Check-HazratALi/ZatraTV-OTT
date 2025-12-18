@@ -8,7 +8,7 @@ import 'package:flutter_chrome_cast/enums/connection_state.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/ads/components/custom_ad_component.dart';
-import 'package:zatra_tv/components/loader_widget.dart';
+// import 'package:zatra_tv/components/loader_widget.dart';
 import 'package:zatra_tv/generated/assets.dart';
 import 'package:zatra_tv/main.dart';
 import 'package:zatra_tv/screens/tv_show/components/tv_show_season_component.dart';
@@ -248,75 +248,75 @@ class TvShowDetailsComponent extends StatelessWidget {
                           );
                         },
                       ),
-                      if (showDetailCont.showDownload.value)
-                        CustomIconButton(
-                          buttonColor: Colors.transparent,
-                          icon: showDetailCont.isDownloaded.value
-                              ? Assets.iconsIcDownloaded
-                              : Assets.iconsIcDownload,
-                          title: locale.value.download,
-                          isTrue: showDetailCont.isDownloaded.value,
-                          iconWidget:
-                              showDetailCont.downloadPercentage.value >= 1 &&
-                                      showDetailCont.downloadPercentage.value <
-                                          100 ||
-                                  showDetailCont.isDownloading.value
-                              ? Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    LoaderWidget(
-                                      size: 30,
-                                      loaderColor: appColorPrimary,
-                                    ),
-                                    if (showDetailCont
-                                            .downloadPercentage
-                                            .value >
-                                        0)
-                                      Marquee(
-                                        child: Text(
-                                          '${showDetailCont.downloadPercentage.value}'
-                                              .suffixText(value: '%'),
-                                          style: primaryTextStyle(
-                                            color: appColorPrimary,
-                                            size: 10,
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                )
-                              : null,
-                          color: iconColor,
-                          onTap: () {
-                            if (showDetailCont.isDownloaded.value ||
-                                showDetailCont
-                                        .selectedEpisode
-                                        .value
-                                        .requiredPlanLevel ==
-                                    0) {
-                              showDetailCont.handleDownloads(context);
-                            } else {
-                              onSubscriptionLoginCheck(
-                                videoAccess:
-                                    showDetailCont.selectedEpisode.value.access,
-                                callBack: () {
-                                  if (currentSubscription.value.level >=
-                                      showDetailCont
-                                          .selectedEpisode
-                                          .value
-                                          .requiredPlanLevel) {
-                                    showDetailCont.handleDownloads(context);
-                                  }
-                                },
-                                planId:
-                                    showDetailCont.selectedEpisode.value.planId,
-                                planLevel: showDetailCont
-                                    .selectedEpisode
-                                    .value
-                                    .requiredPlanLevel,
-                              );
-                            }
-                          },
-                        ),
+                      // if (showDetailCont.showDownload.value)
+                      //   CustomIconButton(
+                      //     buttonColor: Colors.transparent,
+                      //     icon: showDetailCont.isDownloaded.value
+                      //         ? Assets.iconsIcDownloaded
+                      //         : Assets.iconsIcDownload,
+                      //     title: locale.value.download,
+                      //     isTrue: showDetailCont.isDownloaded.value,
+                      //     iconWidget:
+                      //         showDetailCont.downloadPercentage.value >= 1 &&
+                      //                 showDetailCont.downloadPercentage.value <
+                      //                     100 ||
+                      //             showDetailCont.isDownloading.value
+                      //         ? Stack(
+                      //             alignment: Alignment.center,
+                      //             children: [
+                      //               LoaderWidget(
+                      //                 size: 30,
+                      //                 loaderColor: appColorPrimary,
+                      //               ),
+                      //               if (showDetailCont
+                      //                       .downloadPercentage
+                      //                       .value >
+                      //                   0)
+                      //                 Marquee(
+                      //                   child: Text(
+                      //                     '${showDetailCont.downloadPercentage.value}'
+                      //                         .suffixText(value: '%'),
+                      //                     style: primaryTextStyle(
+                      //                       color: appColorPrimary,
+                      //                       size: 10,
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //             ],
+                      //           )
+                      //         : null,
+                      //     color: iconColor,
+                      //     onTap: () {
+                      //       if (showDetailCont.isDownloaded.value ||
+                      //           showDetailCont
+                      //                   .selectedEpisode
+                      //                   .value
+                      //                   .requiredPlanLevel ==
+                      //               0) {
+                      //         showDetailCont.handleDownloads(context);
+                      //       } else {
+                      //         onSubscriptionLoginCheck(
+                      //           videoAccess:
+                      //               showDetailCont.selectedEpisode.value.access,
+                      //           callBack: () {
+                      //             if (currentSubscription.value.level >=
+                      //                 showDetailCont
+                      //                     .selectedEpisode
+                      //                     .value
+                      //                     .requiredPlanLevel) {
+                      //               showDetailCont.handleDownloads(context);
+                      //             }
+                      //           },
+                      //           planId:
+                      //               showDetailCont.selectedEpisode.value.planId,
+                      //           planLevel: showDetailCont
+                      //               .selectedEpisode
+                      //               .value
+                      //               .requiredPlanLevel,
+                      //         );
+                      //       }
+                      //     },
+                      //   ),
                       // CustomIconButton(
                       //   icon: Assets.iconsIcPictureInPicture,
                       //   title: locale.value.pip,
@@ -425,7 +425,7 @@ class TvShowDetailsComponent extends StatelessWidget {
           // Likes
           _buildStatItem(
             icon: Icons.thumb_up_outlined,
-            value: (showDetailCont.tvShowDetail.value.totalLikes ?? 0)
+            value: (showDetailCont.tvShowDetail.value.totalLikes)
                 .formatNumber(),
             label: "Likes",
             color: appColorPrimary,
@@ -434,7 +434,7 @@ class TvShowDetailsComponent extends StatelessWidget {
           // Views
           _buildStatItem(
             icon: Icons.remove_red_eye_outlined,
-            value: (showDetailCont.tvShowDetail.value.totalViews ?? 0)
+            value: (showDetailCont.tvShowDetail.value.totalViews)
                 .formatNumber(),
             label: "Views",
             color: Colors.blue,

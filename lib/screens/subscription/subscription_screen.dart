@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:zatra_tv/screens/profile/components/subscription_component.dart';
+// import 'package:zatra_tv/screens/profile/components/subscription_component.dart';
 import 'package:zatra_tv/screens/subscription/shimmer_subscription_list.dart';
 import 'package:zatra_tv/screens/subscription/subscription_controller.dart';
-import 'package:zatra_tv/utils/app_common.dart';
+// import 'package:zatra_tv/utils/app_common.dart';
 import 'package:zatra_tv/utils/colors.dart';
 import 'package:zatra_tv/generated/assets.dart';
 

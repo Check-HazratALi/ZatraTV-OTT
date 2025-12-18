@@ -233,15 +233,15 @@ class SettingController extends GetxController {
           ),
         );
       }
-      settingList.add(
-        SettingModel(
-          icon: Assets.iconsIcParentPassword,
-          title: locale.value.parentalControl,
-          subTitle: "",
-          showArrow: false,
-          showSwitch: true,
-        ),
-      );
+      // settingList.add(
+      //   SettingModel(
+      //     icon: Assets.iconsIcParentPassword,
+      //     title: locale.value.parentalControl,
+      //     subTitle: "",
+      //     showArrow: false,
+      //     showSwitch: true,
+      //   ),
+      // );
       settingList.add(
         SettingModel(
           icon: Assets.iconsIcAdd,
@@ -410,51 +410,51 @@ class SettingController extends GetxController {
     });
   }
 
-  Future<void> handleParentalLock(bool isEnable) async {
-    if (isLoading.value) return;
-    isLoading(true);
+  // Future<void> handleParentalLock(bool isEnable) async {
+  //   if (isLoading.value) return;
+  //   isLoading(true);
 
-    Map<String, dynamic> request = {
-      "is_parental_lock_enable": isEnable ? 1 : 0,
-    };
-    await CoreServiceApis.updateParentalLock(request)
-        .then((value) {
-          isChildrenProfileEnabled.value = isEnable;
-          successSnackBar(value.message);
-        })
-        .catchError((e) {
-          errorSnackBar(error: e);
-        })
-        .whenComplete(() => isLoading(false));
-  }
+  //   Map<String, dynamic> request = {
+  //     "is_parental_lock_enable": isEnable ? 1 : 0,
+  //   };
+  //   await CoreServiceApis.updateParentalLock(request)
+  //       .then((value) {
+  //         isChildrenProfileEnabled.value = isEnable;
+  //         successSnackBar(value.message);
+  //       })
+  //       .catchError((e) {
+  //         errorSnackBar(error: e);
+  //       })
+  //       .whenComplete(() => isLoading(false));
+  // }
 
-  Future<void> setPin() async {
-    if (newPin.value.isEmpty) {
-      toast(locale.value.pleaseEnterNewPIN);
-    } else if (confirmPin.value == "") {
-      toast(locale.value.pleaseEnterConfirmPin);
-    } else {
-      if (newPin.value == confirmPin.value) {
-        isPinCorrect.value = true;
-        isLoading(true);
-        CoreServiceApis.changePin(newPin.value, confirmPin.value)
-            .then((value) {
-              toast(locale.value.newPinSuccessfullySaved);
-              profilePin(newPin.value);
-              isPinCorrect.value = false;
-              newPin.value = "";
-              confirmPin.value = "";
-              Get.back(result: true);
-              Get.back(result: true);
-            })
-            .catchError((e) {
-              toast(e.toString(), print: true);
-              Get.back(result: false);
-            })
-            .whenComplete(() => isLoading(false));
-      } else {
-        toast(locale.value.pinNotMatched);
-      }
-    }
-  }
+  // Future<void> setPin() async {
+  //   if (newPin.value.isEmpty) {
+  //     toast(locale.value.pleaseEnterNewPIN);
+  //   } else if (confirmPin.value == "") {
+  //     toast(locale.value.pleaseEnterConfirmPin);
+  //   } else {
+  //     if (newPin.value == confirmPin.value) {
+  //       isPinCorrect.value = true;
+  //       isLoading(true);
+  //       CoreServiceApis.changePin(newPin.value, confirmPin.value)
+  //           .then((value) {
+  //             toast(locale.value.newPinSuccessfullySaved);
+  //             profilePin(newPin.value);
+  //             isPinCorrect.value = false;
+  //             newPin.value = "";
+  //             confirmPin.value = "";
+  //             Get.back(result: true);
+  //             Get.back(result: true);
+  //           })
+  //           .catchError((e) {
+  //             toast(e.toString(), print: true);
+  //             Get.back(result: false);
+  //           })
+  //           .whenComplete(() => isLoading(false));
+  //     } else {
+  //       toast(locale.value.pinNotMatched);
+  //     }
+  //   }
+  // }
 }

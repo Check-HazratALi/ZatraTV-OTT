@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/ads/components/custom_ad_component.dart';
 import 'package:zatra_tv/components/custom_icon_button_widget.dart';
-import 'package:zatra_tv/components/loader_widget.dart';
+// import 'package:zatra_tv/components/loader_widget.dart';
 import 'package:zatra_tv/screens/video/video_details_controller.dart';
 import 'package:zatra_tv/generated/assets.dart';
 
@@ -39,7 +39,7 @@ class VideoDetailsComponent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         16.height,
-        
+
         _buildStatsRow(context),
 
         SingleChildScrollView(
@@ -79,72 +79,72 @@ class VideoDetailsComponent extends StatelessWidget {
                   shareVideo(type: VideoType.video, videoId: videoDetail.id);
                 },
               ),
-              Obx(() {
-                if (movieDetailCont.showDownload.value) {
-                  return CustomIconButton(
-                    icon: movieDetailCont.isDownloaded.value
-                        ? Assets.iconsIcDownloaded
-                        : Assets.iconsIcDownload,
-                    title: locale.value.download,
-                    isTrue: movieDetailCont.isDownloaded.value,
-                    iconWidget:
-                        movieDetailCont.downloadPercentage.value >= 1 &&
-                                movieDetailCont.downloadPercentage.value <
-                                    100 ||
-                            movieDetailCont.isDownloading.value
-                        ? Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              LoaderWidget(
-                                size: 30,
-                                loaderColor: appColorPrimary,
-                              ),
-                              if (movieDetailCont.downloadPercentage.value > 0)
-                                Marquee(
-                                  child: Text(
-                                    '${movieDetailCont.downloadPercentage.value}'
-                                        .suffixText(value: '%'),
-                                    style: primaryTextStyle(
-                                      color: appColorPrimary,
-                                      size: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          )
-                        : null,
-                    color: iconColor,
-                    onTap: () async {
-                      if (movieDetailCont.isDownloaded.value ||
-                          movieDetailCont
-                                  .movieDetailsResp
-                                  .value
-                                  .requiredPlanLevel ==
-                              0) {
-                        movieDetailCont.handleDownload(context);
-                      } else {
-                        onSubscriptionLoginCheck(
-                          videoAccess:
-                              movieDetailCont.movieDetailsResp.value.access,
-                          callBack: () {
-                            if (currentSubscription.value.level >=
-                                movieDetailCont
-                                    .movieDetailsResp
-                                    .value
-                                    .requiredPlanLevel) {
-                              movieDetailCont.handleDownload(context);
-                            }
-                          },
-                          planId: videoDetail.planId,
-                          planLevel: videoDetail.requiredPlanLevel,
-                        );
-                      }
-                    },
-                  );
-                } else {
-                  return Offstage();
-                }
-              }),
+              // Obx(() {
+              //   if (movieDetailCont.showDownload.value) {
+              //     return CustomIconButton(
+              //       icon: movieDetailCont.isDownloaded.value
+              //           ? Assets.iconsIcDownloaded
+              //           : Assets.iconsIcDownload,
+              //       title: locale.value.download,
+              //       isTrue: movieDetailCont.isDownloaded.value,
+              //       iconWidget:
+              //           movieDetailCont.downloadPercentage.value >= 1 &&
+              //                   movieDetailCont.downloadPercentage.value <
+              //                       100 ||
+              //               movieDetailCont.isDownloading.value
+              //           ? Stack(
+              //               alignment: Alignment.center,
+              //               children: [
+              //                 LoaderWidget(
+              //                   size: 30,
+              //                   loaderColor: appColorPrimary,
+              //                 ),
+              //                 if (movieDetailCont.downloadPercentage.value > 0)
+              //                   Marquee(
+              //                     child: Text(
+              //                       '${movieDetailCont.downloadPercentage.value}'
+              //                           .suffixText(value: '%'),
+              //                       style: primaryTextStyle(
+              //                         color: appColorPrimary,
+              //                         size: 10,
+              //                       ),
+              //                     ),
+              //                   ),
+              //               ],
+              //             )
+              //           : null,
+              //       color: iconColor,
+              //       onTap: () async {
+              //         if (movieDetailCont.isDownloaded.value ||
+              //             movieDetailCont
+              //                     .movieDetailsResp
+              //                     .value
+              //                     .requiredPlanLevel ==
+              //                 0) {
+              //           movieDetailCont.handleDownload(context);
+              //         } else {
+              //           onSubscriptionLoginCheck(
+              //             videoAccess:
+              //                 movieDetailCont.movieDetailsResp.value.access,
+              //             callBack: () {
+              //               if (currentSubscription.value.level >=
+              //                   movieDetailCont
+              //                       .movieDetailsResp
+              //                       .value
+              //                       .requiredPlanLevel) {
+              //                 movieDetailCont.handleDownload(context);
+              //               }
+              //             },
+              //             planId: videoDetail.planId,
+              //             planLevel: videoDetail.requiredPlanLevel,
+              //           );
+              //         }
+              //       },
+              //     );
+              //   } else {
+              //     return Offstage();
+              //   }
+              // }),
               CustomIconButton(
                 icon: Assets.iconsIcThumbsup,
                 title: locale.value.like,
@@ -259,7 +259,7 @@ class VideoDetailsComponent extends StatelessWidget {
           // Likes - Null Check
           _buildStatItem(
             icon: Icons.thumb_up_outlined,
-            value: (videoDetail.totalLikes ?? 0).formatNumber(),
+            value: (videoDetail.totalLikes).formatNumber(),
             label: "Likes",
             color: appColorPrimary,
           ),
@@ -267,7 +267,7 @@ class VideoDetailsComponent extends StatelessWidget {
           // Views - Null Check
           _buildStatItem(
             icon: Icons.remove_red_eye_outlined,
-            value: (videoDetail.totalViews ?? 0).formatNumber(),
+            value: (videoDetail.totalViews).formatNumber(),
             label: "Views",
             color: Colors.blue,
           ),

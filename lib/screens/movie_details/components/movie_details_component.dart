@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:zatra_tv/ads/components/custom_ad_component.dart';
 import 'package:zatra_tv/components/cached_image_widget.dart';
-import 'package:zatra_tv/components/loader_widget.dart';
+// import 'package:zatra_tv/components/loader_widget.dart';
 import 'package:zatra_tv/generated/assets.dart';
 import 'package:zatra_tv/main.dart';
 import 'package:zatra_tv/screens/auth/sign_in/sign_in_screen.dart';
@@ -84,74 +84,74 @@ class MovieDetailsComponent extends StatelessWidget {
                     // viewFiles(movieDetCont.movieDetailsResp.value.name);
                   },
                 ),
-                if (movieDetCont.showDownload.isTrue)
-                  CustomIconButton(
-                    icon: movieDetCont.isDownloaded.value
-                        ? Assets.iconsIcDownloaded
-                        : Assets.iconsIcDownload,
-                    title: locale.value.download,
-                    isTrue: movieDetCont.isDownloaded.value,
-                    iconWidget:
-                        movieDetCont.downloadPercentage.value >= 1 &&
-                                movieDetCont.downloadPercentage.value < 100 ||
-                            movieDetCont.isDownloading.value
-                        ? Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              LoaderWidget(
-                                size: 30,
-                                loaderColor: appColorPrimary,
-                              ),
-                              if (movieDetCont.downloadPercentage.value > 0)
-                                Marquee(
-                                  child: Text(
-                                    '${movieDetCont.downloadPercentage.value}'
-                                        .suffixText(value: '%'),
-                                    style: primaryTextStyle(
-                                      color: appColorPrimary,
-                                      size: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          )
-                        : null,
-                    color: Colors.white54,
-                    onTap: () async {
-                      if (movieDetCont.isDownloaded.value ||
-                          movieDetCont
-                                  .movieDetailsResp
-                                  .value
-                                  .requiredPlanLevel ==
-                              0) {
-                        movieDetCont.handleDownloads();
-                      } else {
-                        onSubscriptionLoginCheck(
-                          videoAccess:
-                              movieDetCont.movieDetailsResp.value.movieAccess,
-                          callBack: () {
-                            if (currentSubscription.value.level >=
-                                movieDetCont
-                                    .movieDetailsResp
-                                    .value
-                                    .requiredPlanLevel) {
-                              movieDetCont.handleDownloads();
-                            }
-                          },
-                          planId: movieDetCont.movieDetailsResp.value.planId,
-                          planLevel: movieDetCont
-                              .movieDetailsResp
-                              .value
-                              .requiredPlanLevel,
-                          isPurchased:
-                              movieDetCont.movieDetailsResp.value.isPurchased,
-                        );
-                        print(
-                          "==========================${movieDetCont.movieDetailsResp.value.isPurchased}================================",
-                        );
-                      }
-                    },
-                  ),
+                // if (movieDetCont.showDownload.isTrue)
+                //   CustomIconButton(
+                //     icon: movieDetCont.isDownloaded.value
+                //         ? Assets.iconsIcDownloaded
+                //         : Assets.iconsIcDownload,
+                //     title: locale.value.download,
+                //     isTrue: movieDetCont.isDownloaded.value,
+                //     iconWidget:
+                //         movieDetCont.downloadPercentage.value >= 1 &&
+                //                 movieDetCont.downloadPercentage.value < 100 ||
+                //             movieDetCont.isDownloading.value
+                //         ? Stack(
+                //             alignment: Alignment.center,
+                //             children: [
+                //               LoaderWidget(
+                //                 size: 30,
+                //                 loaderColor: appColorPrimary,
+                //               ),
+                //               if (movieDetCont.downloadPercentage.value > 0)
+                //                 Marquee(
+                //                   child: Text(
+                //                     '${movieDetCont.downloadPercentage.value}'
+                //                         .suffixText(value: '%'),
+                //                     style: primaryTextStyle(
+                //                       color: appColorPrimary,
+                //                       size: 10,
+                //                     ),
+                //                   ),
+                //                 ),
+                //             ],
+                //           )
+                //         : null,
+                //     color: Colors.white54,
+                //     onTap: () async {
+                //       if (movieDetCont.isDownloaded.value ||
+                //           movieDetCont
+                //                   .movieDetailsResp
+                //                   .value
+                //                   .requiredPlanLevel ==
+                //               0) {
+                //         movieDetCont.handleDownloads();
+                //       } else {
+                //         onSubscriptionLoginCheck(
+                //           videoAccess:
+                //               movieDetCont.movieDetailsResp.value.movieAccess,
+                //           callBack: () {
+                //             if (currentSubscription.value.level >=
+                //                 movieDetCont
+                //                     .movieDetailsResp
+                //                     .value
+                //                     .requiredPlanLevel) {
+                //               movieDetCont.handleDownloads();
+                //             }
+                //           },
+                //           planId: movieDetCont.movieDetailsResp.value.planId,
+                //           planLevel: movieDetCont
+                //               .movieDetailsResp
+                //               .value
+                //               .requiredPlanLevel,
+                //           isPurchased:
+                //               movieDetCont.movieDetailsResp.value.isPurchased,
+                //         );
+                //         print(
+                //           "==========================${movieDetCont.movieDetailsResp.value.isPurchased}================================",
+                //         );
+                //       }
+                //     },
+                //   ),
                 CustomIconButton(
                   icon: Assets.iconsIcThumbsup,
                   title: locale.value.like,

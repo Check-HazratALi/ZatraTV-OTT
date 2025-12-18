@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+// import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -18,8 +18,8 @@ import '../../utils/cast/controller/fc_cast_controller.dart';
 import '../../utils/cast/flutter_chrome_cast_widget.dart';
 import '../../utils/constants.dart';
 import '../../utils/video_download.dart';
-import '../download_videos/components/download_component.dart';
-import '../download_videos/download_video.dart';
+// import '../download_videos/components/download_component.dart';
+// import '../download_videos/download_video.dart';
 import '../home/home_controller.dart';
 import '../movie_details/components/add_review/add_review_controller.dart';
 import '../profile/profile_controller.dart';
@@ -394,39 +394,39 @@ class TvShowController extends GetxController {
         });
   }
 
-  Future<void> handleDownloads(BuildContext ctx) async {
-    if (isDownloaded.value) {
-      Get.off(() => DownloadVideosScreen())?.then((value) {
-        if (value ?? false) checkIfAlreadyDownloaded();
-      });
-    } else {
-      download();
-    }
-  }
+  // Future<void> handleDownloads(BuildContext ctx) async {
+  //   if (isDownloaded.value) {
+  //     Get.off(() => DownloadVideosScreen())?.then((value) {
+  //       if (value ?? false) checkIfAlreadyDownloaded();
+  //     });
+  //   } else {
+  //     download();
+  //   }
+  // }
 
-  void download() {
-    Get.bottomSheet(
-      isDismissible: true,
-      isScrollControlled: true,
-      enableDrag: false,
-      BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-        child: DownloadComponent(
-          loaderOnOff: (p0) {
-            isDownloading(p0);
-          },
-          downloadDet: selectedEpisode.value.downloadQuality,
-          videoModel: showData.value,
-          refreshCallback: () {
-            checkIfAlreadyDownloaded();
-          },
-          downloadProgress: (p0) {
-            downloadPercentage(p0);
-          },
-        ),
-      ),
-    );
-  }
+  // void download() {
+  //   Get.bottomSheet(
+  //     isDismissible: true,
+  //     isScrollControlled: true,
+  //     enableDrag: false,
+  //     BackdropFilter(
+  //       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+  //       child: DownloadComponent(
+  //         loaderOnOff: (p0) {
+  //           isDownloading(p0);
+  //         },
+  //         downloadDet: selectedEpisode.value.downloadQuality,
+  //         videoModel: showData.value,
+  //         refreshCallback: () {
+  //           checkIfAlreadyDownloaded();
+  //         },
+  //         downloadProgress: (p0) {
+  //           downloadPercentage(p0);
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> checkIfAlreadyDownloaded() async {
     showDownload(

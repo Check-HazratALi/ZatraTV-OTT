@@ -201,7 +201,6 @@ Future<void> main() async {
       AuthServiceApis.clearData();
     }
   }
-
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: appScreenBackgroundDark,
