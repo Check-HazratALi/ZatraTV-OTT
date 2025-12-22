@@ -34,15 +34,31 @@ import 'network_utils.dart';
 
 class AuthServiceApis {
   static Future<String> createUser({required Map request}) async {
-    UserResponse userData = UserResponse.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.register, request: request, method: HttpMethodType.POST)));
+    UserResponse userData = UserResponse.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.register,
+          request: request,
+          method: HttpMethodType.POST,
+        ),
+      ),
+    );
     await storeUserData(userData);
     setValue(SharedPreferenceConst.USER_PASSWORD, request[UserKeys.password]);
     return userData.message;
   }
 
-  static Future<void> loginUser({required Map<String, dynamic> request, bool isSocialLogin = false}) async {
-    if (await isIqonicProduct && request[UserKeys.mobile] == Constants.defaultNumber) {
-      request.putIfAbsent('is_demo_user', () => (request[UserKeys.mobile] == Constants.defaultNumber).getIntBool());
+  static Future<void> loginUser({
+    required Map<String, dynamic> request,
+    bool isSocialLogin = false,
+  }) async {
+    if (await isIqonicProduct &&
+        request[UserKeys.mobile] == Constants.defaultNumber) {
+      request.putIfAbsent(
+        'is_demo_user',
+        () =>
+            (request[UserKeys.mobile] == Constants.defaultNumber).getIntBool(),
+      );
     }
     UserResponse userData = UserResponse.fromJson(
       await handleResponse(
@@ -65,23 +81,59 @@ class AuthServiceApis {
     loginUserData(userData.userData);
     currentSubscription(userData.userData.planDetails);
 
-    if (currentSubscription.value.level > -1 && currentSubscription.value.planType.isNotEmpty && currentSubscription.value.planType.any((element) => element.slug == SubscriptionTitle.videoCast)) {
-      isCastingSupported(currentSubscription.value.planType.firstWhere((element) => element.slug == SubscriptionTitle.videoCast).limitationValue.getBoolInt());
+    if (currentSubscription.value.level > -1 &&
+        currentSubscription.value.planType.isNotEmpty &&
+        currentSubscription.value.planType.any(
+          (element) => element.slug == SubscriptionTitle.videoCast,
+        )) {
+      isCastingSupported(
+        currentSubscription.value.planType
+            .firstWhere(
+              (element) => element.slug == SubscriptionTitle.videoCast,
+            )
+            .limitationValue
+            .getBoolInt(),
+      );
     } else {
       isCastingSupported(false);
     }
-    currentSubscription.value.activePlanInAppPurchaseIdentifier = isIOS ? currentSubscription.value.appleInAppPurchaseIdentifier : currentSubscription.value.googleInAppPurchaseIdentifier;
+    currentSubscription.value.activePlanInAppPurchaseIdentifier = isIOS
+        ? currentSubscription.value.appleInAppPurchaseIdentifier
+        : currentSubscription.value.googleInAppPurchaseIdentifier;
     setValue(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
-    setValue(SharedPreferenceConst.USER_SUBSCRIPTION_DATA, userData.userData.planDetails.toJson());
+    setValue(
+      SharedPreferenceConst.USER_SUBSCRIPTION_DATA,
+      userData.userData.planDetails.toJson(),
+    );
     profilePin(loginUserData.value.pin);
   }
 
-  static Future<ChangePasswordResponse> changePasswordApi({required Map request}) async {
-    return ChangePasswordResponse.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.changePassword, request: request, method: HttpMethodType.POST)));
+  static Future<ChangePasswordResponse> changePasswordApi({
+    required Map request,
+  }) async {
+    return ChangePasswordResponse.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.changePassword,
+          request: request,
+          method: HttpMethodType.POST,
+        ),
+      ),
+    );
   }
 
-  static Future<BaseResponseModel> forgotPasswordApi({required Map request}) async {
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.forgotPassword, request: request, method: HttpMethodType.POST)));
+  static Future<BaseResponseModel> forgotPasswordApi({
+    required Map request,
+  }) async {
+    return BaseResponseModel.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.forgotPassword,
+          request: request,
+          method: HttpMethodType.POST,
+        ),
+      ),
+    );
   }
 
   static Future<List<NotificationData>> getNotificationDetail({
@@ -91,10 +143,22 @@ class AuthServiceApis {
     Function(bool)? lastPageCallBack,
   }) async {
     if (isLoggedIn.value) {
-      final notificationRes = NotificationResponse.fromJson(await handleResponse(await buildHttpResponse(getEndPoint(endPoint: APIEndPoints.getNotification, page: page, perPages: perPage))));
+      final notificationRes = NotificationResponse.fromJson(
+        await handleResponse(
+          await buildHttpResponse(
+            getEndPoint(
+              endPoint: APIEndPoints.getNotification,
+              page: page,
+              perPages: perPage,
+            ),
+          ),
+        ),
+      );
       if (page == 1) notifications.clear();
       notifications.addAll(notificationRes.notificationData);
-      lastPageCallBack?.call(notificationRes.notificationData.length != perPage);
+      lastPageCallBack?.call(
+        notificationRes.notificationData.length != perPage,
+      );
       return notifications;
     } else {
       return [];
@@ -102,11 +166,23 @@ class AuthServiceApis {
   }
 
   static Future<NotificationData> clearAllNotification() async {
-    return NotificationData.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.clearAllNotification)));
+    return NotificationData.fromJson(
+      await handleResponse(
+        await buildHttpResponse(APIEndPoints.clearAllNotification),
+      ),
+    );
   }
 
-  static Future<NotificationData> removeNotification({required String notificationId}) async {
-    return NotificationData.fromJson(await handleResponse(await buildHttpResponse('${APIEndPoints.removeNotification}?id=$notificationId')));
+  static Future<NotificationData> removeNotification({
+    required String notificationId,
+  }) async {
+    return NotificationData.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          '${APIEndPoints.removeNotification}?id=$notificationId',
+        ),
+      ),
+    );
   }
 
   static Future<void> clearData({bool isFromDeleteAcc = false}) async {
@@ -135,8 +211,12 @@ class AuthServiceApis {
       GoogleSignIn().disconnect();
     } else {
       final tempEmail = loginUserData.value.email;
-      final tempPASSWORD = getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
-      final tempIsRememberMe = getValueFromLocal(SharedPreferenceConst.IS_REMEMBER_ME);
+      final tempPASSWORD = getValueFromLocal(
+        SharedPreferenceConst.USER_PASSWORD,
+      );
+      final tempIsRememberMe = getValueFromLocal(
+        SharedPreferenceConst.IS_REMEMBER_ME,
+      );
       final tempUserName = loginUserData.value.fullName;
       profileId = 0.obs;
       localStorage.erase();
@@ -175,33 +255,69 @@ class AuthServiceApis {
     cachedWatchList = RxList<VideoPlayerModel>();
   }
 
-  static Future<BaseResponseModel> deviceLogoutApi({required String deviceId}) async {
+  static Future<BaseResponseModel> deviceLogoutApi({
+    required String deviceId,
+  }) async {
     String id = deviceId.isNotEmpty ? "?device_id=$deviceId" : "";
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.deviceLogout}$id")));
+    return BaseResponseModel.fromJson(
+      await handleResponse(
+        await buildHttpResponse("${APIEndPoints.deviceLogout}$id"),
+      ),
+    );
   }
 
-  static Future<BaseResponseModel> deviceLogoutApiWithoutAuth({required String deviceId, required int userId}) async {
+  static Future<BaseResponseModel> deviceLogoutApiWithoutAuth({
+    required String deviceId,
+    required int userId,
+  }) async {
     List<String> params = [];
     params.add("device_id=$deviceId");
     params.add("user_id=$userId");
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse(getEndPoint(endPoint: APIEndPoints.deviceLogoutNoAuth, params: params))));
+    return BaseResponseModel.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          getEndPoint(
+            endPoint: APIEndPoints.deviceLogoutNoAuth,
+            params: params,
+          ),
+        ),
+      ),
+    );
   }
 
   static Future<BaseResponseModel> deleteAccountCompletely() async {
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.deleteUserAccount)));
+    return BaseResponseModel.fromJson(
+      await handleResponse(
+        await buildHttpResponse(APIEndPoints.deleteUserAccount),
+      ),
+    );
   }
 
   static Future<BaseResponseModel> logOutAllAPI() async {
     List<String> params = [];
     params.add("device_id=${yourDevice.value.deviceId}");
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse(getEndPoint(endPoint: APIEndPoints.logOutAll, params: params))));
+    return BaseResponseModel.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          getEndPoint(endPoint: APIEndPoints.logOutAll, params: params),
+        ),
+      ),
+    );
   }
 
-  static Future<BaseResponseModel> logOutAllAPIWithoutAuth({required int userId}) async {
+  static Future<BaseResponseModel> logOutAllAPIWithoutAuth({
+    required int userId,
+  }) async {
     List<String> params = [];
     params.add("device_id=${yourDevice.value.deviceId}");
     params.add("user_id=$userId");
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse(getEndPoint(endPoint: APIEndPoints.logOutAllNoAuth, params: params))));
+    return BaseResponseModel.fromJson(
+      await handleResponse(
+        await buildHttpResponse(
+          getEndPoint(endPoint: APIEndPoints.logOutAllNoAuth, params: params),
+        ),
+      ),
+    );
   }
 
   static Future<void> getAppConfigurations({
@@ -210,93 +326,147 @@ class AuthServiceApis {
     VoidCallback? onError,
   }) async {
     checkApiCallIsWithinTimeSpan(
-      sharePreferencesKey: SharedPreferenceConst.LAST_APP_CONFIGURATION_CALL_TIME,
+      sharePreferencesKey:
+          SharedPreferenceConst.LAST_APP_CONFIGURATION_CALL_TIME,
       forceSync: forceSync,
       callback: () async {
         List<String> params = [];
-        if (getBoolAsync(SharedPreferenceConst.IS_LOGGED_IN) && loginUserData.value.id > -1) params.add('user_id=${loginUserData.value.id}');
-        if (getBoolAsync(SharedPreferenceConst.IS_LOGGED_IN) && loginUserData.value.id > -1) params.add('device_id=${yourDevice.value.deviceId}');
+        if (getBoolAsync(SharedPreferenceConst.IS_LOGGED_IN) &&
+            loginUserData.value.id > -1)
+          params.add('user_id=${loginUserData.value.id}');
+        if (getBoolAsync(SharedPreferenceConst.IS_LOGGED_IN) &&
+            loginUserData.value.id > -1)
+          params.add('device_id=${yourDevice.value.deviceId}');
         params.add('is_authenticated=${(isLoggedIn.isTrue).getIntBool()}');
 
-        await buildHttpResponse(getEndPoint(endPoint: APIEndPoints.appConfiguration, params: params)).then((value) async {
-          await handleResponse(value).then(
-            (value) async {
-              Rx<Future<AboutPageResponse>> getPageListFuture = Future(() => AboutPageResponse()).obs;
-              await getPageListFuture(CoreServiceApis.getPageList()).then((value) {
-                appPageList.value = value.data; // data in the observable list
-                setValue(SharedPreferenceConst.PAGE_LAST_CALL_TIME, DateTime.timestamp().millisecondsSinceEpoch);
-              });
-              ConfigurationResponse configurationResponse = ConfigurationResponse.fromJson(value);
+        await buildHttpResponse(
+              getEndPoint(
+                endPoint: APIEndPoints.appConfiguration,
+                params: params,
+              ),
+            )
+            .then((value) async {
+              await handleResponse(value).then((value) async {
+                Rx<Future<AboutPageResponse>> getPageListFuture = Future(
+                  () => AboutPageResponse(),
+                ).obs;
+                await getPageListFuture(CoreServiceApis.getPageList()).then((
+                  value,
+                ) {
+                  appPageList.value = value.data; // data in the observable list
+                  setValue(
+                    SharedPreferenceConst.PAGE_LAST_CALL_TIME,
+                    DateTime.timestamp().millisecondsSinceEpoch,
+                  );
+                });
+                ConfigurationResponse configurationResponse =
+                    ConfigurationResponse.fromJson(value);
 
-              ///If device is logged out from another device with same account then below method will logout locally
-              if (configurationResponse.isLogin == false) {
-                AuthServiceApis.removeCacheData();
-                await AuthServiceApis.clearData(isFromDeleteAcc: true);
-                removeKey(SharedPreferenceConst.IS_LOGGED_IN);
-              }
+                ///If device is logged out from another device with same account then below method will logout locally
+                if (configurationResponse.isLogin == false) {
+                  AuthServiceApis.removeCacheData();
+                  await AuthServiceApis.clearData(isFromDeleteAcc: true);
+                  removeKey(SharedPreferenceConst.IS_LOGGED_IN);
+                }
 
-              appCurrency(configurationResponse.currency);
-              appConfigs(configurationResponse);
-              if (currentSubscription.value.level > -1 && currentSubscription.value.planType.isNotEmpty && currentSubscription.value.planType.any((element) => element.slug == SubscriptionTitle.videoCast)) {
-                isCastingSupported(currentSubscription.value.planType.firstWhere((element) => element.slug == SubscriptionTitle.videoCast).limitationValue.getBoolInt());
-              } else {
-                isCastingSupported(false);
-              }
-              isSupportedDevice(configurationResponse.isDeviceSupported);
-              isCastingAvailable(configurationResponse.isCastingAvailable);
-              setValue(SharedPreferenceConst.IS_SUPPORTED_DEVICE, configurationResponse.isDeviceSupported);
-
-              setValue(SharedPreferenceConst.LAST_APP_CONFIGURATION_CALL_TIME, DateTime.timestamp().millisecondsSinceEpoch);
-              await setValue(SharedPreferenceConst.IS_APP_CONFIGURATION_SYNCED_ONCE, true);
-              setValue(SharedPreferenceConst.CONFIGURATION_RESPONSE, configurationResponse.toJson());
-              if (appConfigs.value.enableInAppPurchase.getBoolInt()) {
-                InAppPurchaseService inAppPurchaseService = Get.put(InAppPurchaseService());
-                inAppPurchaseService.init();
-              }
-
-              if (isFromSplashScreen) {
-                if (getBoolAsync(SharedPreferenceConst.IS_FIRST_TIME, defaultValue: true)) {
-                  await setValue(SharedPreferenceConst.IS_FIRST_TIME, false);
-                  Get.offAll(() => WalkThroughScreen());
-                } else if (getBoolValueAsync(SharedPreferenceConst.IS_LOGGED_IN, defaultValue: false) || isLoggedIn.value) {
-                  Get.offAll(() => WatchingProfileScreen(), arguments: true);
+                appCurrency(configurationResponse.currency);
+                appConfigs(configurationResponse);
+                if (currentSubscription.value.level > -1 &&
+                    currentSubscription.value.planType.isNotEmpty &&
+                    currentSubscription.value.planType.any(
+                      (element) => element.slug == SubscriptionTitle.videoCast,
+                    )) {
+                  isCastingSupported(
+                    currentSubscription.value.planType
+                        .firstWhere(
+                          (element) =>
+                              element.slug == SubscriptionTitle.videoCast,
+                        )
+                        .limitationValue
+                        .getBoolInt(),
+                  );
                 } else {
-                  Future.delayed(
-                    Duration(milliseconds: 800),
-                    () {
-                      Get.offAll(() => DashboardScreen(dashboardController: getDashboardController()), binding: BindingsBuilder(
-                        () {
+                  isCastingSupported(false);
+                }
+                isSupportedDevice(configurationResponse.isDeviceSupported);
+                isCastingAvailable(configurationResponse.isCastingAvailable);
+                setValue(
+                  SharedPreferenceConst.IS_SUPPORTED_DEVICE,
+                  configurationResponse.isDeviceSupported,
+                );
+
+                setValue(
+                  SharedPreferenceConst.LAST_APP_CONFIGURATION_CALL_TIME,
+                  DateTime.timestamp().millisecondsSinceEpoch,
+                );
+                await setValue(
+                  SharedPreferenceConst.IS_APP_CONFIGURATION_SYNCED_ONCE,
+                  true,
+                );
+                setValue(
+                  SharedPreferenceConst.CONFIGURATION_RESPONSE,
+                  configurationResponse.toJson(),
+                );
+                if (appConfigs.value.enableInAppPurchase.getBoolInt()) {
+                  InAppPurchaseService inAppPurchaseService = Get.put(
+                    InAppPurchaseService(),
+                  );
+                  inAppPurchaseService.init();
+                }
+
+                if (isFromSplashScreen) {
+                  if (getBoolAsync(
+                    SharedPreferenceConst.IS_FIRST_TIME,
+                    defaultValue: true,
+                  )) {
+                    await setValue(SharedPreferenceConst.IS_FIRST_TIME, false);
+                    Get.offAll(() => WalkThroughScreen());
+                  } else if (getBoolValueAsync(
+                        SharedPreferenceConst.IS_LOGGED_IN,
+                        defaultValue: false,
+                      ) ||
+                      isLoggedIn.value) {
+                    Get.offAll(() => WatchingProfileScreen(), arguments: true);
+                  } else {
+                    Future.delayed(Duration(milliseconds: 800), () {
+                      Get.offAll(
+                        () => DashboardScreen(
+                          dashboardController: getDashboardController(),
+                        ),
+                        binding: BindingsBuilder(() {
                           getDashboardController().addDataOnBottomNav();
                           getDashboardController().onBottomTabChange(0);
 
                           // get ads
                           getDashboardController().getActiveVastAds();
-                          getDashboardController().getActiveCustomAds().then((value) {
-                            getDashboardController().adPlayerController.getCustomAds();
+                          getDashboardController().getActiveCustomAds().then((
+                            value,
+                          ) {
+                            getDashboardController().adPlayerController
+                                .getCustomAds();
                           });
-                        },
-                      ));
-                    },
-                  );
+                        }),
+                      );
+                    });
+                  }
+                } else {
+                  // get ads
+                  getDashboardController().getActiveVastAds();
+                  getDashboardController().getActiveCustomAds().then((value) {
+                    getDashboardController().adPlayerController.getCustomAds();
+                  });
                 }
-              } else {
-                // get ads
-                getDashboardController().getActiveVastAds();
-                getDashboardController().getActiveCustomAds().then((value) {
-                  getDashboardController().adPlayerController.getCustomAds();
-                            
-                });
-              }
-            },
-          );
-        }).onError(
-          (error, stackTrace) {
-            errorSnackBar(error: error.toString());
-            setValue(SharedPreferenceConst.IS_APP_CONFIGURATION_SYNCED_ONCE, false);
+              });
+            })
+            .onError((error, stackTrace) {
+              errorSnackBar(error: error.toString());
+              setValue(
+                SharedPreferenceConst.IS_APP_CONFIGURATION_SYNCED_ONCE,
+                false,
+              );
 
-            onError?.call();
-          },
-        );
+              onError?.call();
+            });
       },
     );
   }
@@ -311,14 +481,21 @@ class AuthServiceApis {
     Function(dynamic)? onSuccess,
   }) async {
     if (isLoggedIn.value) {
-      http.MultipartRequest multiPartRequest = await getMultiPartRequest(APIEndPoints.updateProfile);
-      if (firstName.isNotEmpty) multiPartRequest.fields[UserKeys.firstName] = firstName;
-      if (lastName.isNotEmpty) multiPartRequest.fields[UserKeys.lastName] = lastName;
+      http.MultipartRequest multiPartRequest = await getMultiPartRequest(
+        APIEndPoints.updateProfile,
+      );
+      if (firstName.isNotEmpty)
+        multiPartRequest.fields[UserKeys.firstName] = firstName;
+      if (lastName.isNotEmpty)
+        multiPartRequest.fields[UserKeys.lastName] = lastName;
       if (mobile.isNotEmpty) multiPartRequest.fields[UserKeys.mobile] = mobile;
-      if (address.isNotEmpty) multiPartRequest.fields[UserKeys.address] = address;
+      if (address.isNotEmpty)
+        multiPartRequest.fields[UserKeys.address] = address;
 
       if (imageFile != null) {
-        multiPartRequest.files.add(await http.MultipartFile.fromPath(UserKeys.fileUrl, imageFile.path));
+        multiPartRequest.files.add(
+          await http.MultipartFile.fromPath(UserKeys.fileUrl, imageFile.path),
+        );
       }
 
       multiPartRequest.headers.addAll(buildHeaderTokens());
@@ -332,6 +509,43 @@ class AuthServiceApis {
           throw error;
         },
       );
+    }
+  }
+
+  static Future<BaseResponseModel> trackWatchTime({
+    required int seconds,
+  }) async {
+    try {
+      Map<String, dynamic> request = {'seconds': seconds};
+
+      // শুধুমাত্র লগড ইন ইউজারের জন্য ইউজার আইডি যোগ করুন
+      if (isLoggedIn.value && loginUserData.value.id > 0) {
+        request['user_id'] = loginUserData.value.id;
+      }
+
+      // শুধুমাত্র ডিভাইস আইডি যোগ করুন যদি থাকে
+      if (yourDevice.value.deviceId.isNotEmpty) {
+        request['device_id'] = yourDevice.value.deviceId;
+      }
+
+      // শুধুমাত্র প্রোফাইল আইডি যোগ করুন যদি 0 না হয়
+      if (profileId.value != 0) {
+        request['profile_id'] = profileId.value;
+      }
+
+      return BaseResponseModel.fromJson(
+        await handleResponse(
+          await buildHttpResponse(
+            APIEndPoints.trackTime,
+            request: request,
+            method: HttpMethodType.POST,
+          ),
+        ),
+      );
+    } catch (e) {
+      log('Track time error: $e');
+      // Error না throw করে শুধু log করুন, যাতে app crash না হয়
+      return BaseResponseModel(status: false, message: e.toString());
     }
   }
 }

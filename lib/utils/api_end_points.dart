@@ -101,4 +101,6 @@ class APIEndPoints {
   static const String getCustomAds = 'custom-ads/get-active';
 
   static const String saveRentDetails = 'save-payment-pay-per-view';
+
+  static const String trackTime = '/api/track-time';
 }
