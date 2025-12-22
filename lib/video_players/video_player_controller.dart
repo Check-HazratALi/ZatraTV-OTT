@@ -37,6 +37,8 @@ import 'model/video_model.dart';
 class VideoPlayersController extends GetxController {
   Rx<VideoPlayerModel> videoModel = VideoPlayerModel().obs;
   final LiveShowModel liveShowModel;
+  DateTime? lastPlayTime;
+  DateTime? lastPauseTime;
 
   Rx<PodPlayerController> podPlayerController = PodPlayerController(
     playVideoFrom: PlayVideoFrom.youtube(""),
@@ -1019,6 +1021,38 @@ class VideoPlayersController extends GetxController {
 </html>
 ''';
 
+  void logVideoEvent(String event, {String? details}) {
+    final now = DateTime.now();
+    final timestamp =
+        "${now.hour}:${now.minute}:${now.second}.${now.millisecond}";
+
+    print("""
+    ──────────────────────────────
+    🎥 VIDEO EVENT: $event
+    ⏰ Time: $timestamp
+    📺 Video: ${videoModel.value.name}
+    🔗 Type: ${videoModel.value.type}
+    📊 ID: ${videoModel.value.id}
+    ${details != null ? "📝 Details: $details" : ""}
+    ──────────────────────────────
+    """);
+
+    // Track last play/pause times
+    if (event.contains("STARTED playing")) {
+      lastPlayTime = now;
+    } else if (event.contains("PAUSED")) {
+      lastPauseTime = now;
+
+      // Calculate duration if last play time exists
+      if (lastPlayTime != null) {
+        final duration = now.difference(lastPlayTime!);
+        print(
+          "⏱️ Played for: ${duration.inSeconds}.${duration.inMilliseconds % 1000} seconds",
+        );
+      }
+    }
+  }
+
   void initializeYoutubePlayer(YPlayerController youtubeController) async {
     youtubePlayerController(youtubeController);
     isBuffering(false);
@@ -1365,7 +1399,25 @@ class VideoPlayersController extends GetxController {
         final value = podPlayerController.value;
         final position = value.videoPlayerValue?.position.inSeconds ?? 0;
         final duration = value.videoPlayerValue?.duration.inSeconds ?? 0;
+        final isPlaying = value.videoPlayerValue?.isPlaying ?? false;
+        final wasPlaying = isVideoPlaying.value;
+
         log('Overlay Ads ==> ${overlayAds.length}');
+
+        // ✅ PodPlayer play/pause event logging
+        if (isPlaying && !wasPlaying) {
+          logVideoEvent(
+            "PodPlayer - STARTED playing",
+            details: "Position: ${value.currentVideoPosition}",
+          );
+        } else if (!isPlaying && wasPlaying) {
+          logVideoEvent(
+            "PodPlayer - PAUSED",
+            details: "Position: ${value.currentVideoPosition}",
+          );
+        }
+
+        isVideoPlaying(isPlaying);
 
         if (!isTrailer.value) {
           // Overlay ad logic
@@ -1386,7 +1438,6 @@ class VideoPlayersController extends GetxController {
           }
           // Detect seek forward
           if (position > lastPlaybackPosition.value + 1) {
-            // if (overlayAds.isEmpty) {
             final skippedAds = midRollAdSeconds
                 .where(
                   (adPos) =>
@@ -1400,7 +1451,6 @@ class VideoPlayersController extends GetxController {
                 midRollAds.isNotEmpty) {
               shownMidRollAds.addAll(skippedAds);
               playAd(midRollAds[midRollAds.length - 1]);
-              // }
             }
           }
           lastPlaybackPosition(position);
@@ -1692,12 +1742,49 @@ class VideoPlayersController extends GetxController {
 
   @override
   Future<void> onClose() async {
+    logVideoEvent(
+      "CONTROLLER - CLOSING",
+      details: "Video player controller is being closed",
+    );
+
+    if (lastPlayTime != null) {
+      final now = DateTime.now();
+      final totalPlayDuration = now.difference(lastPlayTime!);
+      final totalSeconds = totalPlayDuration.inSeconds;
+
+      print("""
+    📊 FINAL PLAYBACK SUMMARY:
+    ⏱️ Total played duration: ${totalSeconds} seconds
+    🔗 Video: ${videoModel.value.type}
+    🔗 Video ID: ${videoModel.value.id}
+    """);
+
+      if (totalSeconds > 0 && videoModel.value.id > 0) {
+        try {
+          String contentType = videoModel.value.type.toLowerCase();
+          if (contentType == 'video') contentType = 'video';
+          if (contentType == 'episode') contentType = 'video';
+          if (contentType == 'movie') contentType = 'movie';
+
+          await CoreServiceApis.sendWatchTime(
+            seconds: totalSeconds,
+            contentId: videoModel.value.id,
+            contentType: contentType,
+          );
+        } catch (e) {
+          log('❌ Error in sending watch time to API: $e');
+        }
+      }
+    }
+
     if (!isTrailer.value && videoModel.value.type != VideoType.liveTv)
       await saveToContinueWatchVideo();
+
     if (podPlayerController.value.isInitialised) {
       podPlayerController.value.removeListener(() => podPlayerController.value);
       podPlayerController.value.dispose();
     }
+
     adPlayer.dispose();
     webViewController.close();
     adVideoController.player.dispose();
